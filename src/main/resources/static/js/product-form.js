@@ -38,8 +38,8 @@ function addTrack(preloaded) {
         if (track.length <= 0) return false;
         input.id = input.textContent;
         input.value = track;
-        uguygiyugytuyttrdrttrdctrycytrcdrt
         input.classList.add("track");
+        //test
         //tracks.push(track);
         // console.log(tracks);
     }
