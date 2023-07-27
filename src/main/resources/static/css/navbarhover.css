@@ -1,0 +1,10 @@
+.nav-item > a:hover{
+    color: #FF9EB1;!important;
+}.navbar-nav .nav-item.active .nav-link,
+ .navbar-nav .nav-item:hover .nav-link {
+     color: #FF9EB1;
+ }
+
+ .hov:hover{
+     color: #FF9EB1;
+ }

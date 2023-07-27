@@ -1,6 +1,7 @@
 package com.tutorial.ecommercebackend.entity.product;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class Inventory {
     private Long id;
 
     @Column(name = "quantity", nullable = false)
+    @NotNull(message = "Insert valid Quantity")
     private Integer quantity;
 
     public Inventory(Integer quantity) {

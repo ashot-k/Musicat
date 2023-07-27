@@ -1,58 +1,121 @@
 package com.tutorial.ecommercebackend.controller;
 
 
+import com.tutorial.ecommercebackend.entity.product.Images;
 import com.tutorial.ecommercebackend.entity.product.Product;
+import com.tutorial.ecommercebackend.repository.ImageRepository;
 import com.tutorial.ecommercebackend.repository.ProductRepository;
+import jakarta.validation.Valid;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     ProductRepository products;
+    ImageRepository images;
 
     @Autowired
-    public AdminController(ProductRepository products) {
+    public AdminController(ProductRepository products, ImageRepository images) {
         this.products = products;
+        this.images = images;
     }
 
-
-    @GetMapping("")
+    @GetMapping()
     String index() {
-        return "/admin/index";
+        return "/admin/admin-index";
     }
 
     @GetMapping("/list-products")
     String listProducts(Model model) {
-        model.addAttribute("products", products.findAll());
-        model.addAttribute("product", new Product());
+        model.addAttribute("products", products.findAllByOrderByNameAsc());
         return "/admin/list-products";
     }
-    /*
-    @PostMapping("/addProduct")
-    String addProduct(@ModelAttribute("product") Product newProduct){
-       WebClient webClient = WebClient.create("http://localhost:3000");
 
+    @GetMapping("/product-form")
+    String productForm(@ModelAttribute("product") Product product,
+                       @RequestParam(value = "productId", required = false) Long id,
+                       Model model) {
 
-         newProduct = webClient.post()
-                .uri("/products")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(Mono.just(empl), Product.class)
-                .retrieve()
-                .bodyToMono(Employee.class);
+        if (id != null)
+            model.addAttribute("product", products.findById(id));
+        return "/admin/product-form";
     }
 
-     */
+    @PostMapping("/product-form")
+    String saveProduct(@Valid @ModelAttribute("product") Product product,
+                       @ModelAttribute("imageId") MultipartFile file,
+                       BindingResult result) throws IOException {
 
+        Product savedProduct;
+        if (result.hasErrors()) {
+            System.out.println(result);
+            return "/admin/product-form";
+        } else {
+            savedProduct = products.save(product);
+            System.out.println(product.getName() + " added");
+        }
+        saveImage(savedProduct, file);
+
+
+        return "redirect:/admin/list-products";
+    }
+
+    //save album image
+    private void saveImage(Product product, MultipartFile file) throws IOException {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        Images image = new Images();
+        image.setImage(fileName);
+        image.setProductId(product);
+        Images savedImage = images.save(image);
+
+        String uploadDir = "./src/main/resources/static/images/album-images/" + savedImage.getProductId().getId();
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath))
+            Files.createDirectories(uploadPath);
+        try (InputStream inputStream = file.getInputStream()) {
+            Path filePath = uploadPath.resolve("album_image.png");
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println(filePath);
+        } catch (IOException e) {
+            System.out.println("failed saving file: " + e);
+        }
+
+    }
+
+    @GetMapping("/delete")
+    String deleteProduct(@RequestParam("productId") Long id) throws IOException {
+
+        Optional<Product> p = products.findById(id);
+        List<Images> i = images.findByProductId(p.get());
+        //delete album image
+        if (!i.isEmpty()) {
+            images.deleteById(i.get(0).getId());
+            FileUtils.deleteDirectory(new File("./src/main/resources/static/images/album-images/" + id));
+        }
+        products.deleteById(id);
+        System.out.println(p.get().getName() + " deleted");
+        return "redirect:/admin/list-products";
+    }
 }

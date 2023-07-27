@@ -145,6 +145,15 @@ VALUES ('Imaginations from the Other Side', 'Blind Guardian',
         25, 5,
         1995, 'Power Metal');
 
+INSERT INTO product(name, artist, description, price, fk_inventory_id, year, genre)
+VALUES ('Master Of Reality ', 'Black Sabbath',
+        'Master Of Reality is the third studio album by British band Black Sabbath.',
+        55, 28,
+        1971, 'Heavy Metal');
+
+
+
+
 
 
 DROP TABLE IF EXISTS authorities;
