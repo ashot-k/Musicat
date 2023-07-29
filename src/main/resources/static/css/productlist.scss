@@ -1,0 +1,81 @@
+$product-card-max-width: 240px;
+$product-card-min-width: 100px;
+$product-list-width: 80%;
+$categories-container-width: 20%;
+.content{
+  width: calc(100% - 128px);
+  margin: auto;
+}
+.categories-container {
+  width: $categories-container-width;
+  min-width: 250px;
+}
+
+.product-list {
+  width: $product-list-width;
+}
+
+.card {
+  width: auto;
+  max-width: $product-card-max-width;
+  min-width: $product-card-min-width;
+  height: auto;
+  //container-type: inline-size;
+}
+
+.product-info {
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.product-info > * {
+  width: inherit;
+}
+
+.product-image {
+  width: 100%;
+  max-width: $product-card-max-width;
+  min-width: $product-card-min-width;
+  height: auto;
+}
+
+.album-name, .artist-name {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.album-name {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.artist-name {
+  text-decoration: none;
+}
+
+.product-price {
+  margin-bottom: 2px;
+  padding: 2px;
+  font-size: 18px;
+  width: 65px;
+  font-weight: bold;
+}
+
+.result-info {
+  width: 100%;
+  text-align: start;
+
+}
+
+.result-title {
+  font-weight: bold;
+}
+
+.error404 {
+  background-color: rgb(243, 211, 214);
+}

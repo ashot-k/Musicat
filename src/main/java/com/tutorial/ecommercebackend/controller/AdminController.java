@@ -4,7 +4,7 @@ package com.tutorial.ecommercebackend.controller;
 import com.tutorial.ecommercebackend.entity.product.Images;
 import com.tutorial.ecommercebackend.entity.product.Product;
 import com.tutorial.ecommercebackend.repository.ImageRepository;
-import com.tutorial.ecommercebackend.repository.ProductRepository;
+import com.tutorial.ecommercebackend.service.ProductService;
 import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,33 +31,31 @@ import java.util.Optional;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    ProductRepository products;
+    ProductService productService;
     ImageRepository images;
 
     @Autowired
-    public AdminController(ProductRepository products, ImageRepository images) {
-        this.products = products;
+    public AdminController(ProductService productService, ImageRepository images) {
+        this.productService = productService;
         this.images = images;
     }
 
     @GetMapping()
-    String index() {
+    String showIndex() {
         return "/admin/admin-index";
     }
 
     @GetMapping("/list-products")
     String listProducts(Model model) {
-        model.addAttribute("products", products.findAllByOrderByNameAsc());
+        model.addAttribute("products", productService.findAllByOrderByNameAsc());
         return "/admin/list-products";
     }
 
     @GetMapping("/product-form")
-    String productForm(@ModelAttribute("product") Product product,
-                       @RequestParam(value = "productId", required = false) Long id,
-                       Model model) {
-
+    String showProductForm(@ModelAttribute("product") Product product,
+                           @RequestParam(value = "productId", required = false) Long id, Model model) {
         if (id != null)
-            model.addAttribute("product", products.findById(id));
+            model.addAttribute("product", productService.findById(id));
         return "/admin/product-form";
     }
 
@@ -66,17 +63,15 @@ public class AdminController {
     String saveProduct(@Valid @ModelAttribute("product") Product product,
                        @ModelAttribute("imageId") MultipartFile file,
                        BindingResult result) throws IOException {
-
         Product savedProduct;
         if (result.hasErrors()) {
             System.out.println(result);
             return "/admin/product-form";
         } else {
-            savedProduct = products.save(product);
+            savedProduct = productService.save(product);
             System.out.println(product.getName() + " added");
         }
         saveImage(savedProduct, file);
-
 
         return "redirect:/admin/list-products";
     }
@@ -101,20 +96,17 @@ public class AdminController {
         } catch (IOException e) {
             System.out.println("failed saving file: " + e);
         }
-
     }
 
     @GetMapping("/delete")
     String deleteProduct(@RequestParam("productId") Long id) throws IOException {
-
-        Optional<Product> p = products.findById(id);
+        Optional<Product> p = productService.findById(id);
         List<Images> i = images.findByProductId(p.get());
-        //delete album image
         if (!i.isEmpty()) {
             images.deleteById(i.get(0).getId());
             FileUtils.deleteDirectory(new File("./src/main/resources/static/images/album-images/" + id));
         }
-        products.deleteById(id);
+        productService.deleteById(id);
         System.out.println(p.get().getName() + " deleted");
         return "redirect:/admin/list-products";
     }
