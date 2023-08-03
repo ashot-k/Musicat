@@ -31,6 +31,7 @@ public class UserController {
         Product product = productService.findProductById(Long.parseLong(productId)).get();
         model.addAttribute("product", product);
         model.addAttribute("image", productService.findImagesByProduct(product).get(0).getImage());
+        model.addAttribute("relatedProducts", productService.findAllProductsByArtist(product.getArtist()));
         System.out.println(productId);
 
         return "product-page";

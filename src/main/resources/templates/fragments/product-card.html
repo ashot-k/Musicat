@@ -7,8 +7,8 @@
 </head>
 <body>
 
-<div th:fragment="product-card">
-  <div class="card border-top-0" >
+
+  <div th:fragment="product-card" class="card border-top-0" >
     <a th:href="@{/item/{productId}(productId=${product.id})}">
       <img class="product-image border border-dark border-1 rounded"
            th:src="@{/images/album-images/{id}/album_image.png
@@ -24,7 +24,6 @@
       <p class="product-price" th:text="${product.price} + '€'"></p>
     </div>
   </div>
-</div>
 
 </body>
 </html>

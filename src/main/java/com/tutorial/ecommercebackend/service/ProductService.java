@@ -79,6 +79,10 @@ public class ProductService {
         imageRep.save(image);
     }
     ///////////////////////////PRODUCTS///////////////////////////
+
+    public List<Product> findAllProductsByArtist(String name){
+        return products.findAllByArtist(name);
+    }
     public List<Product> findAllProducts(String keyword) {
         return (keyword != null) ? products.findByKeyword(keyword) : null;
     }
