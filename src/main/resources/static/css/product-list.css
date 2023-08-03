@@ -1,0 +1,78 @@
+.content {
+  width: calc(100% - 128px);
+  margin: auto;
+}
+
+.categories-container {
+  width: 20%;
+  min-width: 250px;
+}
+
+.product-list {
+  width: 80%;
+}
+
+.card {
+  width: auto;
+  max-width: 240px;
+  min-width: 100px;
+  height: auto;
+}
+
+.product-info {
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.product-info > * {
+  width: inherit;
+}
+
+.product-image {
+  width: 100%;
+  max-width: 240px;
+  min-width: 100px;
+  height: auto;
+}
+
+.album-name, .artist-name {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.album-name {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.artist-name {
+  text-decoration: none;
+}
+
+.product-price {
+  margin-bottom: 2px;
+  padding: 2px;
+  font-size: 18px;
+  width: 65px;
+  font-weight: bold;
+}
+
+.result-info {
+  width: 100%;
+  text-align: start;
+}
+
+.result-title {
+  font-weight: bold;
+}
+
+.error404 {
+  background-color: rgb(243, 211, 214);
+}
+
+/*# sourceMappingURL=product-list.css.map */

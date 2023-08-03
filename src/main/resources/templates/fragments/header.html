@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="/css/navbar-hover.css" rel="stylesheet">
+    <title>Musicat</title>
+</head>
+
+<body style="height: 2000px; background-color: #f1f1f1" class="text-dark">
+<div th:fragment="header-nav">
+    <div id="navbarContainer" class="sticky-top" style="height: fit-content">
+        <nav class="navbar navbar-expand-lg navbar-dark p-0 bg-gradient" style="background-color: #2779a7; ">
+            <!--fixed-top-->
+            <a class="navbar-brand display-3" style="padding-left: 15px" href="/static">MUSICAT</a>
+            <button type="button"
+                    class="navbar-toggler"
+                    data-bs-target="#navbarNav"
+                    data-bs-toggle="collapse"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle Navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav  align-items-center " style="height: 60px">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">Genres</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/getProduct" class="nav-link active">placeholder</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">placeholder</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav  align-items-center ms-auto" style="height: 60px">
+                    <li class="nav-item">
+                        <form class="d-flex" th:action="@{/search}">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                                   name="keyword" th:value="${keyword}">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" style="width: 50px; align-items: center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                 class="bi bi-cart" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" sec:authorize="isAuthenticated()">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" sec:authorize="isAuthenticated()">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="w-100 flex-d text-center bg-gradient bg-info">
+        <a sec:authorize="hasRole('ADMIN')" class="h1 w-100" href="/admin">CLICK HERE FOR ADMIN PAGE</a>
+    </div>
+</div>
+</body>
+</html>

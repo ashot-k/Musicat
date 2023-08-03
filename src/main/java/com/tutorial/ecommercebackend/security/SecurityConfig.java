@@ -26,7 +26,7 @@ public class SecurityConfig {
             "/css/**",
             "/images/**",
             "/fonts/**",
-            "/scripts/**",
+            "/js/**",
     };
 
     @Bean
@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/item/**").permitAll()
 
         );
+        http.csrf().disable();
         http.formLogin(form -> form.loginPage("/login").permitAll());
         return http.build();
     }

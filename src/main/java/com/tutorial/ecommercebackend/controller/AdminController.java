@@ -3,7 +3,9 @@ package com.tutorial.ecommercebackend.controller;
 
 import com.tutorial.ecommercebackend.entity.product.Images;
 import com.tutorial.ecommercebackend.entity.product.Product;
+import com.tutorial.ecommercebackend.entity.product.Track;
 import com.tutorial.ecommercebackend.repository.ImageRepository;
+import com.tutorial.ecommercebackend.repository.TrackRepository;
 import com.tutorial.ecommercebackend.service.ProductService;
 import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,14 +33,14 @@ import java.util.Optional;
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
-
+    public static List<String> genreList = Arrays.asList("Pop", "Rock", "Metal", "Country", "EDM", "Rap");
     ProductService productService;
-    ImageRepository images;
+    List<String> trackNames;
+    List<Track> tracks;
 
     @Autowired
-    public AdminController(ProductService productService, ImageRepository images) {
+    public AdminController(ProductService productService) {
         this.productService = productService;
-        this.images = images;
     }
 
     @GetMapping()
@@ -47,67 +50,127 @@ public class AdminController {
 
     @GetMapping("/list-products")
     String listProducts(Model model) {
-        model.addAttribute("products", productService.findAllByOrderByNameAsc());
+        model.addAttribute("products", productService.findAllProductsByOrderByNameAsc());
         return "/admin/list-products";
     }
 
-    @GetMapping("/product-form")
-    String showProductForm(@ModelAttribute("product") Product product,
-                           @RequestParam(value = "productId", required = false) Long id, Model model) {
-        if (id != null)
-            model.addAttribute("product", productService.findById(id));
-        return "/admin/product-form";
+    @PostMapping("/add-tracks")
+    @ResponseBody
+    String addTracks(@RequestBody Object tracks) {
+        System.out.println("called addTracks");
+        this.trackNames = (List<String>) tracks;
+        System.out.println(this.trackNames.toString());
+        return "sus";
     }
 
-    @PostMapping("/product-form")
-    String saveProduct(@Valid @ModelAttribute("product") Product product,
-                       @ModelAttribute("imageId") MultipartFile file,
-                       BindingResult result) throws IOException {
+
+    @GetMapping("/add-product")
+    String showNewProductForm(@ModelAttribute("product") Product product, Model model) {
+        model.addAttribute("genreList", genreList);
+        return "/admin/add-product-form";
+    }
+
+
+    @PostMapping("/add-product")
+    String saveNewProduct(@Valid @ModelAttribute("product") Product product,
+                          @ModelAttribute("imageId") MultipartFile file,
+                          BindingResult result) throws IOException {
+
+
+        System.out.println(product.getId());
+        System.out.println("called saveProducts");
+
+
         Product savedProduct;
         if (result.hasErrors()) {
             System.out.println(result);
-            return "/admin/product-form";
+            return "/admin/add-product-form";
         } else {
-            savedProduct = productService.save(product);
+
+            savedProduct = productService.saveProduct(product);
             System.out.println(product.getName() + " added");
+            handleTracks(savedProduct);
         }
-        saveImage(savedProduct, file);
+        productService.saveImage(savedProduct, file);
 
         return "redirect:/admin/list-products";
     }
 
-    //save album image
-    private void saveImage(Product product, MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        Images image = new Images();
-        image.setImage(fileName);
-        image.setProductId(product);
-        Images savedImage = images.save(image);
+    @GetMapping("/edit-product")
+    String showEditProductForm(@ModelAttribute("product") Product product,
+                               @RequestParam(value = "productId", required = false) Long id, Model model) {
+        Optional<Product> selectedProduct = productService.findProductById(id);
+        System.out.println(productService.findImagesByProduct(selectedProduct.get()).get(0).getImage());
+        Images image = productService.findImagesByProduct(selectedProduct.get()).get(0);
 
-        String uploadDir = "./src/main/resources/static/images/album-images/" + savedImage.getProductId().getId();
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath))
-            Files.createDirectories(uploadPath);
-        try (InputStream inputStream = file.getInputStream()) {
-            Path filePath = uploadPath.resolve("album_image.png");
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println(filePath);
-        } catch (IOException e) {
-            System.out.println("failed saving file: " + e);
+        model.addAttribute("product", selectedProduct);
+        model.addAttribute("image", image.getImage());
+        model.addAttribute("genreList", genreList);
+        return "/admin/edit-product-form";
+    }
+
+    @PostMapping("/edit-product")
+    String saveEditedProduct(@Valid @ModelAttribute("product") Product product,
+                             @ModelAttribute("imageId") MultipartFile file,
+                             BindingResult result) throws IOException {
+        Product savedProduct;
+
+        System.out.println(product.getId());
+        System.out.println("called saveEditedProduct");
+
+        if (result.hasErrors()) {
+            System.out.println(result);
+            return "/admin/edit-product-form";
+        } else {
+            if (trackNames != null)
+                handleTracks(product);
+            savedProduct = productService.saveProduct(product);
+            if (!file.isEmpty())
+                productService.saveImage(savedProduct, file);
+        }
+
+
+        System.out.println(product.getName() + " edited");
+        return "redirect:/admin/list-products";
+    }
+
+
+    private void handleTracks(Product p) {
+        if (!this.trackNames.isEmpty()) {
+            tracks = new ArrayList<>();
+            for (String str : trackNames)
+                tracks.add(new Track(str, p));
+            productService.deleteAllTracks(p);
+            List<Track> savedTracks = productService.saveAllTracks(tracks);
+            p.setTracks(savedTracks);
+            this.tracks.clear();
+            this.trackNames.clear();
         }
     }
 
+    //save album image
+
+
     @GetMapping("/delete")
     String deleteProduct(@RequestParam("productId") Long id) throws IOException {
-        Optional<Product> p = productService.findById(id);
-        List<Images> i = images.findByProductId(p.get());
+        Optional<Product> p = productService.findProductById(id);
+        Product product = p.get();
+
+        List<Images> i = productService.findImagesByProduct(product);
         if (!i.isEmpty()) {
-            images.deleteById(i.get(0).getId());
+            productService.deleteImageById(i.get(0).getId());
             FileUtils.deleteDirectory(new File("./src/main/resources/static/images/album-images/" + id));
         }
-        productService.deleteById(id);
-        System.out.println(p.get().getName() + " deleted");
+
+        List<Track> t = productService.findTracksByProductId(product);
+        List<Long> trackIds = new ArrayList<>();
+        for (Track tr : t)
+            trackIds.add(tr.getId());
+        if (!trackIds.isEmpty())
+           productService.removeTracksByIdIn(trackIds);
+        productService.deleteProductById(id);
+        System.out.println(product.getName() + " deleted");
         return "redirect:/admin/list-products";
     }
 }

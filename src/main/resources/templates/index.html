@@ -9,156 +9,63 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="/css/navbarhover.css" rel="stylesheet">
-    <link href="/css/productlist.css" rel="stylesheet">
+    <link href="/css/navbar-hover.css" rel="stylesheet">
+    <link href="/css/product-list.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
 
-<body style="height: 2000px; background-color: #f1f1f1" class="text-dark">
+<body style="height: 2000px; background-color: #fff" class="text-dark">
 
-<div id="navbarContainer" class="sticky-top" style="height: fit-content">
-    <nav class="navbar navbar-expand-lg navbar-dark p-0 bg-gradient" style="background-color: #2779a7; ">
-        <!--fixed-top-->
-        <a class="navbar-brand display-3" style="padding-left: 15px" href="/">MUSICAT</a>
-        <button type="button"
-                class="navbar-toggler"
-                data-bs-target="#navbarNav"
-                data-bs-toggle="collapse"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle Navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-            <ul class="navbar-nav  align-items-center " style="height: 60px">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">Genres</a>
+<div th:insert="/fragments/header :: header-nav"></div>
+    <div class="d-flex p-1 content" style="height: 2000px">
+        <div class="border border-secondary border-1 rounded categories-container d-flex flex-column align-items-center">
+            <h3 class="p-2 w-100">Filters</h3>
+            <ul class="list-group">
+                <li>Coffee</li>
+                <li>Tea
+                    <ul class="list-group">
+                        <li>Black tea</li>
+                        <li>Green tea</li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="/getProduct" class="nav-link active">placeholder</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">placeholder</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav  align-items-center ms-auto" style="height: 60px">
-                <li class="nav-item">
-                    <form class="d-flex" th:action="@{/search}">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-                               name="keyword" th:value="${keyword}">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" style="width: 50px; align-items: center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                             class="bi bi-cart" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                        </svg>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" sec:authorize="isAuthenticated()">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" sec:authorize="isAuthenticated()">Register</a>
-                </li>
+                <li>Milk</li>
             </ul>
         </div>
-    </nav>
-</div>
-<div class="w-100 flex-d text-center bg-gradient bg-info">
-    <a sec:authorize="hasRole('ADMIN')" class="h1 w-100" href="/admin">CLICK HERE FOR ADMIN PAGE</a>
-</div>
-
-<div class="d-flex p-1 content" style="height: 2000px">
-    <div class="border border-secondary border-1 rounded categories-container d-flex flex-column align-items-center">
-        <h3 class="p-2 w-100">Filters</h3>
-
-        <ul class="list-group">
-            <li>Coffee</li>
-            <li>Tea
-                <ul class="list-group">
-                    <li>Black tea</li>
-                    <li>Green tea</li>
-                </ul>
-            </li>
-            <li>Milk</li>
-        </ul>
-    </div>
-    <div class="product-list d-flex flex-wrap bg-gradient p-5 gap-4 "
-         style="height: fit-content">
-        <div class="result-info">
-            <h2 class="p-2 result-title" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
-                th:text="${keyword} "></h2>
-            <h5 class="p-2" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
-                th:text="${products.size()} + ' products' "></h5>
-            <h1 class="display-6 p-2 error404" th:if="${!#strings.isEmpty(noResults)}"
-                th:utext="'No results for: <b>' + ${keyword} + '</b>'"></h1>
-        </div>
-        <div th:each="product: ${products}" class="card border-top-0">
-            <a th:href="@{/item/{productId}(productId=${product.id})}">
-                <img class="product-image border border-dark border-1 rounded"
-                     th:src="@{/images/album-images/{id}/album_image.png
-                         (id=${product.id})}" alt="image not found ">
-            </a>
-            <div class="card-body d-flex flex-column product-info">
-                <h6 class="card-title album-name">
-                    <a class="album-name" style="" th:text="${product.name}"
-                       th:href="@{'/'+(productId=${product.id})}"></a>
-                </h6>
-                <!--        <p class="card-text" th:text="${product.getDescription()}"></p>-->
-                <a class="card-subtitle hov text-decoration-none artist-name" style=""
-                   th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
-                <p class="product-price" th:text="${product.price} + '€'"></p>
+        <div class="product-list d-flex flex-wrap bg-gradient p-5 gap-4 "
+             style="height: fit-content">
+            <div class="result-info">
+                <h2 class="p-2 result-title" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
+                    th:text="${keyword} "></h2>
+                <h5 class="p-2" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
+                    th:text="${products.size()} + ' products' "></h5>
+                <h1 class="display-6 p-2 error404" th:if="${!#strings.isEmpty(noResults)}"
+                    th:utext="'No results for: <b>' + ${keyword} + '</b>'"></h1>
             </div>
+
+            <div th:each="product: ${products}" th:insert="/fragments/product-card :: product-card"></div>
+        <!--  <div th:each="product: ${products}" class="card border-top-0">
+                <a th:href="@{/item/{productId}(productId=${product.id})}">
+                    <img class="product-image border border-dark border-1 rounded"
+                         th:src="@{/images/album-images/{id}/album_image.png
+                         (id=${product.id})}" alt="image not found ">
+                </a>
+                <div class="card-body d-flex flex-column product-info">
+                    <h6 class="card-title album-name">
+                        <a class="album-name" style="" th:text="${product.name}"
+                           th:href="@{/item/{productId}(productId=${product.id})}"></a>
+                    </h6>
+                    <a class="card-subtitle hov text-decoration-none artist-name" style=""
+                       th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
+                    <p class="product-price" th:text="${product.price} + '€'"></p>
+                </div>
+            </div>-->
         </div>
     </div>
-</div>
 <footer class="display-5 gradient" style="text-align: center">FOOTER PLACEHOLDER</footer>
-<!--<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<table class="table table-bordered table-hover sortable">
-    <thead class="table-dark">
-    <tr>
-        <th scope="col"><a>Name</a></th>
-        <th scope="col">Artist</th>
-        <th scope="col">Price</th>
-        <th scope="col">Year</th>
-        <th scope="col">Genre</th>
-        <th scope="col">Quantity</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product: ${products}">
-        <td th:text="${product.getName()}"></td>
-        <td th:text="${product.getArtist()}"></td>
-        <td th:text="${product.getPrice()}"></td>
-        <td th:text="${product.getYear()}"></td>
-        <td th:text="${product.getGenre()}"></td>
-        <td th:text="${product.getInventory().getQuantity()}"></td>
-    </tr>
-    </tbody>
-</table>-->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<!--<script th:inline="javascript">
-
-
-
-    /*<![CDATA[*/
-    var products = /*[[${products}]]*/;
-    /*]]>*/
-
-    //on key input
-    $('#searchBox').on('keyup',function(){
-        //get string from search box
-        var value =$(this).val();
-        console.log("value = "+ value);
-    });
-
-
-</script>-->
 </body>
 </html>

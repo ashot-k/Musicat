@@ -8,11 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -25,15 +22,15 @@ public class UserController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("products", productService.findAll());
+        model.addAttribute("products", productService.findAllProducts());
         return "index";
     }
 
     @GetMapping("/item/{productId}")
     public String getProduct(Model model, @PathVariable String productId) {
-        Product product = productService.findById(Long.parseLong(productId)).get();
+        Product product = productService.findProductById(Long.parseLong(productId)).get();
         model.addAttribute("product", product);
-
+        model.addAttribute("image", productService.findImagesByProduct(product).get(0).getImage());
         System.out.println(productId);
 
         return "product-page";
@@ -45,7 +42,7 @@ public class UserController {
             model.addAttribute("keyword", keyword);
             keyword = keyword.trim();
             System.out.println(keyword);
-            List<Product> specProducts = productService.findAll(keyword);
+            List<Product> specProducts = productService.findAllProducts(keyword);
             if (specProducts.isEmpty()) {
                 model.addAttribute("noResults", "nothing found");
             }
