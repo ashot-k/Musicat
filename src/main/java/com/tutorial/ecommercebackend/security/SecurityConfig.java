@@ -22,7 +22,7 @@ public class SecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
     }
 
-    String[] staticResources  =  {
+    String[] staticResources = {
             "/css/**",
             "/images/**",
             "/fonts/**",
@@ -30,7 +30,7 @@ public class SecurityConfig {
     };
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(configurer ->
                 configurer
@@ -39,11 +39,10 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/products/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/products").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/search").permitAll()
                         .requestMatchers(HttpMethod.GET, "/item/**").permitAll()
-
         );
         http.csrf().disable();
         http.formLogin(form -> form.loginPage("/login").permitAll());

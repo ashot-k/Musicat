@@ -32,12 +32,12 @@
     <tr th:each="product: ${products}">
 <!--        <td th:text="${}"></td>-->
         <td th:text="${product.getId()}"></td>
-        <td th:text="${product.getName()}"></td>
-        <td th:text="${product.getArtist()}"></td>
+        <td style="max-width: 250px;" th:text="${product.getName()}"></td>
+        <td style="max-width: 150px;" th:text="${product.getArtist()}"></td>
         <td th:text="${product.getPrice()}"></td>
         <td th:text="${product.getYear()}"></td>
         <td th:text="${product.getGenre()}"></td>
-        <td style="max-width: 100px" th:text="${product.tracksToString()}"></td>
+        <td style="max-width: 200px" th:text="${product.tracksToString()}"></td>
         <td th:text="${product.getInventory().getQuantity()}"></td>
         <td>
             <a class="btn btn-warning" type="button"

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="pages" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pagination d-flex justify-content-center gap-1"
+                th:object="${pageList}">
+                <li class="page-item" th:if="${pageList.hasPrevious()}">
+                    <a class="page-link hov" th:href="'/?pageNo=' + (${pageList.getNumber()}-1)"><</a>
+                </li>
+                <li class="page-item" th:unless="${pageList.hasPrevious()}">
+                    <button class="btn hov" disabled="disabled"><</button>
+                </li>
+                <li th:each="page : ${#numbers.sequence(1,pageList.getTotalPages())}" class="page-item">
+                    <button class="btn hov" th:if="${pageList.getNumber() == (page - 1)}"
+                            th:text="${page}" th:href="'/?pageNo=' + (${page}-1)" disabled="disabled"></button>
+                    <a class="page-link hov" th:unless="${pageList.getNumber() == (page - 1)}"
+                       th:text="${page}" th:href="'/?pageNo=' + (${page}-1)">
+                    </a>
+                </li>
+                <li class="page-item" th:if="${pageList.hasNext()}">
+                    <a class="page-link hov" th:href="'/?pageNo=' + (${pageList.getNumber()} + 1)" type="button">></a>
+                </li>
+                <li class="page-item" th:unless="${pageList.hasNext()}">
+                    <button class="btn hov" disabled="disabled">></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -16,62 +16,39 @@ function showImage(fileInput) {
     reader.readAsDataURL(file);
 }
 
-function addPreloadedTrack(tname) {
+function addTrack(preloaded) {
     var ul = document.getElementById("trackListing");
-
     var li = document.createElement("li");
     var name = document.createElement("h6");
-    var div = document.createElement("div");
-    div.className = "d-flex w-100";
+    var span = document.createElement("span");
+    span.className = "d-flex w-100 justify-content-between align-items-center";
 
-    name.id = name.textContent;
-    name.textContent = tname;
+    console.log(preloaded);
+    if(preloaded) {
+        name.textContent = preloaded;
+        name.id = name.textContent;
 
-    div.append(name);
-
+    }
+    else {
+        var track = document.getElementById("added-track").value;
+        if (track.length <= 0) return false;
+        name.id = name.textContent;
+        name.textContent = track;
+        tracks.push(track);
+        console.log(tracks);
+    }
+    name.style.overflowWrap = "anywhere";
+    span.append(name);
     var removeBtn = document.createElement("button");
     removeBtn.className = "btn-close border-1 border-dark";
     removeBtn.onclick = function () {
         removeTrack(name, li);
     };
-
-    div.append(removeBtn);
+    span.append(removeBtn);
     li.style.height = "fit-content";
     li.className="list-group-item";
-    li.append(div);
+    li.append(span);
     ul.appendChild(li);
-    sendTrackData();
-}
-
-function addTrack() {
-    var ul = document.getElementById("trackListing");
-    var track = document.getElementById("added-track").value;
-
-    var li = document.createElement("li");
-    var name = document.createElement("h6");
-    var div = document.createElement("div");
-    div.className = "d-flex w-100";
-
-    if(track.length <= 0) return false;
-    name.id = name.textContent;
-    name.textContent = track;
-
-    div.append(name);
-
-    var removeBtn = document.createElement("button");
-    removeBtn.className = "btn-close border-1 border-dark";
-    removeBtn.onclick = function () {
-        removeTrack(name, li);
-    };
-
-    div.append(removeBtn);
-    li.style.height = "fit-content";
-    li.className="list-group-item";
-    li.append(div);
-    ul.appendChild(li);
-
-    tracks.push(track);
-    console.log(tracks);
     sendTrackData();
 }
 

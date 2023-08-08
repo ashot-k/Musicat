@@ -29,14 +29,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.tutorial.ecommercebackend.entity.product.Genre.genreList;
+
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
-    public static List<String> genreList = Arrays.asList("Pop", "Rock", "Metal", "Country", "EDM", "Rap");
     ProductService productService;
     List<String> trackNames;
-    List<Track> tracks;
 
     @Autowired
     public AdminController(ProductService productService) {
@@ -60,7 +60,7 @@ public class AdminController {
         System.out.println("called addTracks");
         this.trackNames = (List<String>) tracks;
         System.out.println(this.trackNames.toString());
-        return "sus";
+        return "";
     }
 
 
@@ -72,27 +72,23 @@ public class AdminController {
 
 
     @PostMapping("/add-product")
-    String saveNewProduct(@Valid @ModelAttribute("product") Product product,
-                          @ModelAttribute("imageId") MultipartFile file,
-                          BindingResult result) throws IOException {
-
+    String saveNewProduct(@Valid @ModelAttribute("product") Product product, BindingResult result,
+                          @ModelAttribute("imageId") MultipartFile file, Model model) throws IOException {
 
         System.out.println(product.getId());
         System.out.println("called saveProducts");
-
-
         Product savedProduct;
         if (result.hasErrors()) {
-            System.out.println(result);
+            System.out.println(result.getAllErrors());
+            model.addAttribute("genreList", genreList);
             return "/admin/add-product-form";
         } else {
 
             savedProduct = productService.saveProduct(product);
             System.out.println(product.getName() + " added");
-            handleTracks(savedProduct);
+            productService.saveImage(savedProduct, file);
+            productService.handleTracks(savedProduct, trackNames);
         }
-        productService.saveImage(savedProduct, file);
-
         return "redirect:/admin/list-products";
     }
 
@@ -124,34 +120,17 @@ public class AdminController {
             return "/admin/edit-product-form";
         } else {
             if (trackNames != null)
-                handleTracks(product);
+                productService.handleTracks(product, trackNames);
             savedProduct = productService.saveProduct(product);
             if (!file.isEmpty())
                 productService.saveImage(savedProduct, file);
         }
-
-
         System.out.println(product.getName() + " edited");
         return "redirect:/admin/list-products";
     }
 
 
-    private void handleTracks(Product p) {
-        if (!this.trackNames.isEmpty()) {
-            tracks = new ArrayList<>();
-            for (String str : trackNames)
-                tracks.add(new Track(str, p));
-            productService.deleteAllTracks(p);
-            List<Track> savedTracks = productService.saveAllTracks(tracks);
-            p.setTracks(savedTracks);
-            this.tracks.clear();
-            this.trackNames.clear();
-        }
-    }
-
     //save album image
-
-
     @GetMapping("/delete")
     String deleteProduct(@RequestParam("productId") Long id) throws IOException {
         Optional<Product> p = productService.findProductById(id);
@@ -168,7 +147,7 @@ public class AdminController {
         for (Track tr : t)
             trackIds.add(tr.getId());
         if (!trackIds.isEmpty())
-           productService.removeTracksByIdIn(trackIds);
+            productService.removeTracksByIdIn(trackIds);
         productService.deleteProductById(id);
         System.out.println(product.getName() + " deleted");
         return "redirect:/admin/list-products";

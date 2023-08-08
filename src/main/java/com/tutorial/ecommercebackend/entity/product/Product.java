@@ -7,6 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -50,9 +51,9 @@ public class Product {
     private Inventory inventory;
 
     @Column(name = "year", nullable = false)
-    @Min(value = 1900, message = "Enter valid year of release")
-    @Max(value = 2030, message = "Enter valid year of release")
     @NotNull(message = "Enter valid year of release")
+    @Min(value = 1900, message = "Year must be greater than or equal to 1900")
+    @Max(value = 2030, message = "Year must be less than or equal to 2030")
     private Integer year;
 
 

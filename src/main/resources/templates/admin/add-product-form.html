@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 
     <!--<meta th:name="_csrf" th:content="${_csrf.token}"/>
@@ -17,100 +19,13 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-sm-3">
-            <div class="list-container">
-                <h4>Track Listing</h4>
-                <ol class="list-group" type="1" id="trackListing">
-                    <!--                  <li class="list-group-item">Track 1</li>    -->
-                </ol>
-            </div>
+        <div th:insert="/fragments/track-listing :: track-list" class="col-sm-3">
         </div>
         <div class="col-lg-6" style="width: 50%;">
-            <form id="form" action="#" enctype="multipart/form-data" th:action="@{/admin/add-product}"
+            <form id="form" enctype="multipart/form-data" th:action="@{/admin/add-product}"
                   th:object="${product}"
                   method="post" class="w-100 mx-auto my-5">
-                <div class="row gx-3">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-
-                            <label for="name" class="form-label">Name
-                                <input name="name" id="name" type="text" th:field="*{name}" class="form-control"
-                                       required>
-                            </label>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}"
-                                 th:errors="*{name}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="artist" class="form-label">Artist
-                                <input name="artist" id="artist" type="text" th:field="*{artist}" class="form-control"
-                                       required>
-                            </label>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('artist')}"
-                                 th:errors="*{artist}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="year" class="form-label">Year
-                                <input name="year" id="year" type="number" th:field="*{year}" class="form-control"
-                                       required>
-                            </label>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('year')}"
-                                 th:errors="*{year}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="genre" id="genre" class="form-label">Genre</label>
-                            <select class="form-select" aria-label="Select Genre" th:field="*{genre}" required>
-                                <option value="">Select Genre</option>
-                                <option th:each="genreOption : ${genreList}" th:text="${genreOption}"
-                                        th:value="${genreOption}"></option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('genre')}"
-                                 th:errors="*{genre}"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description
-                                <input name="description" id="description" type="text" th:field="*{description}"
-                                       class="form-control" required></label>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}"
-                                 th:errors="*{description}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="price" class="form-label">Price
-                                <input name="price" id="price" type="number" th:field="*{price}" class="form-control"
-                                       required></label>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}"
-                                 th:errors="*{price}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inventory.quantity" class="form-label">Stock Quantity
-                                <input name="inventory.quantity" id="inventory.quantity" type="number"
-                                       th:field="*{inventory.quantity}" class="form-control" required>
-                            </label>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('inventory.quantity')}"
-                                 th:errors="*{inventory.quantity}"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="imageFile" class="form-label">Artwork</label>
-                            <input id="imageFile" type="file" name="file" class="form-control"
-                                   accept="image/png, image/jpeg" required="required">
-                        </div>
-                    </div>
-                    <img id="preview" class="img-fluid mx-auto mb-3 mt-3" alt="Image preview" src="">
-                    <div class="d-grid gap-2 col-lg-6 mx-auto" style="width: 100%;">
-                        <div class="d-grid col-6 mx-auto mb-3 justify-content-center">
-                            <label for="added-track" class="form-label">Track Name
-                                <input name="added-track" id="added-track" type="text" class="form-control">
-                            </label>
-                            <button id="add-track-button" class="btn btn-primary" type="button" onclick="addTrack()">Add
-                                Track
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <button class="btn btn-primary" type="submit">Save Product</button>
-                </div>
+                <div th:insert="/fragments/product-form :: product-form"></div>
             </form>
         </div>
     </div>

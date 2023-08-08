@@ -1,6 +1,6 @@
 $product-card-max-width: 240px;
 $product-card-min-width: 100px;
-$product-list-width: 80%;
+$product-list-width: 100%;
 $categories-container-width: 20%;
 .content{
   width: calc(100% - 128px);
@@ -10,9 +10,14 @@ $categories-container-width: 20%;
   width: $categories-container-width;
   min-width: 250px;
 }
+.filter-title{
+  text-align: start;
+  font-weight: bolder;
+}
 
 .product-list {
   width: $product-list-width;
+  justify-content: center;
 }
 
 .card {
@@ -42,7 +47,7 @@ $categories-container-width: 20%;
 }
 
 .album-name, .artist-name {
-  display: block;
+  //display: block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
