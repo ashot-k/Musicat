@@ -1,3 +1,14 @@
+$product-card-max-width: 240px;
+$product-card-min-width: 30px;
+$product-list-width: 100%;
+$categories-container-width: 300px;
+
 .product-details{
   display: block;
+}
+.product-image{
+  width: 100%;
+  max-width: $product-card-max-width;
+  min-width: $product-card-min-width;
+  height: auto;
 }

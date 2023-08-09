@@ -9,17 +9,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="/css/navbar-hover.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
 <body>
 <div th:fragment="filters" class="list-group">
-    <h4 style="text-align: center">Filters</h4>
+
+    <h4 style="text-align: start">Filters</h4>
+    <br class="mt-3 mb-2"/>
     <div>
         <h5 class="filter-title">Genres</h5>
 
         <div class="list-group list-group-flush text-align-start">
-            <a th:each="genre :${genreList}" href="#" class="list-group-item list-group-item-action"
+            <a th:each="genre :${genreList}" href="#" class="hov list-group-item list-group-item-action"
                th:text="${genre}"
                th:href="@{search(keyword=${genre})}"></a>
         </div>

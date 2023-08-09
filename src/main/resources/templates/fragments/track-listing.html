@@ -13,11 +13,11 @@
     <title>Musicat</title>
 </head>
 <body>
-<div th:fragment="track-list" class="list-container my-5">
+<div th:fragment="track-list" class="track-list-container">
     <h4 style="text-align: center">Track Listing</h4>
     <ol style="padding-left: 0" class="list-group list-group-numbered" type="1" id="trackListing">
-        <li th:if="${tracks !=null}" th:each="track : ${tracks}" th:text="${track.name}" class="list-group-item" style="word-wrap: anywhere"></li>
-<!--       <li class="list-group-item">Track 1</li>-->
+        <li th:if="${tracks !=null}" th:each="track : ${tracks}" th:text="${track.name}"
+            class="fw-semibold list-group-item" style="text-align: start; word-wrap: anywhere"></li>
     </ol>
 </div>
 </body>

@@ -1,0 +1,28 @@
+
+.cart-items-number{
+  font-size: 18px;
+  margin-left: 25px;
+  position: absolute;
+  background-color: green;
+  color: white;
+  border-radius: 50%;
+  padding-left: 3px;
+  padding-right: 3px;
+  pointer-events: none
+}
+.nav-item > a:hover {
+  color: #ff5e7f !important;
+  transition-property: color;
+  transition-duration: 600ms;
+  transition-delay: 0s;
+}
+  ///color: #ff5e7f;
+   //color: #ff496d;
+
+.hov:hover {
+
+  color: #ff5e7f;
+  transition-property: color;
+  transition-duration: 600ms;
+  transition-delay: 0s;
+}

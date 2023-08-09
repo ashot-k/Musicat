@@ -1,16 +1,87 @@
+
+
+
+@media screen and (max-width: 400px){
+  $product-card-max-width: 100px;
+  $product-card-min-width: 70px;
+  .content{
+    padding: 0 !important;
+  }
+  .product-list{
+    padding: 5px !important;
+    margin: 2px !important;
+    margin-left: 5px !important;
+  }
+  .add-to-cart-btn{
+    font-size: 14px !important;
+  }
+  .card-container{
+    max-width: $product-card-max-width !important;
+    min-width: $product-card-min-width !important;
+  }
+  .card{
+
+  }
+  .categories-container{
+    background-color: #ffffff;
+    font-size: 16px;
+  }
+  .card-body{
+    height: fit-content;
+  }
+  .product-image{
+    max-width: $product-card-max-width;
+  }
+}
+@media screen and (max-width: 600px) and (min-width: 400px){
+  $product-card-max-width: 120px;
+  $product-card-min-width: 80px;
+  .content{
+    padding: 0 !important;
+  }
+  .product-list{
+    padding: 5px !important;
+    margin: 2px !important;
+    margin-left: 5px !important;
+  }
+  .add-to-cart-btn{
+    font-size: 14px !important;
+  }
+  .card-container{
+    max-width: $product-card-max-width !important;
+    min-width: $product-card-min-width !important;
+  }
+  .card{
+  }
+  .categories-container{
+    font-size: 16px;
+  }
+  .card-body{
+    height: fit-content;
+  }
+  .product-image{
+    max-width: $product-card-max-width;
+  }
+}
+
 $product-card-max-width: 240px;
-$product-card-min-width: 100px;
+$product-card-min-width: 30px;
 $product-list-width: 100%;
-$categories-container-width: 20%;
-.content{
-  width: calc(100% - 128px);
-  margin: auto;
+$categories-container-width: 300px;
+
+.track-list-container{
+  min-width: 65%;
+}
+.list-container{
+  width: 100%;
 }
 .categories-container {
+  background-color: #ffffff;
   width: $categories-container-width;
-  min-width: 250px;
+  min-width: 125px;
 }
 .filter-title{
+  font-size: 18px;
   text-align: start;
   font-weight: bolder;
 }
@@ -18,13 +89,15 @@ $categories-container-width: 20%;
 .product-list {
   width: $product-list-width;
   justify-content: center;
+  height: fit-content;
+  background: #ffffff;
 }
 
 .card {
   width: auto;
-  max-width: $product-card-max-width;
-  min-width: $product-card-min-width;
   height: auto;
+  max-width: $product-card-max-width !important;
+  min-width: $product-card-min-width !important;
   //container-type: inline-size;
 }
 
@@ -33,10 +106,6 @@ $categories-container-width: 20%;
   height: 100%;
   width: 100%;
   text-align: center;
-}
-
-.product-info > * {
-  width: inherit;
 }
 
 .product-image {

@@ -1,3 +1,12 @@
+.product-details {
+  display: block;
+}
 
+.product-image {
+  width: 100%;
+  max-width: 240px;
+  min-width: 30px;
+  height: auto;
+}
 
 /*# sourceMappingURL=product-page.css.map */

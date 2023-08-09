@@ -10,9 +10,8 @@
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
-<h1 style="text-align: center" class="display-4">MUSICAT</h1>
-<hr>
-<div class="container">
+<div class="sticky-top" th:insert="/fragments/header :: header-nav"></div>
+<div class="container my-2">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card">
@@ -97,7 +96,8 @@
                                         id="postalCode" name="postalCode"
                                         class="form-control" placeholder="Enter Postal code" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('addresses.postalCode')}"
+                            <div class="text-danger invalid-feedback"
+                                 th:if="${#fields.hasErrors('addresses.postalCode')}"
                                  th:errors="*{addresses.postalCode}">
                             </div>
                         </div>
@@ -110,7 +110,8 @@
                                         id="address1" name="address"
                                         class="form-control" placeholder="Enter 1st address" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('addresses.addressLine1')}"
+                            <div class="text-danger invalid-feedback"
+                                 th:if="${#fields.hasErrors('addresses.addressLine1')}"
                                  th:errors="*{addresses.addressLine1}">
                             </div>
                         </div>
@@ -128,7 +129,8 @@
                                         id="address2" name="address"
                                         class="form-control" placeholder="Enter 2nd address"/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('addresses.addressLine2')}"
+                            <div class="text-danger invalid-feedback"
+                                 th:if="${#fields.hasErrors('addresses.addressLine2')}"
                                  th:errors="*{addresses.addressLine2}">
                             </div>
                         </div>

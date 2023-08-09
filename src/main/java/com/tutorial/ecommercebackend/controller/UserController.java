@@ -39,19 +39,19 @@ public class UserController {
     }
 
     @ModelAttribute("products")
-    public Page<Product> populateProducts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+    public Page<Product> populateProducts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
+//                                          ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ) {
         return productService.findAllProductsPaged(pageNo, pageSize);
     }
 
     @ModelAttribute("username")
-    public String localUser(Model model) {
+    public String localUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = "";
         if (authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
+            if (principal instanceof UserDetails userDetails) {
                 username = userDetails.getUsername();
             }
         }
