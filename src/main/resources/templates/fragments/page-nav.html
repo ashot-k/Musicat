@@ -16,24 +16,24 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="pagination d-flex justify-content-center gap-1"
-                th:object="${pageList}">
-                <li class="page-item" th:if="${pageList.hasPrevious()}">
-                    <a class="page-link hov" th:href="'/?pageNo=' + (${pageList.getNumber()}-1)"><</a>
+                th:object="${products}">
+                <li class="page-item" th:if="${products.hasPrevious()}">
+                    <a class="page-link hov" th:href="'/?pageNo=' + (${products.getNumber()}-1)"><</a>
                 </li>
-                <li class="page-item" th:unless="${pageList.hasPrevious()}">
+                <li class="page-item" th:unless="${products.hasPrevious()}">
                     <button class="btn hov" disabled="disabled"><</button>
                 </li>
-                <li th:each="page : ${#numbers.sequence(1,pageList.getTotalPages())}" class="page-item">
-                    <button class="btn hov" th:if="${pageList.getNumber() == (page - 1)}"
+                <li th:each="page : ${#numbers.sequence(1,products.getTotalPages())}" class="page-item">
+                    <button class="btn hov" th:if="${products.getNumber() == (page - 1)}"
                             th:text="${page}" th:href="'/?pageNo=' + (${page}-1)" disabled="disabled"></button>
-                    <a class="page-link hov" th:unless="${pageList.getNumber() == (page - 1)}"
+                    <a class="page-link hov" th:unless="${products.getNumber() == (page - 1)}"
                        th:text="${page}" th:href="'/?pageNo=' + (${page}-1)">
                     </a>
                 </li>
-                <li class="page-item" th:if="${pageList.hasNext()}">
-                    <a class="page-link hov" th:href="'/?pageNo=' + (${pageList.getNumber()} + 1)" type="button">></a>
+                <li class="page-item" th:if="${products.hasNext()}">
+                    <a class="page-link hov" th:href="'/?pageNo=' + (${products.getNumber()} + 1)" type="button">></a>
                 </li>
-                <li class="page-item" th:unless="${pageList.hasNext()}">
+                <li class="page-item" th:unless="${products.hasNext()}">
                     <button class="btn hov" disabled="disabled">></button>
                 </li>
             </ul>

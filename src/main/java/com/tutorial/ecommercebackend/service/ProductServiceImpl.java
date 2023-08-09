@@ -6,11 +6,11 @@ import com.tutorial.ecommercebackend.entity.product.Track;
 import com.tutorial.ecommercebackend.repository.ImageRepository;
 import com.tutorial.ecommercebackend.repository.ProductRepository;
 import com.tutorial.ecommercebackend.repository.TrackRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     ProductRepository products;
     ImageRepository imageRep;
     TrackRepository trackRep;
@@ -36,8 +36,54 @@ public class ProductServiceImpl implements ProductService{
         this.imageRep = images;
         this.trackRep = trackRep;
     }
+
+    ///////////////////////////PRODUCTS///////////////////////////
+    public List<Product> findAllProductsByArtist(String name) {
+        return products.findAllByArtist(name);
+    }
+
+    public List<Product> findProductsByKeyword(String keyword) {
+        return (keyword != null) ? products.findByKeyword(keyword) : null;
+    }
+
+    public List<Product> findAllProducts() {
+        return products.findAll();
+    }
+
+    public static int totalPages;
+
+    public Page<Product> findProductsPaged(String keyword, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Product> productPage = products.findByKeyword(keyword, pageable);
+        totalPages = productPage.getTotalPages();
+        return productPage;
+    }
+
+    public Page<Product> findAllProductsPaged(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Product> productPage = products.findAll(pageable);
+        totalPages = productPage.getTotalPages();
+        return productPage;
+    }
+
+    public Product saveProduct(Product product) {
+        return products.save(product);
+    }
+
+    public List<Product> findAllProductsByOrderByNameAsc() {
+        return products.findAllByOrderByNameAsc();
+    }
+
+    public Optional<Product> findProductById(Long id) {
+        return products.findById(id);
+    }
+
+    public void deleteProductById(Long id) {
+        products.deleteById(id);
+    }
+
     ///////////////////////////TRACKS///////////////////////////
-    public void handleTracks(Product p, List<String> trackNames) {
+    public void saveTracks(Product p, List<String> trackNames) {
         List<Track> tracks = new ArrayList<>();
         if (!trackNames.isEmpty()) {
             for (String str : trackNames)
@@ -49,29 +95,36 @@ public class ProductServiceImpl implements ProductService{
             trackNames.clear();
         }
     }
-    public void deleteAllTracks(Product product){
+
+    public void deleteAllTracks(Product product) {
         trackRep.deleteAll(trackRep.findByProductId(product.getId()));
     }
-    public List<Track> saveAllTracks(List<Track> tracks){
+
+    public List<Track> saveAllTracks(List<Track> tracks) {
         return trackRep.saveAll(tracks);
     }
-    public List<Track> findTracksByProductId(Product product){
+
+    public List<Track> findTracksByProduct(Product product) {
         return trackRep.findByProductId(product.getId());
     }
-    public void removeTracksByIdIn(List<Long> ids){
+
+    public void removeTracksByIdIn(List<Long> ids) {
         trackRep.removeByIdIn(ids);
     }
+
     ///////////////////////////IMAGES///////////////////////////
-    public List<Images> findImagesByProduct(Product product){
+    public List<Images> findImagesByProduct(Product product) {
         return imageRep.findByProduct(product);
     }
-    public void deleteAllImages(Product product){
+
+    public void deleteAllImages(Product product) {
         imageRep.deleteAll(imageRep.findByProduct(product));
     }
 
-    public void deleteImageById(Long id){
+    public void deleteImageById(Long id) {
         imageRep.deleteById(id);
     }
+
     public void saveImage(Product product, MultipartFile file) throws IOException {
         String uploadDir = "./src/main/resources/static/images/album-images/" + product.getId();
         Path uploadPath = Paths.get(uploadDir);
@@ -93,37 +146,6 @@ public class ProductServiceImpl implements ProductService{
         deleteAllImages(product);
         imageRep.save(image);
     }
-    ///////////////////////////PRODUCTS///////////////////////////
-    public List<Product> findAllProductsByArtist(String name){
-        return products.findAllByArtist(name);
-    }
-    public List<Product> findAllProducts(String keyword) {
-        return (keyword != null) ? products.findByKeyword(keyword) : null;
-    }
-    public List<Product> findAllProducts(int pageNo, int pageSize) {
-        return findAllProductsPages(pageNo,  pageSize).stream().toList();
-    }
-public Page<Product> findAllProductsPages(int pageNo, int pageSize){
-    Pageable pageable = PageRequest.of(pageNo,pageSize);
-    Page<Product> productPage = products.findAll(pageable);
-    totalPages = productPage.getTotalPages();
-    return productPage;
-}
-    public static int totalPages;
 
-    public Product saveProduct(Product product) {
-        return products.save(product);
-    }
 
-    public List<Product> findAllProductsByOrderByNameAsc() {
-        return products.findAllByOrderByNameAsc();
-    }
-
-    public Optional<Product> findProductById(Long id) {
-        return products.findById(id);
-    }
-
-    public void deleteProductById(Long id) {
-        products.deleteById(id);
-    }
 }

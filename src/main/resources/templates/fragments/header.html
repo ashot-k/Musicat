@@ -13,7 +13,7 @@
     <title>Musicat</title>
 </head>
 
-<body style="height: 2000px; background-color: #f1f1f1" class="text-dark">
+<body style="height: 2000px; background-color: #f1f1f1" class="text-white">
 <div th:fragment="header-nav">
     <div id="navbarContainer" class="sticky-top" style="height: fit-content">
         <nav class="navbar navbar-expand-lg navbar-dark p-0 bg-gradient" style="background-color: #2779a7; ">
@@ -40,12 +40,12 @@
                         <a href="#" class="nav-link active">placeholder</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav  align-items-center ms-auto" style="height: 60px">
+                <ul class="navbar-nav gap-3 align-items-center" style="height: 60px">
                     <li class="nav-item">
-                        <form class="d-flex" th:action="@{/search}">
+                        <form class="d-flex gap-2" th:action="@{/search}">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
                                    name="keyword" th:value="${keyword}">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            <button class="hov active btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </li>
                     <li class="nav-item">
@@ -56,11 +56,18 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" sec:authorize="isAuthenticated()">Login</a>
+
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-primary my-2 my-sm-0 active" href="/login" >Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" sec:authorize="isAuthenticated()">Register</a>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 active" style="margin-right: 15px" th:href="@{/register}" >Register</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <h5 class="active" style="text-align: center; color: white"  th:utext="'Logged in as <br>' + ${username}"></h5>
+                    </li>
+                    <li class=""  sec:authorize="isAuthenticated()">
+                        <a  class="active btn btn-outline-danger my-2 my-sm-0" style="margin-right: 15px" href="/logout">Logout</a>
                     </li>
                 </ul>
             </div>

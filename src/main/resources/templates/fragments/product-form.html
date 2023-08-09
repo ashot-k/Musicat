@@ -16,6 +16,9 @@
     <div class="row gx-3">
         <div class="col-md-6">
             <div class="mb-3">
+                <label hidden>
+                    <input name="id" th:field="*{id}" hidden>
+                </label>
                 <label for="name" class="form-label">Name
                     <input name="name" id="name" type="text" th:field="*{name}" class="form-control"
                            required>

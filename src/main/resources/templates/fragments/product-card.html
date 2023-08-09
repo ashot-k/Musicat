@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <link href="/css/product-list.css" rel="stylesheet">
+    <link href="/css/product-list.css" rel="stylesheet">
 </head>
 <body>
 
 
-  <div th:fragment="product-card" class="card border-top-0" >
+<div th:fragment="product-card" class="card border-top-0">
     <a th:href="@{/item/{productId}(productId=${product.id})}">
-      <img class="product-image border border-dark border-1 rounded"
-           th:src="@{/images/album-images/{id}/album_image.png
+        <img class="product-image border border-dark border-1 rounded"
+             th:src="@{/images/album-images/{id}/album_image.png
                          (id=${product.id})}" alt="image not found ">
     </a>
     <div class="card-body d-flex flex-column product-info">
-      <h6 class="card-title album-name">
-        <a class="album-name" style="text-decoration: none" th:text="${product.name}"
-           th:href="@{/item/{productId}(productId=${product.id})}"></a>
-      </h6>
-      <a class="card-subtitle hov text-decoration-none artist-name" style=""
-         th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
-      <p class="product-price" th:text="${product.price} + '€'"></p>
+        <h6 class="card-title album-name">
+            <a class="album-name" style="text-decoration: none" th:text="${product.name}"
+               th:href="@{/item/{productId}(productId=${product.id})}"></a>
+        </h6>
+        <a class="card-subtitle hov text-decoration-none artist-name" style=""
+           th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
+        <p class="product-price" th:text="${product.price} + '€'"></p>
+        <form action="#" method="post" style="width: 100%;">
+            <input type="hidden" th:name="productId" th:value="${product.id}">
+            <button type="submit" class="btn btn-outline-success fs-6 fw-bold w-65">Add to Cart</button>
+        </form>
     </div>
-  </div>
+</div>
 
 </body>
 </html>

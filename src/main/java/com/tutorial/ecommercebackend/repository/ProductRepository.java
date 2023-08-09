@@ -1,6 +1,8 @@
 package com.tutorial.ecommercebackend.repository;
 
 import com.tutorial.ecommercebackend.entity.product.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +16,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM product p WHERE p.name like %:keyword% or p.artist like %:keyword% or p.genre like %:keyword%"
             , nativeQuery = true)
     List<Product> findByKeyword(@Param("keyword") String keyword);
+    @Query(value = "SELECT * FROM product p WHERE p.name like %:keyword% or p.artist like %:keyword% or p.genre like %:keyword%"
+            , nativeQuery = true)
+    Page<Product> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query(value = "SELECT * FROM product p WHERE p.name like %:keyword%"
+            , nativeQuery = true)
+    Page<Product> findByName(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query(value = "SELECT * FROM product p WHERE p.genre like %:keyword%"
+            , nativeQuery = true)
+    Page<Product> findByGenre(@Param("keyword") String keyword, Pageable pageable);
 
 
     List<Product> findAllByArtist(String name);

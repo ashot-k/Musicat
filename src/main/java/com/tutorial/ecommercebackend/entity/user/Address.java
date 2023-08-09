@@ -28,10 +28,4 @@ public class Address {
 
     @Column(name = "country", nullable = false, length = 80)
     private String country;
-
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private LocalUser localUser;
-
 }

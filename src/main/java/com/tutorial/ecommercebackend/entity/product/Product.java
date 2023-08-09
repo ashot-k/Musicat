@@ -56,8 +56,6 @@ public class Product {
     @Max(value = 2030, message = "Year must be less than or equal to 2030")
     private Integer year;
 
-
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Track> tracks;
 

@@ -19,20 +19,7 @@
 <div th:insert="/fragments/header :: header-nav"></div>
 <div class="d-flex p-1 content" style="height: 2000px">
     <div class="p-1 categories-container d-flex flex-column">
-        <div class="list-group">
-            <h4 style="text-align: center">Filters</h4>
-            <div>
-                <h5 class="filter-title">Genres</h5>
-                <div class="list-group" style="width: 100%;">
-                    <a th:each="genre :${genreList}" href="#" class="list-group-item list-group-item-action"
-                       th:text="${genre}"
-                       th:href="@{search(keyword=${genre})}"></a>
-                </div>
-            </div>
-            <div>
-                <h5 class="filter-title">Year</h5>
-            </div>
-        </div>
+       <div th:insert="/fragments/filters :: filters"></div>
     </div>
     <div class="w-100">
         <div class="product-list d-flex flex-wrap p-5 gap-4"
@@ -41,13 +28,14 @@
                 <h2 class="p-2 result-title" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
                     th:text="${keyword} "></h2>
                 <h5 class="p-2" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
-                    th:text="${products.size()} + ' products' "></h5>
+                    th:text="${products.getNumberOfElements()} + ' products' "></h5>
                 <h1 class="display-6 p-2 error404" th:if="${!#strings.isEmpty(noResults)}"
                     th:utext="'No results for: <b>' + ${keyword} + '</b>'"></h1>
             </div>
-            <div th:each="product: ${products}" th:insert="/fragments/product-card :: product-card"></div>
+            <div th:each="product: ${products.stream().toList()}"
+                 th:insert="/fragments/product-card :: product-card"></div>
         </div>
-        <div th:insert="/fragments/page-nav :: pages"></div>
+        <div th:if="${#strings.isEmpty(noResults)}" th:insert="/fragments/page-nav :: pages"></div>
     </div>
 </div>
 

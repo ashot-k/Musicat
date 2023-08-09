@@ -1,39 +1,65 @@
 package com.tutorial.ecommercebackend.controller;
 
+import com.tutorial.ecommercebackend.entity.product.Genre;
 import com.tutorial.ecommercebackend.entity.product.Product;
+import com.tutorial.ecommercebackend.entity.user.LocalUser;
+import com.tutorial.ecommercebackend.service.LocalUserService;
 import com.tutorial.ecommercebackend.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.tutorial.ecommercebackend.entity.product.Genre.genreList;
 import static com.tutorial.ecommercebackend.service.ProductServiceImpl.totalPages;
-
 
 @Controller
 public class UserController {
     ProductService productService;
-    // private static final String pageSize = "6";
+    LocalUserService userService;
+    private static final int pageSize = 5;
+    private static final int pageNo = 0;
 
     @Autowired
-    public UserController(ProductService productService) {
+    public UserController(ProductService productService, LocalUserService userService) {
         this.productService = productService;
+        this.userService = userService;
+    }
+
+    @ModelAttribute("genreList")
+    public List<String> populateGenreList() {
+        return Genre.genreList;
+    }
+
+    @ModelAttribute("products")
+    public Page<Product> populateProducts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        return productService.findAllProductsPaged(pageNo, pageSize);
+    }
+
+    @ModelAttribute("username")
+    public String localUser(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = "";
+        if (authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                username = userDetails.getUsername();
+            }
+        }
+        return username;
     }
 
     @GetMapping("/")
-    public String index(Model model,
-                        @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                        @RequestParam(value = "pageSize", defaultValue = "3", required = false) int pageSize) {
-
-        model.addAttribute("products", productService.findAllProducts(pageNo, pageSize));
-        model.addAttribute("genreList", genreList);
-        model.addAttribute("pageList", productService.findAllProductsPages(pageNo,pageSize));
+    public String index() {
         System.out.println(totalPages);
         return "index";
     }
@@ -43,11 +69,11 @@ public class UserController {
         Product product = productService.findProductById(Long.parseLong(productId)).get();
         model.addAttribute("product", product);
         model.addAttribute("image", productService.findImagesByProduct(product).get(0).getImage());
-        model.addAttribute("tracks", productService.findTracksByProductId(product));
+        model.addAttribute("tracks", productService.findTracksByProduct(product));
+
         List<Product> relatedProducts = productService.findAllProductsByArtist(product.getArtist());
         relatedProducts.remove(product);
         model.addAttribute("relatedProducts", relatedProducts);
-        System.out.println(productId);
 
         return "product-page";
     }
@@ -56,15 +82,29 @@ public class UserController {
     String search(Model model, String keyword) {
         if (keyword != null) {
             model.addAttribute("keyword", keyword);
-            model.addAttribute("genreList", genreList);
             keyword = keyword.trim();
-            System.out.println(keyword);
-            List<Product> specProducts = productService.findAllProducts(keyword);
+            Page<Product> specProducts = productService.findProductsPaged(keyword, pageNo, pageSize);
             if (specProducts.isEmpty()) {
                 model.addAttribute("noResults", "nothing found");
             }
             model.addAttribute("products", specProducts);
         }
+        return "index";
+    }
+
+    @GetMapping("/register")
+    String register(@ModelAttribute("user") LocalUser user, Model model) {
+        return "registration-form";
+    }
+
+    @PostMapping("/register")
+    String registerConfirm(@Valid @ModelAttribute("user") LocalUser user,
+                           BindingResult result) {
+        if (result.hasErrors()) {
+            System.out.println("errors in user registration: " + result);
+            return "registration-form";
+        } else
+            userService.saveUser(user);
         return "index";
     }
 }

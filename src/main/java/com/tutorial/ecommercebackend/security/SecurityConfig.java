@@ -38,14 +38,25 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/register").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/search").permitAll()
                         .requestMatchers(HttpMethod.GET, "/item/**").permitAll()
         );
+        http.formLogin(login -> {
+            login
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/")
+                    .permitAll();
+        });
+       http.logout(logout -> {
+            logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/");
+        });
         http.csrf().disable();
-        http.formLogin(form -> form.loginPage("/login").permitAll());
         return http.build();
     }
 
