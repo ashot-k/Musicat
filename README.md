@@ -1,2 +1,2 @@
 # ecommerce
-Simple eshop for physical music media in the making 
+Simple eshop for physical music media WIP 
