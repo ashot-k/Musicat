@@ -4,6 +4,7 @@ import com.tutorial.ecommercebackend.entity.user.LocalUser;
 import com.tutorial.ecommercebackend.repository.LocalUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -23,4 +24,13 @@ public class LocalUserServiceImpl implements LocalUserService{
     public LocalUser saveUser(LocalUser user) {
        return userRep.save(user);
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRep.existsByUsername(username);
+    }
+
+
+
+
 }

@@ -8,5 +8,5 @@ public interface LocalUserService {
 
    List<LocalUser> findAll();
    LocalUser saveUser(LocalUser user);
-
+   boolean existsByUsername(String username);
 }

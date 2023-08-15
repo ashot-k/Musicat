@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -8,6 +10,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-aF2kV6ar2V8Wb9hJLz3f9XtCtOgXJnBnH5jO3qD4lZ6ESz2pLXwBbXeK5nV+G3rQFbZhnD0yD3v7K4pRQm9F7A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
 <div class="sticky-top" th:insert="/fragments/header :: header-nav"></div>
@@ -27,8 +32,11 @@
                                        id="username" name="username"
                                        class="form-control" placeholder="Enter username" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('username')}"
+                            <div class="text-danger" th:if="${#fields.hasErrors('username')}"
                                  th:errors="*{username}">
+                            </div>
+                            <div class="text-danger" th:if="${dupleUsername != null}" th:text="${dupleUsername}">
+
                             </div>
                         </div>
                         <div class="form-group mb-3">
@@ -38,8 +46,8 @@
                                         id="password" name="password"
                                         class="form-control" placeholder="Enter password" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('passwrd')}"
-                                 th:errors="*{passwrd}">
+                            <div class="text-danger" th:if="${#fields.hasErrors('passwrd')}"
+                                 th:uerrors="*{passwrd}">
                             </div>
                         </div>
                         <div class="form-group mb-3">
@@ -49,7 +57,7 @@
                                         id="firstName" name="firstName"
                                         class="form-control" placeholder="Enter your first name"/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                            <div class="text-danger" th:if="${#fields.hasErrors('firstName')}"
                                  th:errors="*{firstName}">
                             </div>
                         </div>
@@ -58,9 +66,9 @@
                                 <input
                                         type="text" th:field="*{email}"
                                         id="email" name="email"
-                                        class="form-control" placeholder="Enter Email" required/>
+                                        class="form-control" placeholder="xxx@mail.com" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('email')}"
+                            <div class="text-danger" th:if="${#fields.hasErrors('email')}"
                                  th:errors="*{email}">
                             </div>
                         </div>
@@ -72,7 +80,7 @@
                                         id="country" name="country"
                                         class="form-control" placeholder="Enter Country" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('addresses.country')}"
+                            <div class="text-danger" th:if="${#fields.hasErrors('addresses.country')}"
                                  th:errors="*{addresses.country}">
                             </div>
                         </div>
@@ -84,7 +92,7 @@
                                         id="city" name="city"
                                         class="form-control" placeholder="Enter City" required/>
                             </label>
-                            <div class="text-danger invalid-feedback" th:if="${#fields.hasErrors('addresses.city')}"
+                            <div class="text-danger" th:if="${#fields.hasErrors('addresses.city')}"
                                  th:errors="*{addresses.city}">
                             </div>
                         </div>
@@ -92,11 +100,11 @@
                         <div class="form-group mb-3">
                             <label class="control-label w-100">Postal code
                                 <input
-                                        type="text" th:field="*{addresses.postalCode}"
+                                        type="number" th:field="*{addresses.postalCode}"
                                         id="postalCode" name="postalCode"
                                         class="form-control" placeholder="Enter Postal code" required/>
                             </label>
-                            <div class="text-danger invalid-feedback"
+                            <div class="text-danger"
                                  th:if="${#fields.hasErrors('addresses.postalCode')}"
                                  th:errors="*{addresses.postalCode}">
                             </div>
@@ -110,7 +118,7 @@
                                         id="address1" name="address"
                                         class="form-control" placeholder="Enter 1st address" required/>
                             </label>
-                            <div class="text-danger invalid-feedback"
+                            <div class="text-danger"
                                  th:if="${#fields.hasErrors('addresses.addressLine1')}"
                                  th:errors="*{addresses.addressLine1}">
                             </div>
@@ -129,7 +137,7 @@
                                         id="address2" name="address"
                                         class="form-control" placeholder="Enter 2nd address"/>
                             </label>
-                            <div class="text-danger invalid-feedback"
+                            <div class="text-danger"
                                  th:if="${#fields.hasErrors('addresses.addressLine2')}"
                                  th:errors="*{addresses.addressLine2}">
                             </div>
@@ -147,6 +155,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script th:src="@{/js/user-registration.js}"></script>
 </body>
 
 </html>

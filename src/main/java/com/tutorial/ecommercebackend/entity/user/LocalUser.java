@@ -1,9 +1,8 @@
 package com.tutorial.ecommercebackend.entity.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -16,6 +15,16 @@ import java.util.List;
 @Entity
 @Table(name = "local_user")
 public class LocalUser {
+    public static final String PASSWORD_ERROR_MESSAGE = """
+                        Please enter a password that has: <br>
+                        At least 5 characters. <br>
+                        At least one letter. <br>
+                        At least one number.""";
+
+
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,6 +36,12 @@ public class LocalUser {
 
     @Column(name = "passwrd", nullable = false, length = 1000)
     @NotBlank(message = "Enter valid password")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).{5,}$"
+            , message = """
+            Please enter a password that has <br>
+            At least 5 characters <br>
+            At least one letter <br>
+            At least one number""")
     private String passwrd;
 
     @Column(name = "first_name", nullable = false)
@@ -34,12 +49,12 @@ public class LocalUser {
     private String firstName;
 
     @Column(name = "email", nullable = false)
-    @Email(message = "Enter valid email")
+    @Email(message = "Enter a valid email")
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_addresses_id")
-    @NotNull
+    @Valid
     private Address addresses;
 
 }
