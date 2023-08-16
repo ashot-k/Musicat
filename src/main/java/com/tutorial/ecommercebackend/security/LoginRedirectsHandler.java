@@ -17,11 +17,15 @@ import java.util.Collection;
 public class LoginRedirectsHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException{
-        Collection<? extends GrantedAuthority> role= authentication.getAuthorities();
-        for(GrantedAuthority a:role) {
+                                        Authentication authentication) throws IOException {
+
+        Collection<? extends GrantedAuthority> role = authentication.getAuthorities();
+
+        for (GrantedAuthority a : role) {
             if (a.getAuthority().equals("ROLE_ADMIN"))
                 response.sendRedirect("http://localhost:8088/admin");
+            else
+                response.sendRedirect("http://localhost:8088/");
         }
     }
 }

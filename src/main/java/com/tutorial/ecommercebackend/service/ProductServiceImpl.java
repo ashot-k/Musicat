@@ -52,9 +52,9 @@ public class ProductServiceImpl implements ProductService {
 
     public static int totalPages;
 
-    public Page<Product> findProductsPaged(String keyword, int pageNo, int pageSize) {
+    public Page<Product> findProductsByKeywordPaged(String keyword, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Product> productPage = products.findByKeyword(keyword, pageable);
+        Page<Product> productPage = products.findByKeywordPageable(keyword, pageable);
         totalPages = productPage.getTotalPages();
         return productPage;
     }

@@ -2,13 +2,9 @@ package com.tutorial.ecommercebackend.entity.product;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
+
 @Entity
 @Table(name = "inventory")
 public class Inventory {
@@ -24,5 +20,17 @@ public class Inventory {
     public Inventory(Integer quantity) {
         this.quantity = quantity;
     }
+    public Inventory(){}
 
+    public Long getId() {
+        return id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }

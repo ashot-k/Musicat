@@ -1,11 +1,8 @@
 package com.tutorial.ecommercebackend.entity.product;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Getter@Setter
 @Table(name = "images")
 public class Images {
     @Id
@@ -20,4 +17,24 @@ public class Images {
     @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

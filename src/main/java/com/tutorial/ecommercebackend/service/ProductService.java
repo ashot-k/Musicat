@@ -16,11 +16,12 @@ public interface ProductService {
     public List<Product> findAllProductsByArtist(String name);
 
     public List<Product> findProductsByKeyword(String keyword);
+    public Page<Product> findProductsByKeywordPaged(String keyword, int pageNo, int pageSize);
 
     public List<Product> findAllProducts();
 
     public Page<Product> findAllProductsPaged(int pageNo, int pageSize);
-    public Page<Product> findProductsPaged(String keyword, int pageNo, int pageSize);
+
     public List<Product> findAllProductsByOrderByNameAsc();
 
     public Product saveProduct(Product product);

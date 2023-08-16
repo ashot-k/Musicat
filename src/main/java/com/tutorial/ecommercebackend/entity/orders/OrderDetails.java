@@ -2,12 +2,8 @@ package com.tutorial.ecommercebackend.entity.orders;
 
 import com.tutorial.ecommercebackend.entity.user.LocalUser;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Setter
-@Getter
 @Table(name = "order_details")
 public class OrderDetails {
     @Id
