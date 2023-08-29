@@ -3,13 +3,16 @@ package com.tutorial.ecommercebackend.entity.user;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "local_user")
-public class LocalUser {
+public class LocalUser implements UserDetails {
 
     public static final String PASSWORD_ERROR_MESSAGE = """
             Please enter a password that has: <br>
@@ -45,23 +48,55 @@ public class LocalUser {
     @Valid
     private Address addresses;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "username")
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String passwrd) {
@@ -69,7 +104,7 @@ public class LocalUser {
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -77,7 +112,7 @@ public class LocalUser {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -85,7 +120,7 @@ public class LocalUser {
     }
 
     public Address getAddresses() {
-        return addresses;
+        return this.addresses;
     }
 
     public void setAddresses(Address addresses) {
@@ -93,7 +128,7 @@ public class LocalUser {
     }
 
     public Role getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(Role role) {

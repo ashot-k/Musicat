@@ -100,7 +100,7 @@
 }
 
 .album-name, .artist-name {
-  overflow: hidden;
+  overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }

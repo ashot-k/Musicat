@@ -3,24 +3,19 @@ package com.tutorial.ecommercebackend.controller;
 import com.tutorial.ecommercebackend.entity.user.LocalUser;
 import com.tutorial.ecommercebackend.entity.user.Role;
 import com.tutorial.ecommercebackend.service.LocalUserService;
-import com.tutorial.ecommercebackend.service.ProductService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.io.IOException;
-import java.util.Collection;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LoginController  {
@@ -28,7 +23,6 @@ public class LoginController  {
 
     @Autowired
     public LoginController(LocalUserService userService) {
-
         this.userService = userService;
     }
     @GetMapping("/login")
@@ -48,8 +42,7 @@ public class LoginController  {
     }
 
     @PostMapping("/register")
-    String registerUser(@Valid @ModelAttribute("user") LocalUser user,
-                        BindingResult result, Model model) {
+    String registerUser(@Valid @ModelAttribute("user") LocalUser user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             checkDupleUsername(user.getUsername(), model);
             System.out.println("errors in user registration: " + result);
@@ -59,7 +52,7 @@ public class LoginController  {
         }
 
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRole(new Role(user));
+        user.setRole(Role.ROLE_CUSTOMER);
         userService.saveUser(user);
 
         return "index";

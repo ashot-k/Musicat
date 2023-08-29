@@ -21,27 +21,27 @@ import static com.tutorial.ecommercebackend.service.ProductServiceImpl.totalPage
 
 @Controller
 public class UserController {
+
     ProductService productService;
-    private static final int pageSize = 5;
+
+    public static final String indexUrl = "http://localhost:8088/";
+    private static final int pageSize = 3;
     private static final int pageNo = 0;
 
     @Autowired
     public UserController(ProductService productService) {
         this.productService = productService;
     }
-
     @ModelAttribute("genreList")
     public List<String> populateGenreList() {
         return Genre.genreList;
     }
-
     @ModelAttribute("products")
     public Page<Product> populateProducts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
-//                                          ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+//                                        ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
     ) {
         return productService.findAllProductsPaged(pageNo, pageSize);
     }
-
     @ModelAttribute("username")
     public String localUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,9 +55,13 @@ public class UserController {
         return username;
     }
 
+
+
+
+
     @GetMapping("/")
-    public String index() {
-        System.out.println(totalPages);
+    public String homePage() {
+        System.out.println("Total pages: " + totalPages);
         return "index";
     }
 

@@ -1,12 +1,10 @@
 package com.tutorial.ecommercebackend.security;
 
-import jakarta.servlet.ServletException;
+import com.tutorial.ecommercebackend.controller.UserController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +21,9 @@ public class LoginRedirectsHandler extends SavedRequestAwareAuthenticationSucces
 
         for (GrantedAuthority a : role) {
             if (a.getAuthority().equals("ROLE_ADMIN"))
-                response.sendRedirect("http://localhost:8088/admin");
+                response.sendRedirect(UserController.indexUrl + "/admin");
             else
-                response.sendRedirect("http://localhost:8088/");
+                response.sendRedirect(UserController.indexUrl);
         }
     }
 }

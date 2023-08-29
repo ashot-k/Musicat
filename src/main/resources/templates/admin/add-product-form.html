@@ -17,13 +17,13 @@
 <body>
 <div class="container">
     <div class="row">
-        <div th:insert="/fragments/track-listing :: track-list" class="col-sm-3">
+        <div th:insert="~{/fragments/track-listing :: track-list}" class="col-sm-3">
         </div>
         <div class="col-lg-6" style="width: 50%;">
             <form id="form" enctype="multipart/form-data" th:action="@{/admin/add-product}"
                   th:object="${product}"
                   method="post" class="w-100 mx-auto my-5">
-                <div th:insert="/fragments/product-form :: product-form"></div>
+                <div th:insert="~{/fragments/product-form :: product-form}"></div>
             </form>
         </div>
     </div>
