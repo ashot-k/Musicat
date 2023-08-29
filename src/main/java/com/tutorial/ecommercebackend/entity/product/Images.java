@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "image_id", nullable = false)
     private Long id;
 
     @Lob
-    @Column(name = "imagedata", columnDefinition="VARCHAR(255)")
+    @Column(name = "image_data", columnDefinition="VARCHAR(255)")
     private String image;
 
     @OneToOne
@@ -20,9 +20,6 @@ public class Images {
 
     public Long getId() {
         return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getImage() {

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
@@ -13,11 +13,13 @@
     <link href="/css/navbar.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
+
 <body style="height: 1700px; background-color: #f1f1f1" class="text-dark">
-<div class="sticky-top" th:insert="~{/fragments/header:: header-nav}"></div>
+
+<div class="sticky-top" th:insert="/fragments/header :: header-nav"></div>
 <div class="d-flex content p-5 gap-5">
     <div class="categories-container rounded d-flex flex-column p-3 gap-4">
-       <div th:insert="~{/fragments/filters :: filters}"></div>
+       <div th:insert="/fragments/filters :: filters"></div>
     </div>
     <div th:if="${products != null}" class="d-flex flex-column list-container">
         <div  class="product-list rounded d-flex flex-wrap p-5 gap-4">
@@ -30,9 +32,9 @@
                     th:utext="'No results for: <b>' + ${keyword} + '</b>'"></h1>
             </div>
             <div class="card-container"  th:each="product: ${products.stream().toList()}"
-                 th:insert="~{/fragments/product-card :: product-card}"></div>
+                 th:insert="/fragments/product-card :: product-card"></div>
         </div>
-        <div class="mt-2" th:if="${#strings.isEmpty(noResults)}" th:insert="~{/fragments/page-nav :: pages}"></div>
+        <div class="mt-2" th:if="${#strings.isEmpty(noResults)} " th:insert="/fragments/page-nav :: pages"></div>
     </div>
 </div>
 <footer class="display-5 gradient" style="text-align: center">FOOTER PLACEHOLDER</footer>

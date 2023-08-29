@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "inventory_id", nullable = false)
     private Long id;
 
     @Column(name = "quantity", nullable = false)

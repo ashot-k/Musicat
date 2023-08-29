@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "address_id", nullable = false)
     private Long id;
 
     @Column(name = "address_line_1", nullable = false)

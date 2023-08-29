@@ -14,4 +14,5 @@ public interface LocalUserRepository extends JpaRepository<LocalUser, Long> {
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+
 }

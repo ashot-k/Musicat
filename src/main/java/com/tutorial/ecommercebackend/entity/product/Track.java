@@ -18,11 +18,11 @@ public class Track {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "track_id", nullable = false)
     private Long id;
 
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "track_name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,9 +31,7 @@ public class Track {
     public Long getId() {
         return id;
     }
-    public void setId(Long id) {
-        this.id = id;
-    }
+
     public String getName() {
         return name;
     }

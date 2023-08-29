@@ -12,9 +12,8 @@
     <title></title>
 </head>
 <body>
-<div th:fragment="pages" class="container">
-    <ul class="pagination d-flex justify-content-center gap-1"
-        th:object="${products}">
+<div th:fragment="pages" class="container" th:object="${products}">
+    <ul class="pagination d-flex justify-content-center gap-1" th:if="${products.totalPages > 1}">
         <li class="page-item" th:if="${products.hasPrevious()}">
             <a class="page-link hov" th:href="'/?pageNo=' + (${products.getNumber()}-1)"><</a>
         </li>

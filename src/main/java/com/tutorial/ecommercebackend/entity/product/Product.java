@@ -25,10 +25,10 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "product_name", nullable = false)
     @NotBlank(message = "Name cannot be empty")
     private String name;
 
@@ -54,7 +54,7 @@ public class Product {
     private Inventory inventory;
 
 
-    @Column(name = "year", nullable = false)
+    @Column(name = "year_of_release", nullable = false)
     @NotNull(message = "Enter valid year of release")
     @Min(value = 1900, message = "Year must be greater than or equal to 1900")
     @Max(value = 2030, message = "Year must be less than or equal to 2030")

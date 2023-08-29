@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 public class PaymentDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "pay_details_id", nullable = false)
     private Long id;
 
-    @Column(name = "type", nullable = false, length = 15)
-    private String type;
+    @Column(name = "pay_method", nullable = false, length = 15)
+    private String payMethod;
 
     @Column(name = "account_number", nullable = false)
     private Long accountNumber;

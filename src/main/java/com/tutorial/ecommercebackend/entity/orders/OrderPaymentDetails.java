@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class OrderPaymentDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "order_pay_details_id", nullable = false)
     private Long id;
 
     @OneToOne(orphanRemoval = true)

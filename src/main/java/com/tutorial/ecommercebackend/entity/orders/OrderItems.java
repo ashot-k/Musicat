@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class OrderItems {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "order_items_id", nullable = false)
     private Long id;
 
     @ManyToOne(optional = false)

@@ -63,8 +63,7 @@ public class SecurityConfig implements AccessDeniedHandler {
         http.formLogin(login -> {
             login
                     .loginPage("/login")
-                    .defaultSuccessUrl("/")
-                    .permitAll();
+                    .defaultSuccessUrl("/");
         });
         http.logout(logout -> {
             logout
