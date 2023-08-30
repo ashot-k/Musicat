@@ -1,5 +1,5 @@
 
-const tracks = [];
+
 $(document).ready(function () {
     $('#imageFile').change(function () {
         showImage(this);
@@ -16,55 +16,60 @@ function showImage(fileInput) {
     reader.readAsDataURL(file);
 }
 
+
+
+const tracks = [];
 function addTrack(preloaded) {
     var ul = document.getElementById("trackListing");
     var li = document.createElement("li");
-    var name = document.createElement("h6");
+    var input = document.createElement("input");
     var span = document.createElement("span");
     span.className = "d-flex w-100 justify-content-between align-items-center";
 
     console.log(preloaded);
     if(preloaded) {
-        name.textContent = preloaded;
-        name.id = name.textContent;
+        input.value = preloaded;
+        input.id = input.textContent;
+        input.classList.add("track");
 
     }
     else {
         var track = document.getElementById("added-track").value;
         if (track.length <= 0) return false;
-        name.id = name.textContent;
-        name.textContent = track;
-        tracks.push(track);
-        console.log(tracks);
+        input.id = input.textContent;
+        input.value = track;
+        uguygiyugytuyttrdrttrdctrycytrcdrt
+        input.classList.add("track");
+        //tracks.push(track);
+        // console.log(tracks);
     }
-    name.style.overflowWrap = "anywhere";
-    span.append(name);
+    input.style.overflowWrap = "anywhere";
+    span.append(input);
     var removeBtn = document.createElement("button");
     removeBtn.className = "btn-close border-1 border-dark";
     removeBtn.onclick = function () {
-        removeTrack(name, li);
+        removeTrack(input, li);
     };
     span.append(removeBtn);
     li.style.height = "fit-content";
     li.className="list-group-item";
     li.append(span);
     ul.appendChild(li);
-    sendTrackData();
+  //  sendTrackData();
 }
 
 
 
 
 
-function removeTrack(name, li) {
+function removeTrack(input, li) {
     li.remove();
-    tracks.splice(tracks.indexOf(name.textContent), 1);
-    console.log(tracks);
-    sendTrackData();
+    tracks.splice(tracks.indexOf(input.value), 1);
 }
 
 
 function sendTrackData() {
+
     $.ajax({
         type: "POST",
         contentType: "application/json",

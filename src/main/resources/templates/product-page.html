@@ -32,31 +32,39 @@
                     <img class="border border-secondary border-1 rounded product-image" th:src="${image}" src="#"
                          alt="Product Image">
                 </div>
-                <div class="col-lg-5">
-                    <h4 class="fs-5 fw-bold">
-                        Band:
-                        <a class="hov text-decoration-none h5" style="text-decoration: none" th:text="${product.artist}"
-                           th:href="@{'/search?keyword=' + ${product.artist}}"> </a>
-                    </h4>
-                    <h4 class="fs-5 fw-bold" th:text="'Genre: ' + ${product.genre}"></h4>
-                    <h4 class="fs-5 fw-bold" th:text="'Year: ' + ${product.year}"></h4>
-                    <span class="fs-5" style="display: block; padding: 5px 0 5px; word-wrap: normal"
-                          th:text="${product.description}">
-                    </span>
-                    <!--style="display: grid; justify-content: center"-->
-                    <div class="d-flex flex-column align-items-center my-4">
+                <div class="col-lg-5 d-flex flex-fill flex-column justify-content-between"
+                     style="height: 240px; width: 500px;">
+                    <div>
+                        <h4 class="fs-5 fw-bold">
+                            Band:
+                            <a class="hov text-decoration-none h5" style="text-decoration: none"
+                               th:text="${product.artist}"
+                               th:href="@{'/search?keyword=' + ${product.artist}}"> </a>
+                        </h4>
+                        <h4 class="fs-5 fw-bold" th:text="'Genre: ' + ${product.genre}"></h4>
+                        <h4 class="fs-5 fw-bold" th:text="'Year: ' + ${product.year}"></h4>
+                    </div>
+                    <div>
                         <span class="fs-4 h4 fw-bold">Price:
                             <span th:text="${product.price} + '€'" class="fw-bold"></span>
                         </span>
-                        <form action="#" method="post" style="width: 100%;">
+                        <hr class="mt-1" style="width: 0">
+                        <form action="#" method="post" style="width: 25%;">
                             <input type="hidden" th:name="productId" th:value="${product.id}">
                             <button type="submit" class="btn btn-success fs-5 fw-bold w-100">Add to Cart</button>
                         </form>
                     </div>
+                 <!--   style="display: grid; justify-content: center"
+                    <div class="d-flex flex-column align-items-center my-4">
+                    </div>-->
                 </div>
             </div>
-            <hr class="mt-3 mb-2 w-100">
-            <div style="text-align: center;" class="my-3"
+            <hr class="mt-3 mb-1 w-100">
+            <span class="fs-5 self-align-end" style="display: block; padding: 5px 0 5px; word-wrap: normal"
+                  th:text="${product.description}">
+                    </span>
+            <hr class="mt-3 mb-1 w-100">
+            <div style="text-align: center;" class="my-2"
                  th:insert="/fragments/track-listing :: track-list">
             </div>
         </div>

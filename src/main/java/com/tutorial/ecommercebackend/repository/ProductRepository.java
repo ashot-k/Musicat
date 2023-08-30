@@ -14,14 +14,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     // List<Product> findAll(String keyword);
-    @Query(value = "SELECT * FROM product p WHERE p.name like %:keyword% or p.artist like %:keyword% or p.genre like %:keyword%"
+    @Query(value = "SELECT * FROM product p WHERE p.product_name like %:keyword% or p.artist like %:keyword% or p.genre like %:keyword%"
             , nativeQuery = true)
     List<Product> findByKeyword(@Param("keyword") String keyword);
-    @Query(value = "SELECT * FROM product p WHERE p.name like %:keyword% or p.artist like %:keyword% or p.genre like %:keyword%"
+    @Query(value = "SELECT * FROM product p WHERE p.product_name like %:keyword% or p.artist like %:keyword% or p.genre like %:keyword%"
             , nativeQuery = true)
     Page<Product> findByKeywordPageable(@Param("keyword") String keyword, Pageable pageable);
 
-    @Query(value = "SELECT * FROM product p WHERE p.name like %:keyword%"
+    @Query(value = "SELECT * FROM product p WHERE p.product_name like %:keyword%"
             , nativeQuery = true)
     Page<Product> findByName(@Param("keyword") String keyword, Pageable pageable);
 
