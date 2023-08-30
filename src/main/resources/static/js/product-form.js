@@ -6,9 +6,9 @@ $(document).ready(function () {
     });
 })
 function showImage(fileInput) {
-    file = fileInput.files[0];
+    let file = fileInput.files[0];
 
-    reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = function (e) {
         $('#preview').attr('src', e.target.result)
     };

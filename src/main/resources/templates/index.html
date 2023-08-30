@@ -28,7 +28,7 @@
                     th:text="${keyword} "></h2>
                 <h5 class="p-2" th:if="${!#strings.isEmpty(keyword)} and ${#strings.isEmpty(noResults)}"
                     th:text="${products.getNumberOfElements()} + ' products' "></h5>
-                <h1 class="display-6 p-2 error404" th:if="${!#strings.isEmpty(noResults)}"
+                <h1 class="display-6 p-3 error404 rounded" th:if="${!#strings.isEmpty(noResults)}"
                     th:utext="'No results for: <b>' + ${keyword} + '</b>'"></h1>
             </div>
             <div class="card-container"  th:each="product: ${products.stream().toList()}"
