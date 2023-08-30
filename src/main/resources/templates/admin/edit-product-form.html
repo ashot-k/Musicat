@@ -47,11 +47,7 @@
         console.log(preloadedTracks.length);
         if (preloadedTracks.length > 0) {
             for (let i = 0; i < preloadedTracks.length; i++) {
-                tracks.push(preloadedTracks[i]);
-            }
-            console.log("tracks after preloading: " + tracks);
-            for (let i = 0; i < tracks.length; i++) {
-                addTrack(tracks[i]);
+                addTrack(preloadedTracks[i]);
             }
         }
 

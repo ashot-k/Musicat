@@ -18,7 +18,7 @@ function showImage(fileInput) {
 
 
 
-const tracks = [];
+//const tracks = [];
 function addTrack(preloaded) {
     var ul = document.getElementById("trackListing");
     var li = document.createElement("li");
@@ -26,12 +26,10 @@ function addTrack(preloaded) {
     var span = document.createElement("span");
     span.className = "d-flex w-100 justify-content-between align-items-center";
 
-    console.log(preloaded);
     if(preloaded) {
         input.value = preloaded;
         input.id = input.textContent;
         input.classList.add("track");
-
     }
     else {
         var track = document.getElementById("added-track").value;
@@ -39,41 +37,33 @@ function addTrack(preloaded) {
         input.id = input.textContent;
         input.value = track;
         input.classList.add("track");
-        //test
-        //tracks.push(track);
-        // console.log(tracks);
     }
     input.style.overflowWrap = "anywhere";
     span.append(input);
     var removeBtn = document.createElement("button");
     removeBtn.className = "btn-close border-1 border-dark";
     removeBtn.onclick = function () {
-        removeTrack(input, li);
+        li.remove();
     };
     span.append(removeBtn);
     li.style.height = "fit-content";
     li.className="list-group-item";
     li.append(span);
     ul.appendChild(li);
-  //  sendTrackData();
 }
-
-
-
-
-
-function removeTrack(input, li) {
-    li.remove();
-    tracks.splice(tracks.indexOf(input.value), 1);
-}
-
 
 function sendTrackData() {
+    var trackList = document.getElementsByClassName("track")
+    const tracks = [];
 
+
+    for (let i = 0; i < trackList.length; i++) {
+        if(trackList[i].value.length > 0)
+        tracks[i] = trackList[i].value;
+    }
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        //   dataType: "json",
         data: JSON.stringify(tracks),//send data directly
         url: '/admin/add-tracks',
         asynch: false,
@@ -82,9 +72,9 @@ function sendTrackData() {
         },
         error: function (xhr, status, error) {
             console.log("Error:", error);
-            //   alert("Request failed: " + error);
         }
     });
+    $("#form").submit();
 }
 
 
