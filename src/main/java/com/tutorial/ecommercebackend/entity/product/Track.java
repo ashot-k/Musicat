@@ -2,9 +2,11 @@ package com.tutorial.ecommercebackend.entity.product;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "track")
-public class Track {
+public class Track implements Serializable {
 
 
     public Track(String name, Product product) {

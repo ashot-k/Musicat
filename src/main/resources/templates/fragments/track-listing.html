@@ -13,8 +13,9 @@
     <title>Musicat</title>
 </head>
 <body>
-<div th:fragment="track-list" class="track-list-container">
+<div th:fragment="track-list" class="track-list-container my-5">
     <h4 style="text-align: center">Track Listing</h4>
+    <hr class="mt-3 w-100">
     <ol style="padding-left: 0" class="list-group list-group-numbered" type="1" id="trackListing">
         <li th:if="${tracks !=null}" th:each="track : ${tracks}" th:text="${track.name}"
             class="fw-semibold list-group-item" style="text-align: start; word-wrap: anywhere"></li>

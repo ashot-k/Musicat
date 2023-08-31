@@ -3,11 +3,12 @@ package com.tutorial.ecommercebackend.entity.product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "inventory")
-public class Inventory {
+public class Inventory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inventory_id", nullable = false)

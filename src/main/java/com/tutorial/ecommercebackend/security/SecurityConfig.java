@@ -12,10 +12,12 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import java.io.IOException;
 
@@ -59,6 +61,12 @@ public class SecurityConfig implements AccessDeniedHandler {
                         .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/search").permitAll()
                         .requestMatchers(HttpMethod.GET, "/item/**").permitAll()
+
+
+
+
+
+                        .requestMatchers("/**").permitAll()
         );
         http.formLogin(login -> {
             login
@@ -70,10 +78,13 @@ public class SecurityConfig implements AccessDeniedHandler {
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/");
         });
+        http.sessionManagement((session) -> session
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+        );
         http.csrf().disable();
+
         return http.build();
     }
-
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {

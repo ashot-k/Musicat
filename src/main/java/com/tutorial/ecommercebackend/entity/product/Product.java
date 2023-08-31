@@ -3,6 +3,7 @@ package com.tutorial.ecommercebackend.entity.product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.io.Serializable;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable{
     public Product(String name, String artist, String description, Double price, Inventory inventory, Integer year, String genre, List<Track> tracks) {
         this.name = name;
         this.artist = artist;
@@ -64,12 +65,38 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Track> tracks;
 
-    public List<String> tracksToString() {
+    public List<String> tracksToStringList() {
         List<String> stringList = new ArrayList<>();
         for (Track t: tracks) {
             stringList.add(t.getName());
         }
         return stringList;
+    }
+
+    public String tracksToString() {
+        StringBuilder allTracks = new StringBuilder();
+        for (int i = 0; i < tracks.toArray().length; i++) {
+            allTracks.append(tracks.get(i).getName()).append(", ");
+        }
+        allTracks.deleteCharAt(allTracks.length() - 2);
+        allTracks.append("[" + tracks.size() + "]");
+        return allTracks.toString();
+    }
+
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", artist='" + artist + '\'' +
+                ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", inventory=" + inventory +
+                ", year=" + year +
+                ", tracks=" + tracks +
+                '}';
     }
 
     public Long getId() {

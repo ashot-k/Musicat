@@ -22,12 +22,12 @@
         <a class="card-subtitle hov text-decoration-none artist-name" style=""
            th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
         <p class="product-price" th:text="${product.price} + '€'"></p>
-        <form action="#" method="post" style="width: 100%;">
-            <input type="hidden" th:name="productId" th:value="${product.id}">
-            <button type="submit" class="add-to-cart-btn btn btn-outline-success fs-6 fw-bold w-65">Add to Cart</button>
-        </form>
+        <div style="width: 100%;">
+<!--            <input type="hidden" th:name="productId" th:value="${product.id}">-->
+            <button type="button" th:attr="onclick=|addToCart('${product.id}')|"   class="add-to-cart-btn btn btn-outline-success fs-6 fw-bold w-65">Add to Cart</button>
+        </div>
+<!--        th:onclick="'javascript:addToCart(' + ${product} + ')'"-->
     </div>
 </div>
-
 </body>
 </html>

@@ -13,7 +13,9 @@
 </head>
 <body>
 <div th:fragment="product-form">
-    <div class="row gx-3">
+    <div class="row gx-3 border-start border-end" >
+        <h4 style="text-align: center">Album Information</h4>
+        <hr class="mt-2 w-100">
         <div class="col-md-6">
             <div class="mb-3">
                 <label hidden>
@@ -83,8 +85,10 @@
                        accept="image/png, image/jpeg" required="required">
             </div>
         </div>
+        <hr class="mt-0 w-100">
         <img id="preview" class="mx-auto mb-3 mt-3" alt="Image preview"
              style="width: 256px; height: 256px;" src="" th:src="@{${image}}">
+        <hr class="mt-3 mb-1 w-100">
         <div class="d-grid gap-2 col-lg-6 mx-auto" style="width: 100%;">
             <div class="d-grid col-6 mx-auto mb-3 justify-content-center">
                 <label for="added-track" class="form-label">Track Name
