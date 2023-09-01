@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @SpringBootApplication
-@EnableJdbcHttpSession
+@EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 1800)
 public class EcommerceApplication {
 
     public static void main(String[] args) {

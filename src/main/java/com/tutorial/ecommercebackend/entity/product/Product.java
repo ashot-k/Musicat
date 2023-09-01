@@ -62,7 +62,7 @@ public class Product implements Serializable{
     private Integer year;
 
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany( mappedBy = "product", cascade = CascadeType.ALL)
     private List<Track> tracks;
 
     public List<String> tracksToStringList() {
@@ -74,6 +74,9 @@ public class Product implements Serializable{
     }
 
     public String tracksToString() {
+        if(tracks.isEmpty()){
+            return "!empty!";
+        }
         StringBuilder allTracks = new StringBuilder();
         for (int i = 0; i < tracks.toArray().length; i++) {
             allTracks.append(tracks.get(i).getName()).append(", ");

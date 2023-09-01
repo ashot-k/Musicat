@@ -8,7 +8,6 @@ import java.io.Serializable;
 @Table(name = "track")
 public class Track implements Serializable {
 
-
     public Track(String name, Product product) {
         this.name = name;
         this.product = product;
@@ -22,7 +21,6 @@ public class Track implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "track_id", nullable = false)
     private Long id;
-
 
     @Column(name = "track_name", nullable = false)
     private String name;

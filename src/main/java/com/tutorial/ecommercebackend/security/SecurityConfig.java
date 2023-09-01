@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import java.io.IOException;
 
@@ -52,21 +53,17 @@ public class SecurityConfig implements AccessDeniedHandler {
         http.authorizeHttpRequests(configurer ->
                 configurer
                         .requestMatchers(staticResources).permitAll()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/login").anonymous()
                         .requestMatchers("/register").anonymous()
-                        .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/search").permitAll()
                         .requestMatchers(HttpMethod.GET, "/item/**").permitAll()
 
-
-
-
-
-                        .requestMatchers("/**").permitAll()
         );
         http.formLogin(login -> {
             login
@@ -79,13 +76,18 @@ public class SecurityConfig implements AccessDeniedHandler {
                     .logoutSuccessUrl("/");
         });
         http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         );
         http.csrf().disable();
 
         return http.build();
     }
-
+    @Bean
+    public HttpSessionRequestCache httpSessionRequestCache() {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setCreateSessionAllowed(false);
+        return requestCache;
+    }
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.sendRedirect("/");

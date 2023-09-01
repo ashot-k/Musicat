@@ -11,7 +11,6 @@ public class OrderPaymentDetails {
     private Long id;
 
     @OneToOne(orphanRemoval = true)
-    @JoinColumn(name = "order_id")
     private OrderDetails orderId;
 
     @Column(name = "amount", nullable = false)

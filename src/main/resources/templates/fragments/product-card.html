@@ -10,7 +10,7 @@
 
 <div th:fragment="product-card" class="card border-top-0">
     <a th:href="@{/item/{productId}(productId=${product.id})}">
-        <img class="product-image border border-dark border-1 rounded"
+        <img class="product-image border border-dark border-1 rounded" th:id="${product.id}"
              th:src="@{/images/album-images/{id}/album_image.png
                          (id=${product.id})}" alt="image not found ">
     </a>
@@ -23,10 +23,8 @@
            th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
         <p class="product-price" th:text="${product.price} + '€'"></p>
         <div style="width: 100%;">
-<!--            <input type="hidden" th:name="productId" th:value="${product.id}">-->
-            <button type="button" th:attr="onclick=|addToCart('${product.id}')|"   class="add-to-cart-btn btn btn-outline-success fs-6 fw-bold w-65">Add to Cart</button>
+            <button type="button" th:attr="onclick=|addToCart('${product.id}', '${product.name}')|"   class="add-to-cart-btn btn btn-outline-success fs-6 fw-bold w-65">Add to Cart</button>
         </div>
-<!--        th:onclick="'javascript:addToCart(' + ${product} + ')'"-->
     </div>
 </div>
 </body>

@@ -53,10 +53,10 @@ function addTrack(preloaded) {
 }
 
 function sendTrackData() {
+
     var trackList = document.getElementsByClassName("track")
     const tracks = [];
-
-
+    if(tracklist.empty()) return;
     for (let i = 0; i < trackList.length; i++) {
         if(trackList[i].value.length > 0)
         tracks[i] = trackList[i].value;
@@ -68,13 +68,12 @@ function sendTrackData() {
         url: '/admin/add-tracks',
         asynch: false,
         success: function () {
-            //  alert("success");
+            $("#form").submit();
         },
         error: function (xhr, status, error) {
             console.log("Error:", error);
         }
     });
-    $("#form").submit();
 }
 
 
