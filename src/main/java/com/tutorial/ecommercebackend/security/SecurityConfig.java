@@ -68,7 +68,7 @@ public class SecurityConfig implements AccessDeniedHandler {
         http.formLogin(login -> {
             login
                     .loginPage("/login")
-                    .defaultSuccessUrl("/");
+                    .defaultSuccessUrl("/after-login");
         });
         http.logout(logout -> {
             logout
@@ -76,7 +76,7 @@ public class SecurityConfig implements AccessDeniedHandler {
                     .logoutSuccessUrl("/");
         });
         http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
         );
         http.csrf().disable();
 

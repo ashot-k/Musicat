@@ -4,12 +4,36 @@ import com.tutorial.ecommercebackend.entity.user.LocalUser;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "shopping_cart")
 public class Cart implements Serializable {
+    public static final int TIMEOUT_IN_SECONDS = 30   * 1000;
+    public Cart() {
+        this.cartItems = new ArrayList<>();
+        setupTimers();
+    }
+    public Cart(LocalUser user) {
+        this.cartItems = new ArrayList<>();
+        this.localUser = user;
+        setupTimers();
+    }
+
+
+    public void setupTimers(){
+        this.timeCreated = new Timestamp(System.currentTimeMillis());
+        this.lastAccessed = new Timestamp(System.currentTimeMillis());
+        this.remaining = new Timestamp(TIMEOUT_IN_SECONDS);
+    }
+    public void acccessed(){
+        this.lastAccessed = new Timestamp(System.currentTimeMillis());
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", nullable = false)
@@ -20,25 +44,16 @@ public class Cart implements Serializable {
     @OneToOne
     @JoinColumn(name = "cart_user")
     private LocalUser localUser;
+    @Column(name = "time_created")
+    private Timestamp timeCreated;
+    @Column(name = "last_accessed")
+    private Timestamp lastAccessed;
+    @Column(name = "remaining")
+    private Timestamp remaining;
 
-
-    public Cart() {
-        this.cartItems = new ArrayList<>();
-        System.out.println("called cart constructor");
+    public String getTotalItems() {
+        return String.valueOf(cartItems.size());
     }
-    public Cart(LocalUser user){
-        this.cartItems = new ArrayList<>();
-        this.localUser = user;
-        System.out.println("called cart constructor");
-    }
-
-
-
-
-
-
-
-
 
     public Long getId() {
         return id;
@@ -48,22 +63,36 @@ public class Cart implements Serializable {
         this.id = id;
     }
 
+    public Timestamp getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(Timestamp timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public Timestamp getLastAccessed() {
+        return lastAccessed;
+    }
+
+    public void setLastAccessed(Timestamp lastAccessed) {
+        this.lastAccessed = lastAccessed;
+    }
+
+    public Timestamp getRemaining() {
+        return remaining;
+    }
+
+    public void setRemaining(Timestamp remaining) {
+        this.remaining = remaining;
+    }
+
     public LocalUser getLocalUser() {
         return localUser;
     }
 
     public void setLocalUser(LocalUser localUser) {
         this.localUser = localUser;
-    }
-
-
-
-    public Cart(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
-    }
-
-    public String getTotalItems() {
-        return String.valueOf(cartItems.size());
     }
 
     public List<CartItem> getCartItems() {

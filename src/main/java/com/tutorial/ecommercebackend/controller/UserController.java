@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,6 +36,13 @@ import static com.tutorial.ecommercebackend.service.ProductServiceImpl.totalPage
 @Controller
 @SessionAttributes("cart")
 public class UserController {
+
+    /*
+    TODO MAKE ADD-TO-CART SAVE TO DB FOR AUTHENTICATED AND SESSION FOR UNAUTHENTICATED
+
+    */
+
+
     ProductService productService;
     CartService cartService;
 
@@ -47,71 +53,37 @@ public class UserController {
     List<Product> currentPageProducts;
 
     @Autowired
-    public UserController(ProductService productService, CartService cartService,  LocalUserService userService) {
+    public UserController(ProductService productService, CartService cartService, LocalUserService userService) {
         this.productService = productService;
         this.cartService = cartService;
+        this.userService = userService;
         this.currentPageProducts = new ArrayList<>();
-        this.userService =  userService;
     }
-
-    @GetMapping("/login")
-    String loginPage() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    String login() {
-        return "index";
-    }
-
-    @GetMapping("/register")
-    String register(@ModelAttribute("user") LocalUser user) {
-        return "registration-form";
-    }
-
-    @PostMapping("/register")
-    String registerUser(@Valid @ModelAttribute("user") LocalUser user,
-                        BindingResult result, Model model, HttpServletRequest request) {
-        if (result.hasErrors()) {
-            checkDupleUsername(userService, user.getUsername(), model);
-            System.out.println("errors in user registration: " + result);
-            return "registration-form";
-        } else if (checkDupleUsername(userService, user.getUsername(), model)) {
-            return "registration-form";
-        }
-
-        String purePassword = user.getPassword();
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRole(Role.ROLE_CUSTOMER);
-        LocalUser savedUser = userService.saveUser(user);
-        Cart cart = new Cart(savedUser);
-        cartService.saveCart(cart);
-
-        SecurityUtils.autoLogin(request, savedUser.getUsername(), purePassword);
-        return "redirect:/";
-    }
-
     @ModelAttribute("cartCounter")
     public Integer cardCounter() {
         return 0;
     }
 
     @ModelAttribute("cart")
-    public Cart shoppingCartAnon() {
-        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
-            return null;
-        Cart c;
-        c = new Cart();
-        System.out.println(c);
-        return c;
+    public Cart shoppingCart(HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) {
+            System.out.println( SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            System.out.println("USER cart method");
+            Cart tempCart = cartService.findByUsername(auth.getPrincipal().toString());
+            tempCart.acccessed();
+            return tempCart;
+        } else {
+            Cart tempCart = (Cart) session.getAttribute("cart");
+            if (tempCart == null) {
+                System.out.println("ANON cart method");
+                tempCart = new Cart();
+                session.setAttribute("cart", tempCart);
+            }
+            return tempCart;
+        }
     }
-    @ModelAttribute("cart")
-    public Cart shoppingCartForCustomer() {
-        if(!SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
-            return null;
-        System.out.println("authenticated cart method");
-       return cartService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-    }
+
     @ModelAttribute("genreList")
     public List<String> populateGenreList() {
         return Genre.genreList;
@@ -123,7 +95,6 @@ public class UserController {
     ) {
         Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
         currentPageProducts = page.toList();
-        System.out.println("in model method currentpageproducts variable: " + currentPageProducts);
         return page;
     }
 
@@ -140,11 +111,61 @@ public class UserController {
         return username;
     }
 
+
     @GetMapping("/")
     public String homePage() {
         System.out.println("Total pages: " + totalPages);
         return "index";
     }
+
+    @GetMapping("/login")
+    String loginPage() {
+        return "login";
+    }
+    @GetMapping("/after-login")
+    String postLogin(HttpSession session){
+        Cart tempCart = cartService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        if (tempCart != null) {
+            Cart anonCart = (Cart) session.getAttribute("cart");
+            if (anonCart != null)
+                if (!anonCart.getCartItems().isEmpty())
+                    tempCart.getCartItems().addAll(anonCart.getCartItems());
+        }
+        return "index";
+    }
+    /* @GetMapping("after-logout")
+     String postLogout(){
+
+     }*/
+    @GetMapping("/register")
+    String register(@ModelAttribute("user") LocalUser user) {
+        return "registration-form";
+    }
+
+    @PostMapping("/register")
+    String registerUser(@Valid @ModelAttribute("user") LocalUser user,
+                        BindingResult result, Model model, HttpServletRequest request, HttpSession httpSession) {
+        if (result.hasErrors()) {
+            checkDupleUsername(userService, user.getUsername(), model);
+            System.out.println("errors in user registration: " + result);
+            return "registration-form";
+        } else if (checkDupleUsername(userService, user.getUsername(), model)) {
+            return "registration-form";
+        }
+
+        String purePassword = user.getPassword();
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setRole(Role.ROLE_CUSTOMER);
+        LocalUser savedUser = userService.saveUser(user);
+
+        Cart anonCart = (Cart) httpSession.getAttribute("cart");
+        anonCart.setLocalUser(savedUser);
+        cartService.saveCart(anonCart);
+
+        SecurityUtils.autoLogin(request, savedUser.getUsername(), purePassword);
+        return "redirect:/";
+    }
+
 
     @GetMapping("/item/{productId}")
     public String getProduct(Model model, @PathVariable String productId) {
@@ -178,7 +199,7 @@ public class UserController {
     @PostMapping("/add-to-cart")
     @PreAuthorize("isAnonymous()")
     ResponseEntity addToCart(@RequestBody Object itemId,
-                             @ModelAttribute Cart cart) {
+                             @ModelAttribute Cart cart, HttpSession session) {
         System.out.println("called addToCart spring");
         if (cart.getCartItems() == null) System.out.println("true");
 
