@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "shopping_cart")
+@Table(name = "cart")
 public class Cart implements Serializable {
     public static final int TIMEOUT_IN_SECONDS = 30   * 1000;
     public Cart() {
@@ -23,7 +23,6 @@ public class Cart implements Serializable {
         this.localUser = user;
         setupTimers();
     }
-
 
     public void setupTimers(){
         this.timeCreated = new Timestamp(System.currentTimeMillis());
@@ -39,8 +38,7 @@ public class Cart implements Serializable {
     @Column(name = "cart_id", nullable = false)
     private Long id;
 
-    @OneToMany
-    private List<CartItem> cartItems;
+
     @OneToOne
     @JoinColumn(name = "cart_user")
     private LocalUser localUser;
@@ -50,6 +48,15 @@ public class Cart implements Serializable {
     private Timestamp lastAccessed;
     @Column(name = "remaining")
     private Timestamp remaining;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "cart_item_mapping",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_item_id")
+    )
+    private List<CartItem> cartItems = new ArrayList<>();
+
 
     public String getTotalItems() {
         return String.valueOf(cartItems.size());

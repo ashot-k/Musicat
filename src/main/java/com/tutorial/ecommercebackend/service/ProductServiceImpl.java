@@ -6,12 +6,12 @@ import com.tutorial.ecommercebackend.entity.product.Track;
 import com.tutorial.ecommercebackend.repository.ImageRepository;
 import com.tutorial.ecommercebackend.repository.ProductRepository;
 import com.tutorial.ecommercebackend.repository.TrackRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository products;
     ImageRepository imageRep;
     TrackRepository trackRep;
+
+    public static int totalPages;
 
     @Autowired
     public ProductServiceImpl(ProductRepository products, ImageRepository images, TrackRepository trackRep) {
@@ -50,8 +52,6 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findAllProducts() {
         return products.findAll();
     }
-
-    public static int totalPages;
 
     public Page<Product> findProductsByKeywordPaged(String keyword, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -92,8 +92,7 @@ public class ProductServiceImpl implements ProductService {
             deleteAllTracks(p);
             List<Track> savedTracks = saveAllTracks(tracks);
             p.setTracks(savedTracks);
-            tracks.clear();
-            trackNames.clear();
+            products.save(p);
         }
     }
 
@@ -147,6 +146,4 @@ public class ProductServiceImpl implements ProductService {
         deleteAllImages(product);
         imageRep.save(image);
     }
-
-
 }

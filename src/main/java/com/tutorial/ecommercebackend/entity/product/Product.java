@@ -2,6 +2,7 @@ package com.tutorial.ecommercebackend.entity.product;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.time.Year;
@@ -41,7 +42,6 @@ public class Product implements Serializable{
     @NotBlank(message = "Genre cannot be empty")
     private String genre;
 
-
     @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
@@ -49,11 +49,9 @@ public class Product implements Serializable{
     @NotNull(message = "Insert valid price")
     private Double price;
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_inventory_id")
     private Inventory inventory;
-
 
     @Column(name = "year_of_release", nullable = false)
     @NotNull(message = "Enter valid year of release")
@@ -61,8 +59,12 @@ public class Product implements Serializable{
     @Max(value = 2030, message = "Year must be less than or equal to 2030")
     private Integer year;
 
-
-    @OneToMany( mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "tracks_mapping",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "track_id")
+    )
     private List<Track> tracks;
 
     public List<String> tracksToStringList() {
@@ -86,8 +88,8 @@ public class Product implements Serializable{
         return allTracks.toString();
     }
 
-
     @Override
+    @Transactional
     public String toString() {
         return "Product{" +
                 "id=" + id +

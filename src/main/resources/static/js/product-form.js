@@ -54,9 +54,13 @@ function addTrack(preloaded) {
 
 function sendTrackData() {
 
-    var trackList = document.getElementsByClassName("track")
+    const trackList = document.getElementsByClassName("track");
+    console.log(trackList);
     const tracks = [];
-    if(tracklist.empty()) return;
+
+    if(trackList.length < 1)
+        return;
+
     for (let i = 0; i < trackList.length; i++) {
         if(trackList[i].value.length > 0)
         tracks[i] = trackList[i].value;

@@ -2,22 +2,25 @@ package com.tutorial.ecommercebackend.entity.shopping;
 
 import com.tutorial.ecommercebackend.entity.product.Product;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "cart_item")
+@Transactional
 public class CartItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_item_id")
+    @Column(name = "item_id")
     private Long cartItemId;
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "product_id")
     private Product product;
     @Column(name = "quantity", nullable = false)
     private int quantity;
+
     public CartItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
@@ -26,7 +29,6 @@ public class CartItem implements Serializable {
         this.product = product;
         this.quantity = 1;
     }
-
     public CartItem() {
 
     }

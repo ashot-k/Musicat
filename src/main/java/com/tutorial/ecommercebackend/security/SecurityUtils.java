@@ -1,5 +1,6 @@
 package com.tutorial.ecommercebackend.security;
 
+import com.tutorial.ecommercebackend.controller.UserController;
 import com.tutorial.ecommercebackend.service.LocalUserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ public class SecurityUtils {
     //e.g After registration
     public static void autoLogin(HttpServletRequest request, String username, String password) {
         try {
-            System.out.println(password);
             request.login(username, password);
         } catch (ServletException e) {
             System.out.println("Error while login " + e);
