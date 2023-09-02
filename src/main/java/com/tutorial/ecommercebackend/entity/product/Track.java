@@ -8,10 +8,6 @@ import java.io.Serializable;
 @Table(name = "track")
 public class Track implements Serializable {
 
-    public Track(String name, Product product) {
-        this.name = name;
-        this.product = product;
-    }
     public Track(String name) {
         this.name = name;
     }
@@ -25,8 +21,6 @@ public class Track implements Serializable {
     @Column(name = "track_name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
 
     public Long getId() {
         return id;
@@ -40,11 +34,4 @@ public class Track implements Serializable {
         this.name = name;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 }

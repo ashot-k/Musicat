@@ -5,7 +5,7 @@ function addToCart(item, name) {
         data: JSON.stringify(item),
         url: '/add-to-cart',
         success: function () {
-           increaseCounter();
+            increaseCounter();
             addToCartPopup(item, name);
         },
         error: function (xhr, status, error) {
@@ -36,7 +36,6 @@ function addToCartPopup(item, name) {
     h6.textContent = name + " has been added to the cart!";
     h6.style.padding = "5px";
     h6.style.whiteSpace = "nowrap";
-
 
     added_container.appendChild(img);
     added_container.appendChild(h6);

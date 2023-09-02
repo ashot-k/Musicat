@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
         List<Track> tracks = new ArrayList<>();
         if (!trackNames.isEmpty()) {
             for (String str : trackNames)
-                tracks.add(new Track(str, p));
+                tracks.add(new Track(str));
             deleteAllTracks(p);
             List<Track> savedTracks = saveAllTracks(tracks);
             p.setTracks(savedTracks);
@@ -97,16 +97,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void deleteAllTracks(Product product) {
-        trackRep.deleteAll(trackRep.findByProductId(product.getId()));
+        trackRep.deleteAll(product.getTracks());
     }
 
     public List<Track> saveAllTracks(List<Track> tracks) {
         return trackRep.saveAll(tracks);
     }
 
-    public List<Track> findTracksByProduct(Product product) {
+   /* public List<Track> findTracksByProduct(Product product) {
         return trackRep.findByProductId(product.getId());
-    }
+    }*/
 
     public void removeTracksByIdIn(List<Long> ids) {
         trackRep.removeByIdIn(ids);

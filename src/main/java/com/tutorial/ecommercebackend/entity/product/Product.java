@@ -5,14 +5,16 @@ import jakarta.validation.constraints.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "product")
 public class Product implements Serializable{
+
+    public static final String IMAGE_URL_PREFIX =  "/images/album-images/";
+    public static final String IMAGE_URL_SUFFIX = "/album_image.png";
+
     public Product(String name, String artist, String description, Double price, Inventory inventory, Integer year, String genre, List<Track> tracks) {
         this.name = name;
         this.artist = artist;
@@ -62,8 +64,8 @@ public class Product implements Serializable{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "tracks_mapping",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "track_id")
+            joinColumns = @JoinColumn(name = "product_id")
+            , inverseJoinColumns = @JoinColumn(name = "track_id")
     )
     private List<Track> tracks;
 
@@ -103,7 +105,9 @@ public class Product implements Serializable{
                 ", tracks=" + tracks +
                 '}';
     }
-
+    public String getImageURL(){
+        return IMAGE_URL_PREFIX + this.getId() + IMAGE_URL_SUFFIX;
+    }
     public Long getId() {
         return id;
     }

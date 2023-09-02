@@ -11,6 +11,5 @@ import java.util.List;
 @Repository
 @Transactional
 public interface TrackRepository extends JpaRepository<Track, Long> {
-     List<Track> findByProductId(Long product_id);
      void removeByIdIn(Collection<Long> ids);
 }

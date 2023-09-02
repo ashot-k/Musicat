@@ -37,8 +37,6 @@ public class Cart implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", nullable = false)
     private Long id;
-
-
     @OneToOne
     @JoinColumn(name = "cart_user")
     private LocalUser localUser;
@@ -59,7 +57,11 @@ public class Cart implements Serializable {
 
 
     public String getTotalItems() {
-        return String.valueOf(cartItems.size());
+        int total = 0;
+        for (CartItem cartItem : cartItems) {
+           total = cartItem.getProduct().getInventory().getQuantity();
+        }
+        return String.valueOf(total);
     }
 
     public Long getId() {

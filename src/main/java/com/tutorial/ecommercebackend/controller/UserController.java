@@ -10,6 +10,7 @@ import com.tutorial.ecommercebackend.security.SecurityUtils;
 import com.tutorial.ecommercebackend.service.CartService;
 import com.tutorial.ecommercebackend.service.LocalUserService;
 import com.tutorial.ecommercebackend.service.ProductService;
+import com.tutorial.ecommercebackend.utils.ControllerUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -55,7 +56,7 @@ public class UserController {
         this.currentPageProducts = new ArrayList<>();
     }
     @ModelAttribute("cartCounter")
-    public Integer cardCounter() {
+    public Integer cartCounter() {
         return 0;
     }
 
@@ -102,7 +103,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String homePage() {
+    public String homePage(HttpSession session) {
         System.out.println("Total pages: " + totalPages);
         return "index";
     }
@@ -112,7 +113,7 @@ public class UserController {
         return "login";
     }
     @GetMapping("/after-login")
-    String postLogin(HttpSession session, Model m){
+    String afterLogin(HttpSession session, Model m){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Cart userCart = cartService.findByUsername(username);
         if (userCart == null) {
@@ -146,28 +147,22 @@ public class UserController {
         } else if (checkDupleUsername(userService, user.getUsername(), model)) {
             return "registration-form";
         }
-
         String purePassword = user.getPassword();
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setRole(Role.ROLE_CUSTOMER);
         LocalUser savedUser = userService.saveUser(user);
 
-       /* Cart anonCart = (Cart) session.getAttribute("cart");
-        anonCart.setLocalUser(savedUser);
-        cartService.saveCart(anonCart);
-*/
         SecurityUtils.autoLogin(request, savedUser.getUsername(), purePassword);
-        postLogin(session, model);
+        afterLogin(session, model);
         return "redirect:/";
     }
-
 
     @GetMapping("/item/{productId}")
     public String getProduct(Model model, @PathVariable String productId) {
         Product product = productService.findProductById(Long.parseLong(productId)).get();
         model.addAttribute("product", product);
         model.addAttribute("image", productService.findImagesByProduct(product).get(0).getImage());
-        model.addAttribute("tracks", productService.findTracksByProduct(product));
+        model.addAttribute("tracks", product.getTracks());
 
         List<Product> relatedProducts = productService.findAllProductsByArtist(product.getArtist());
         relatedProducts.remove(product);
@@ -190,22 +185,25 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/cart")
+    String showCart(){
+        return "cart";
+    }
     @PostMapping("/add-to-cart")
     ResponseEntity addToCart(@RequestBody Object itemId,
                              @ModelAttribute Cart cart) {
         Product productToAdd = null;
-
         for (Product p : currentPageProducts) {
             if (p.getId() == Long.parseLong((String) itemId)) {
                 productToAdd = p;
             }
         }
-
-        System.out.println("Item id to be added: " + productToAdd.getName());
+        System.out.println("Item name to be added: " + productToAdd.getName());
         cartService.addItem(cart, new CartItem(productToAdd));
         if (!cart.getCartItems().isEmpty()) {
             for (CartItem cartItem : cart.getCartItems()) {
                 System.out.print("[" + cartItem.getProduct().getName() + "] ");
+                System.out.println("quantity :" + cartItem.getQuantity());
             }
         }
         return ResponseEntity.ok(HttpStatus.OK);

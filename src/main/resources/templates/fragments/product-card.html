@@ -11,8 +11,7 @@
 <div th:fragment="product-card" class="card border-top-0">
     <a th:href="@{/item/{productId}(productId=${product.id})}">
         <img class="product-image border border-dark border-1 rounded" th:id="${product.id}"
-             th:src="@{/images/album-images/{id}/album_image.png
-                         (id=${product.id})}" alt="image not found ">
+           th:src="@{${product.getImageURL()}}"  alt="image not found">
     </a>
     <div class="card-body d-flex flex-column product-info">
         <h6 class="card-title album-name">

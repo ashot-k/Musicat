@@ -150,6 +150,19 @@
   animation: slideIn 0.8s ease-in forwards, slideOut 0.8s 2s ease-out forwards;
 }
 
+.cart-item {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex-direction: row;
+  height: fit-content;
+  background-color: #f5f5f5;
+  padding: 0;
+  margin-top: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
 @keyframes slideIn {
   0% {
     transform: translateX(50px);

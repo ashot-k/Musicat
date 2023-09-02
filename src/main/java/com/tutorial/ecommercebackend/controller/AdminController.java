@@ -130,7 +130,7 @@ public class AdminController {
             FileUtils.deleteDirectory(new File("./src/main/resources/static/images/album-images/" + id));
         }
 
-        List<Track> t = productService.findTracksByProduct(product);
+        List<Track> t = product.getTracks();
         List<Long> trackIds = new ArrayList<>();
         for (Track tr : t)
             trackIds.add(tr.getId());

@@ -38,8 +38,6 @@ public interface ProductService {
 
     public List<Track> saveAllTracks(List<Track> tracks);
 
-    public List<Track> findTracksByProduct(Product product);
-
     public void removeTracksByIdIn(List<Long> ids);
 
     ///////////////////////////IMAGES///////////////////////////
