@@ -13,14 +13,14 @@
 .nav-item > a:hover {
   color: #ff5e7f !important;
   transition-property: color;
-  transition-duration: 600ms;
+  transition-duration: 400ms;
   transition-delay: 0s;
 }
 
 .hov:hover {
   color: #ff5e7f;
   transition-property: color;
-  transition-duration: 600ms;
+  transition-duration: 400ms;
   transition-delay: 0s;
 }
 

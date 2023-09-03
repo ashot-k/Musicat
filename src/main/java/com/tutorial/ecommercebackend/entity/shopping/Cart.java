@@ -59,7 +59,7 @@ public class Cart implements Serializable {
     public int getTotalItems() {
         int total = 0;
         for (CartItem cartItem : cartItems) {
-           total = cartItem.getQuantity();
+           total += cartItem.getQuantity();
         }
         return total;
     }
