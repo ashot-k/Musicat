@@ -56,12 +56,12 @@ public class Cart implements Serializable {
     private List<CartItem> cartItems = new ArrayList<>();
 
 
-    public String getTotalItems() {
+    public int getTotalItems() {
         int total = 0;
         for (CartItem cartItem : cartItems) {
            total = cartItem.getQuantity();
         }
-        return String.valueOf(total);
+        return total;
     }
 
     public Long getId() {

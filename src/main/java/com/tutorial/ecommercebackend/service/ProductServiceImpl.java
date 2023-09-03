@@ -84,16 +84,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     ///////////////////////////TRACKS///////////////////////////
-    public void saveTracks(Product p, List<String> trackNames) {
+    public boolean saveTracks(Product p, List<String> trackNames) {
         List<Track> tracks = new ArrayList<>();
         if (!trackNames.isEmpty()) {
             for (String str : trackNames)
                 tracks.add(new Track(str));
-            deleteAllTracks(p);
+            if(p.getTracks() != null)
+                deleteAllTracks(p);
             List<Track> savedTracks = saveAllTracks(tracks);
             p.setTracks(savedTracks);
-            products.save(p);
+            if(!p.getTracks().isEmpty()) {
+                products.save(p);
+                return true;
+            }
+            else
+                return false;
         }
+        return false;
     }
 
     public void deleteAllTracks(Product product) {

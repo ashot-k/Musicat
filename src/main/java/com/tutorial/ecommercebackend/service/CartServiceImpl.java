@@ -34,14 +34,13 @@ public class CartServiceImpl implements CartService {
                 if (cartItem.getProduct().getId().longValue() == preCartItem.getProduct().getId().longValue()) {
                     preCartItem.setQuantity(preCartItem.getQuantity() + 1);
                     savedCartItem = cartItemRep.save(preCartItem);
+                    return savedCartItem;
                 }
             }
         }
-        else{
-            savedCartItem = cartItemRep.save(cartItem);
-            cart.getCartItems().add(savedCartItem);
-            cartRep.save(cart);
-        }
+        savedCartItem = cartItemRep.save(cartItem);
+        cart.getCartItems().add(savedCartItem);
+        cartRep.save(cart);
         return savedCartItem;
     }
 

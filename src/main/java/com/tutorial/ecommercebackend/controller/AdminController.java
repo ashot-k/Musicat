@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -77,7 +78,9 @@ public class AdminController {
             savedProduct = productService.saveProduct(product);
             System.out.println(product.getName() + " added");
             productService.saveImage(savedProduct, file);
-            productService.saveTracks(savedProduct, trackNames);
+          if(!productService.saveTracks(savedProduct, trackNames)){
+              return"/admin/add-product-form";
+          }
         }
         return "redirect:/admin/list-products";
     }

@@ -58,9 +58,7 @@ function sendTrackData() {
     console.log(trackList);
     const tracks = [];
 
-    if(trackList.length < 1)
-        return;
-
+    if(trackList.length > 0)
     for (let i = 0; i < trackList.length; i++) {
         if(trackList[i].value.length > 0)
         tracks[i] = trackList[i].value;

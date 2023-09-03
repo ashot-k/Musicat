@@ -80,14 +80,7 @@ public class UserController {
         return Genre.genreList;
     }
 
-    @ModelAttribute("products")
-    public Page<Product> populateProducts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
-//                                        ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
-    ) {
-        Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
-        currentPageProducts = page.toList();
-        return page;
-    }
+
 
     @ModelAttribute("username")
     public String localUser() {
@@ -102,8 +95,23 @@ public class UserController {
         return username;
     }
 
+   /* @ModelAttribute("products")
+    public Page<Product> populateProducts(
+    ) {
+
+        Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
+        System.out.println();
+        //currentPageProducts = page.toList();
+        return page;
+    }*/
+
     @GetMapping("/")
-    public String homePage(HttpSession session) {
+    public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
+//                                        ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    , Model model) {
+        Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
+        model.addAttribute("products", page);
+        currentPageProducts = page.toList();
         System.out.println("Total pages: " + totalPages);
         return "index";
     }
@@ -186,8 +194,7 @@ public class UserController {
     }
 
     @GetMapping("/cart")
-    String showCart(){
-
+    String showCart(HttpSession session){
         return "cart";
     }
     @PostMapping("/add-to-cart")

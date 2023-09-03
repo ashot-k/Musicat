@@ -13,40 +13,40 @@ import java.util.Optional;
 
 public interface ProductService {
     ///////////////////////////PRODUCTS///////////////////////////
-    public List<Product> findAllProductsByArtist(String name);
+    List<Product> findAllProductsByArtist(String name);
 
-    public List<Product> findProductsByKeyword(String keyword);
-    public Page<Product> findProductsByKeywordPaged(String keyword, int pageNo, int pageSize);
+    List<Product> findProductsByKeyword(String keyword);
+    Page<Product> findProductsByKeywordPaged(String keyword, int pageNo, int pageSize);
 
-    public List<Product> findAllProducts();
+    List<Product> findAllProducts();
 
-    public Page<Product> findAllProductsPaged(int pageNo, int pageSize);
+    Page<Product> findAllProductsPaged(int pageNo, int pageSize);
 
-    public List<Product> findAllProductsByOrderByNameAsc();
+    List<Product> findAllProductsByOrderByNameAsc();
 
-    public Product saveProduct(Product product);
+    Product saveProduct(Product product);
 
 
-    public Optional<Product> findProductById(Long id);
+    Optional<Product> findProductById(Long id);
 
-    public void deleteProductById(Long id);
+    void deleteProductById(Long id);
 
     ///////////////////////////TRACKS///////////////////////////
-    public void saveTracks(Product p, List<String> trackNames);
+    boolean saveTracks(Product p, List<String> trackNames);
 
-    public void deleteAllTracks(Product product);
+    void deleteAllTracks(Product product);
 
-    public List<Track> saveAllTracks(List<Track> tracks);
+    List<Track> saveAllTracks(List<Track> tracks);
 
-    public void removeTracksByIdIn(List<Long> ids);
+    void removeTracksByIdIn(List<Long> ids);
 
     ///////////////////////////IMAGES///////////////////////////
-    public List<Images> findImagesByProduct(Product product);
+    List<Images> findImagesByProduct(Product product);
 
-    public void deleteAllImages(Product product);
+    void deleteAllImages(Product product);
 
-    public void deleteImageById(Long id);
+    void deleteImageById(Long id);
 
-    public void saveImage(Product product, MultipartFile file) throws IOException;
+    void saveImage(Product product, MultipartFile file) throws IOException;
 
 }

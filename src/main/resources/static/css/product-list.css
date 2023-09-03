@@ -150,9 +150,13 @@
   animation: slideIn 0.8s ease-in forwards, slideOut 0.8s 2s ease-out forwards;
 }
 
+.cart-container {
+  height: 80px;
+}
+
 .cart-item {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: start;
   flex-direction: row;
   height: fit-content;
@@ -161,6 +165,37 @@
   margin-top: 5px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  gap: 16px;
+}
+
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+}
+
+.cart-item-name-container {
+  width: 800px;
+}
+
+.cart-item-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.quantity-input-container {
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-input-container > * {
+  font-size: 14px;
+}
+
+.quantity-input-field {
+  width: 90px;
+  height: 25px;
 }
 
 @keyframes slideIn {
