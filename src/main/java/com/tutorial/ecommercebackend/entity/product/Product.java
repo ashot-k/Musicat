@@ -90,21 +90,6 @@ public class Product implements Serializable{
         return allTracks.toString();
     }
 
-    @Override
-    @Transactional
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", artist='" + artist + '\'' +
-                ", genre='" + genre + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", inventory=" + inventory +
-                ", year=" + year +
-                ", tracks=" + tracks +
-                '}';
-    }
     public String getImageURL(){
         return IMAGE_URL_PREFIX + this.getId() + IMAGE_URL_SUFFIX;
     }

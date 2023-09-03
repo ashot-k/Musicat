@@ -51,9 +51,9 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active btn" style="width: 50px; align-items: center">
+                        <a href="/cart" class="nav-link active btn" style="width: 50px; align-items: center">
                          <span id="cart-number" class="rounded cart-items-number" th:if="${cart !=null}"
-                               th:text="${cart.getTotalItems}">
+                               th:text="${cart.getTotalItems()}">
                          </span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                                  class="bi bi-cart" viewBox="0 0 16 16">

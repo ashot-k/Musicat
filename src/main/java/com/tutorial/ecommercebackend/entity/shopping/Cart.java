@@ -47,7 +47,7 @@ public class Cart implements Serializable {
     @Column(name = "remaining")
     private Timestamp remaining;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
             name = "cart_item_mapping",
             joinColumns = @JoinColumn(name = "cart_id"),
@@ -59,7 +59,7 @@ public class Cart implements Serializable {
     public String getTotalItems() {
         int total = 0;
         for (CartItem cartItem : cartItems) {
-           total = cartItem.getProduct().getInventory().getQuantity();
+           total = cartItem.getQuantity();
         }
         return String.valueOf(total);
     }

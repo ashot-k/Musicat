@@ -187,6 +187,7 @@ public class UserController {
 
     @GetMapping("/cart")
     String showCart(){
+
         return "cart";
     }
     @PostMapping("/add-to-cart")

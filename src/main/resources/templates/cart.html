@@ -17,8 +17,8 @@
 <body style="height: 1700px; background-color: #f1f1f1" class="text-dark">
 <div class="sticky-top" th:insert="/fragments/header :: header-nav"></div>
 <div class="cart-container container">
-    <div class="cart-item" th:each="cartItem :${cart.getCartItems()}">"
-        <img th:src="@{cartItem.getProduct().getImageURL()}" alt="Image not Found">
+    <div class="cart-item" th:each="cartItem :${cart.getCartItems()}">
+        <img th:src="@{${cartItem.getProduct().getImageURL()}}" alt="Image not Found">
         <h1 th:text="${cartItem.getProduct().getName()}"></h1>
     </div>
 </div>
