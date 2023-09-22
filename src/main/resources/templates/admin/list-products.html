@@ -18,6 +18,7 @@
     <tr>
 <!--        <th scope="col">Artwork</th>-->
         <th scope="col">id</th>
+        <th scope="col">Image</th>
         <th scope="col">Name</th>
         <th scope="col">Artist</th>
         <th scope="col">Price</th>
@@ -32,6 +33,7 @@
     <tr th:each="product: ${products}">
 <!--        <td th:text="${}"></td>-->
         <td th:text="${product.getId()}"></td>
+        <td style="width: 64px"><img th:src="@{${product.getImageURL()}}" alt="" style="width: 64px; height: 64px"></td>
         <td style="max-width: 250px;" th:text="${product.getName()}"></td>
         <td style="max-width: 150px;" th:text="${product.getArtist()}"></td>
         <td th:text="${product.getPrice()}"></td>

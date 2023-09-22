@@ -201,6 +201,7 @@ public class UserController {
     ResponseEntity addToCart(@RequestBody Object itemId,
                              @ModelAttribute Cart cart) {
         Product productToAdd = null;
+
         for (Product p : currentPageProducts) {
             if (p.getId() == Long.parseLong((String) itemId)) {
                 productToAdd = p;

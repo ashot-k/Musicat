@@ -20,9 +20,32 @@
    //color: #ff496d;
 
 .hov:hover {
-
   color: #ff5e7f;
   transition-property: color;
   transition-duration: 400ms;
   transition-delay: 0s;
+}
+@keyframes slideIn {
+  0% {
+    transform: translateX(50px);
+    visibility: visible;
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(50px);
+    visibility: collapse;
+    opacity: 0;
+  }
 }
