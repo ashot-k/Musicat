@@ -118,6 +118,7 @@ $categories-container-width: 300px;
 
 .album-name, .artist-name {
   //display: block;
+  width: 200px;
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -137,7 +138,7 @@ $categories-container-width: 300px;
   margin-bottom: 2px;
   padding: 2px;
   font-size: 18px;
-  width: 65px;
+  width: 100%;
   font-weight: bold;
 }
 

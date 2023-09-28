@@ -97,7 +97,6 @@ public class AdminController {
         if (image != null)
             if (!image.isEmpty())
                 model.addAttribute("image", image.get(0).getImage());
-
         return "/admin/edit-product-form";
     }
 

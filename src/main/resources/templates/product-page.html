@@ -13,14 +13,12 @@
     <link href="/css/product-page.css" rel="stylesheet">
     <link href="/css/product-list.css" rel="stylesheet">
     <link href="/css/navbar.css" rel="stylesheet">
+    <link href="/css/cart.css" rel="stylesheet">
+    <link href="/css/mini-cart.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
-
 <body style="height: fit-content; background-color: white" class="text-dark">
-
-
 <div th:insert="/fragments/header :: header-nav"></div>
-
 <div th:object="${product}" class="container my-5">
     <div class="row">
         <div class="col-md-12 text-start mb-1">
@@ -29,7 +27,7 @@
         <div class="d-flex flex-column align-items-center col-md-6 w-100 text-start mb-4 gap-3">
             <div class="d-flex flex-row align-items-start gap-4 w-100">
                 <div>
-                    <img class="border border-secondary border-1 rounded product-image" th:src="${image}" src="#"
+                    <img th:id="'product' + ${product.id}" class="border border-secondary border-1 rounded product-image" th:src="${image}" src="#"
                          alt="Product Image">
                 </div>
                 <div class="col-lg-5 d-flex flex-fill flex-column justify-content-between"
@@ -51,12 +49,14 @@
                         <hr class="mt-1" style="width: 0">
                         <form action="#" method="post" style="width: 25%;">
                             <input type="hidden" th:name="productId" th:value="${product.id}">
-                            <button type="button" th:attr="onclick=|addToCart('${product.id}')|" class="btn btn-success fs-5 fw-bold w-100">Add to Cart</button>
+                            <button type="button" th:attr="onclick=|addToCart('${product.id}', '${product.name}')|"
+                                    class="btn btn-success fs-5 fw-bold w-100">Add to Cart
+                            </button>
                         </form>
                     </div>
-                 <!--   style="display: grid; justify-content: center"
-                    <div class="d-flex flex-column align-items-center my-4">
-                    </div>-->
+                    <!--   style="display: grid; justify-content: center"
+                       <div class="d-flex flex-column align-items-center my-4">
+                       </div>-->
                 </div>
             </div>
             <hr class="mt-3 mb-1 w-100">
@@ -82,6 +82,7 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script th:src="@{/js/shopping-cart.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/mini-cart.js}"></script>
 </body>
 </html>

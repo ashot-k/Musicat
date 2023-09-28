@@ -10,41 +10,59 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="/css/cart.css" rel="stylesheet">
+    <link href="/css/mini-cart.css" rel="stylesheet">
     <link href="/css/navbar.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
 
 <body onload="onLoad()" style="height: 1700px; background-color: #f1f1f1" class="text-dark">
 <div class="sticky-top" th:insert="/fragments/header :: header-nav"></div>
-<br>
-<div class="cart-container container">
-    <div class="cart-item gap-1" th:each="cartItem :${cart.getCartItems()}">
-        <div class="d-flex flex-row align-items-center gap-1 cart-item-name-container">
-            <a th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
-                <img class="cart-item-image" th:src="@{${cartItem.getProduct().getImageURL()}}" alt="Image not Found">
-            </a>
-            <a class="cart-item-property hov cart-item-name"
-               th:text="${cartItem.getProduct().getName()}"
-               th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
-            </a>
-        </div>
-        <div class="cart-item-info-container d-flex flex-row align-items-center gap-2">
-                <span class="cart-item-property" th:text="'Unit price: ' + ${cartItem.getProduct().getPrice()} + '€'"></span>
-            <div class="quantity-input-container d-flex flex-column">
-                <label for="quantityInput">Quantity</label>
-                <input class="form-control quantity-input-field" id="quantityInput" type="number" th:value="${cartItem.getQuantity()}">
+<div class="d-flex flex-row" style="justify-content: space-evenly">
+        <div class="cart-container">
+            <div class="cart-item gap-1 cart-item-id" th:id="'cartItemId'+${cartItem.getCartItemId()}"
+                 th:each="cartItem :${cart.getCartItems()}">
+                <div class="d-flex flex-row align-items-center gap-1 cart-item-name-container">
+                    <a th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
+                        <img class="cart-item-image" th:src="@{${cartItem.getProduct().getImageURL()}}"
+                             alt="Image not Found">
+                    </a>
+                    <a class="cart-item-property hov cart-item-name"
+                       th:text="${cartItem.getProduct().getName()}"
+                       th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
+                    </a>
+                </div>
+                <div class="cart-item-info-container d-flex flex-row align-items-center gap-1">
+                    <div class="cart-item-property">
+                        <span>Unit price: </span>
+                        <span class="unit-price"
+                              th:text="${cartItem.getProduct().getPrice()}"></span>
+                        <span>€</span>
+                    </div>
+                    <div class="quantity-input-container d-flex flex-column">
+                        <label>Quantity</label>
+                        <input class="form-control quantity-input-field" type="number"
+                               th:id="${cartItem.getQuantity()}"
+                               th:value="${cartItem.getQuantity()}">
+                    </div>
+                    <div class="cart-item-property">
+                        <span>Total: </span>
+                        <span class="total-price"
+                              th:text="${cartItem.getProduct().getPrice() * cartItem.getQuantity()}"></span>
+                        <span>€</span>
+                    </div>
+                    <button class="btn btn-danger remove-item-button" type="button">Remove</button>
+                </div>
             </div>
-            <button class="btn btn-danger" type="button"> Remove</button>
-            <span class="cart-item-property"
-                  th:text="'Total: ' + ${cartItem.getProduct().getPrice() * cartItem.getQuantity()} + '€'"></span>
         </div>
+    <div class="container">
+        <h6>jiojoijoijoij</h6>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script th:src="@{/js/shopping-cart.js}"></script>
-<script th:src="@{/js/cart-page.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/mini-cart.js}"></script>
 </body>
 </html>

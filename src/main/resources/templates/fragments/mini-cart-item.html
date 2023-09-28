@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="mini-cart-item">
+    <div class="d-flex align-items-center gap-1 mini-cart-item-name-container" style="width: 40%">
+        <a th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
+            <img class="cart-item-image" th:src="@{${cartItem.getProduct().getImageURL()}}" alt="Image not Found">
+        </a>
+        <a class="cart-item-property hov cart-item-name"
+           th:text="${cartItem.getProduct().getName()}"
+           th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
+        </a>
+    </div>
+    <div class="d-flex align-items-center gap-1 justify-content-end" style="width: 60%; padding-right: 15px">
+        <div class="mini-cart-item-quantity-container d-flex flex-column">
+            <label>Quantity</label>
+            <h6 class="mini-cart-item-quantity" style="text-align: center"
+                th:text="${cartItem.getQuantity()}"
+            ></h6>
+        </div>
+        <button class="btn btn-danger remove-item-button" type="button"
+                th:attr="onclick=|removeItem('${cartItem.getCartItemId()}')|">Remove
+        </button>
+    </div>
+</body>
+</html>

@@ -13,23 +13,26 @@ import java.util.List;
 @Entity
 @Table(name = "cart")
 public class Cart implements Serializable {
-    public static final int TIMEOUT_IN_SECONDS = 30   * 1000;
+    public static final int TIMEOUT_IN_SECONDS = 30 * 1000;
+
     public Cart() {
         this.cartItems = new ArrayList<>();
         setupTimers();
     }
+
     public Cart(LocalUser user) {
         this.cartItems = new ArrayList<>();
         this.localUser = user;
         setupTimers();
     }
 
-    public void setupTimers(){
+    public void setupTimers() {
         this.timeCreated = new Timestamp(System.currentTimeMillis());
         this.lastAccessed = new Timestamp(System.currentTimeMillis());
         this.remaining = new Timestamp(TIMEOUT_IN_SECONDS);
     }
-    public void acccessed(){
+
+    public void acccessed() {
         this.lastAccessed = new Timestamp(System.currentTimeMillis());
     }
 
@@ -47,21 +50,30 @@ public class Cart implements Serializable {
     @Column(name = "remaining")
     private Timestamp remaining;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "cart_item_mapping",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "cart_item_id")
     )
-    private List<CartItem> cartItems = new ArrayList<>();
+    private List<CartItem> cartItems;
 
-
-    public int getTotalItems() {
+    public String getTotalItems() {
         int total = 0;
+        if(this.getCartItems().isEmpty())
+            return "";
         for (CartItem cartItem : cartItems) {
-           total += cartItem.getQuantity();
+            total += cartItem.getQuantity();
         }
-        return total;
+        return String.valueOf(total);
+    }
+
+    public CartItem findCartItem(int id) {
+        for (CartItem cartItem : this.getCartItems()) {
+            if (cartItem.getCartItemId() == id)
+                return cartItem;
+        }
+        return null;
     }
 
     public Long getId() {

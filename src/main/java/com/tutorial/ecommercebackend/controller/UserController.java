@@ -10,7 +10,6 @@ import com.tutorial.ecommercebackend.security.SecurityUtils;
 import com.tutorial.ecommercebackend.service.CartService;
 import com.tutorial.ecommercebackend.service.LocalUserService;
 import com.tutorial.ecommercebackend.service.ProductService;
-import com.tutorial.ecommercebackend.utils.ControllerUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -23,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.tutorial.ecommercebackend.security.SecurityUtils.checkDupleUsername;
-import static com.tutorial.ecommercebackend.service.ProductServiceImpl.totalPages;
 
 @Controller
 @SessionAttributes("cart")
@@ -55,6 +52,7 @@ public class UserController {
         this.userService = userService;
         this.currentPageProducts = new ArrayList<>();
     }
+
     @ModelAttribute("cartCounter")
     public Integer cartCounter() {
         return 0;
@@ -64,7 +62,7 @@ public class UserController {
     public Cart shoppingCart(HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) {
-            System.out.println( SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             Cart userCart = cartService.findByUsername(auth.getPrincipal().toString());
             userCart.acccessed();
             return userCart;
@@ -75,12 +73,11 @@ public class UserController {
             return anonCart;
         }
     }
+
     @ModelAttribute("genreList")
     public List<String> populateGenreList() {
         return Genre.genreList;
     }
-
-
 
     @ModelAttribute("username")
     public String localUser() {
@@ -95,24 +92,26 @@ public class UserController {
         return username;
     }
 
-   /* @ModelAttribute("products")
-    public Page<Product> populateProducts(
-    ) {
-
-        Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
-        System.out.println();
-        //currentPageProducts = page.toList();
-        return page;
-    }*/
-
     @GetMapping("/")
     public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
 //                                        ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
-    , Model model) {
+            , Model model) {
         Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
         model.addAttribute("products", page);
         currentPageProducts = page.toList();
-        System.out.println("Total pages: " + totalPages);
+        return "index";
+    }
+
+    @GetMapping("/search")
+    String search(Model model, String keyword) {
+        model.addAttribute("keyword", keyword);
+        keyword = keyword.trim();
+        Page<Product> specProductsPage = productService.findProductsByKeywordPaged(keyword, pageNo, pageSize);
+        if (specProductsPage.isEmpty()) {
+            model.addAttribute("noResults", "nothing found");
+        }
+        model.addAttribute("products", specProductsPage);
+        currentPageProducts = specProductsPage.toList();
         return "index";
     }
 
@@ -120,8 +119,9 @@ public class UserController {
     String loginPage() {
         return "login";
     }
+
     @GetMapping("/after-login")
-    String afterLogin(HttpSession session, Model m){
+    String afterLogin(HttpSession session, Model m) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Cart userCart = cartService.findByUsername(username);
         if (userCart == null) {
@@ -136,10 +136,7 @@ public class UserController {
 
         return "redirect:/";
     }
-    /* @GetMapping("after-logout")
-     String postLogout(){
 
-     }*/
     @GetMapping("/register")
     String register(@ModelAttribute("user") LocalUser user) {
         return "registration-form";
@@ -179,42 +176,50 @@ public class UserController {
         return "product-page";
     }
 
-    @GetMapping("/search")
-    String search(Model model, String keyword) {
-        if (keyword != null) {
-            model.addAttribute("keyword", keyword);
-            keyword = keyword.trim();
-            Page<Product> specProducts = productService.findProductsByKeywordPaged(keyword, pageNo, pageSize);
-            if (specProducts.isEmpty()) {
-                model.addAttribute("noResults", "nothing found");
-            }
-            model.addAttribute("products", specProducts);
-        }
-        return "index";
-    }
-
     @GetMapping("/cart")
-    String showCart(HttpSession session){
+    String showCart() {
         return "cart";
     }
+
+
+    CartItem prevAdded;
     @PostMapping("/add-to-cart")
     ResponseEntity addToCart(@RequestBody Object itemId,
-                             @ModelAttribute Cart cart) {
+                             @ModelAttribute Cart cart, Model m) {
         Product productToAdd = null;
-
         for (Product p : currentPageProducts) {
             if (p.getId() == Long.parseLong((String) itemId)) {
                 productToAdd = p;
             }
         }
-        System.out.println("Item name to be added: " + productToAdd.getName());
-        cartService.addItem(cart, new CartItem(productToAdd));
-        if (!cart.getCartItems().isEmpty()) {
-            for (CartItem cartItem : cart.getCartItems()) {
-                System.out.print("[" + cartItem.getProduct().getName() + "] ");
-                System.out.println("quantity :" + cartItem.getQuantity());
-            }
-        }
+
+        prevAdded = cartService.addItem(cart, new CartItem(productToAdd));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+
+    @GetMapping("/add-new")
+    @ResponseBody
+    CartItem ok(){
+        return prevAdded;
+    }
+    @PostMapping("/update-quantity/{cartItemId}")
+    ResponseEntity updateQuantity(Model model,
+                                  @PathVariable String cartItemId, @RequestBody int quantity) {
+        Cart c = (Cart) model.getAttribute("cart");
+        CartItem cartItem = c.findCartItem(Integer.parseInt(cartItemId));
+        if (cartItem != null)
+            cartItem.setQuantity(quantity);
+        cartService.saveCart(c);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/remove-item/{cartItemId}")
+    ResponseEntity removeCartItem(Model model,
+                                  @PathVariable String cartItemId) {
+        Cart c = (Cart) model.getAttribute("cart");
+        c.getCartItems().remove(c.findCartItem(Integer.parseInt(cartItemId)));
+        cartService.saveCart(c);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

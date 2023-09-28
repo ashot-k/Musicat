@@ -100,6 +100,7 @@
 }
 
 .album-name, .artist-name {
+  width: 200px;
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -119,7 +120,7 @@
   margin-bottom: 2px;
   padding: 2px;
   font-size: 18px;
-  width: 65px;
+  width: 100%;
   font-weight: bold;
 }
 

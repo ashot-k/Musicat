@@ -89,15 +89,14 @@ public class ProductServiceImpl implements ProductService {
         if (!trackNames.isEmpty()) {
             for (String str : trackNames)
                 tracks.add(new Track(str));
-            if(p.getTracks() != null)
+            if (p.getTracks() != null)
                 deleteAllTracks(p);
             List<Track> savedTracks = saveAllTracks(tracks);
             p.setTracks(savedTracks);
-            if(!p.getTracks().isEmpty()) {
+            if (!p.getTracks().isEmpty()) {
                 products.save(p);
                 return true;
-            }
-            else
+            } else
                 return false;
         }
         return false;

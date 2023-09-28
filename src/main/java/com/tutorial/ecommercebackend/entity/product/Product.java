@@ -1,5 +1,6 @@
 package com.tutorial.ecommercebackend.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,12 +62,13 @@ public class Product implements Serializable{
     @Max(value = 2030, message = "Year must be less than or equal to 2030")
     private Integer year;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tracks_mapping",
             joinColumns = @JoinColumn(name = "product_id")
             , inverseJoinColumns = @JoinColumn(name = "track_id")
     )
+    @JsonIgnore
     private List<Track> tracks;
 
     public List<String> tracksToStringList() {

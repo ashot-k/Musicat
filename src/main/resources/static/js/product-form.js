@@ -7,23 +7,20 @@ $(document).ready(function () {
 })
 function showImage(fileInput) {
     let file = fileInput.files[0];
-
     let reader = new FileReader();
     reader.onload = function (e) {
         $('#preview').attr('src', e.target.result)
     };
-
     reader.readAsDataURL(file);
 }
 
 
 
-//const tracks = [];
 function addTrack(preloaded) {
-    var ul = document.getElementById("trackListing");
-    var li = document.createElement("li");
-    var input = document.createElement("input");
-    var span = document.createElement("span");
+    const ul = document.getElementById("trackListing");
+    const li = document.createElement("li");
+    const input = document.createElement("input");
+    const span = document.createElement("span");
     span.className = "d-flex w-100 justify-content-between align-items-center";
 
     if(preloaded) {
@@ -32,7 +29,7 @@ function addTrack(preloaded) {
         input.classList.add("track");
     }
     else {
-        var track = document.getElementById("added-track").value;
+        const track = document.getElementById("added-track").value;
         if (track.length <= 0) return false;
         input.id = input.textContent;
         input.value = track;
@@ -40,7 +37,7 @@ function addTrack(preloaded) {
     }
     input.style.overflowWrap = "anywhere";
     span.append(input);
-    var removeBtn = document.createElement("button");
+    const removeBtn = document.createElement("button");
     removeBtn.className = "btn-close border-1 border-dark";
     removeBtn.onclick = function () {
         li.remove();
@@ -53,7 +50,6 @@ function addTrack(preloaded) {
 }
 
 function sendTrackData() {
-
     const trackList = document.getElementsByClassName("track");
     console.log(trackList);
     const tracks = [];
@@ -77,10 +73,3 @@ function sendTrackData() {
         }
     });
 }
-
-
-
-
-
-/* var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");*/

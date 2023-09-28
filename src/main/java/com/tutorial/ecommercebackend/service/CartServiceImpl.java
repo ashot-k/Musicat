@@ -5,6 +5,7 @@ import com.tutorial.ecommercebackend.entity.shopping.Cart;
 import com.tutorial.ecommercebackend.entity.shopping.CartItem;
 import com.tutorial.ecommercebackend.repository.CartItemRepository;
 import com.tutorial.ecommercebackend.repository.CartRepository;
+import org.hibernate.annotations.DialectOverride;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,21 +29,39 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartItem addItem(Cart cart, CartItem cartItem) {
+        if (!cart.getCartItems().isEmpty()) {
+            for (CartItem preCartItem : cart.getCartItems()) {
+                if (cartItem.getProduct().getId().equals(preCartItem.getProduct().getId())) {
+                    preCartItem.setQuantity(preCartItem.getQuantity() + cartItem.getQuantity());
+                    return cartItemRep.save(preCartItem);
+                }
+            }
+        }
+        CartItem savedItem = cartItemRep.save(cartItem);
+        List<CartItem> newCartItems = new ArrayList<>();
+        newCartItems.addAll(cart.getCartItems());
+        newCartItems.add(savedItem);
+        cart.setCartItems(newCartItems);
+        cartRep.save(cart);
+        return savedItem;
+    }
+   /* @Override
+    public CartItem addItem(Cart cart, CartItem cartItem) {
         CartItem savedCartItem = null;
         if (!cart.getCartItems().isEmpty()) {
             for (CartItem preCartItem : cart.getCartItems()) {
                 if (cartItem.getProduct().getId().longValue() == preCartItem.getProduct().getId().longValue()) {
                     preCartItem.setQuantity(preCartItem.getQuantity() + 1);
                     savedCartItem = cartItemRep.save(preCartItem);
-                    return savedCartItem;
                 }
             }
         }
         savedCartItem = cartItemRep.save(cartItem);
         cart.getCartItems().add(savedCartItem);
         cartRep.save(cart);
+
         return savedCartItem;
-    }
+    }*/
 
     @Override
     public List<CartItem> addItems(Cart cart, List<CartItem> cartItems) {

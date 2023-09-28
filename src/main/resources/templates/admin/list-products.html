@@ -16,7 +16,6 @@
 <table class="table table-bordered table-hover sortable">
     <thead class="table-dark">
     <tr>
-<!--        <th scope="col">Artwork</th>-->
         <th scope="col">id</th>
         <th scope="col">Image</th>
         <th scope="col">Name</th>
@@ -31,7 +30,7 @@
     </thead>
     <tbody>
     <tr th:each="product: ${products}">
-<!--        <td th:text="${}"></td>-->
+        <!--        <td th:text="${}"></td>-->
         <td th:text="${product.getId()}"></td>
         <td style="width: 64px"><img th:src="@{${product.getImageURL()}}" alt="" style="width: 64px; height: 64px"></td>
         <td style="max-width: 250px;" th:text="${product.getName()}"></td>
@@ -46,7 +45,8 @@
                th:href="@{/admin/edit-product(productId=${product.id})}">Edit</a>
             <a class="btn btn-danger" type="button" data-bs-toggle="modal"
                th:data-bs-target="'#deleteModal' + ${product.id}">Delete</a>
-            <div class="modal fade" th:id="'deleteModal' + ${product.id}" tabindex="-1" aria-labelledby="deleteModalLabel"
+            <div class="modal fade" th:id="'deleteModal' + ${product.id}" tabindex="-1"
+                 aria-labelledby="deleteModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
