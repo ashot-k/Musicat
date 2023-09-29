@@ -6,15 +6,13 @@
   background-color: green;
   color: white;
   border-radius: 50%;
-  padding-left: 3px;
-  padding-right: 3px;
   pointer-events: none;
 }
 
 .nav-item > a:hover {
   color: #ff5e7f !important;
   transition-property: color;
-  transition-duration: 400ms;
+  transition-duration: 300ms;
   transition-delay: 0s;
 }
 
