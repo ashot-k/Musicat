@@ -1,3 +1,5 @@
+$navBarHeight: 60px;
+
 .cart-items-number{
   font-size: 16px;
   margin-left: 25px;
@@ -6,18 +8,20 @@
   background-color: green;
   color: white;
   border-radius: 50%;
-  padding-left: 3px;
-  padding-right: 3px;
   pointer-events: none;
 }
 .nav-item > a:hover {
   color: #ff5e7f !important;
   transition-property: color;
-  transition-duration: 400ms;
+  transition-duration: 300ms;
   transition-delay: 0s;
 }
-  ///color: #ff5e7f;
+   //color: #ff5e7f;
    //color: #ff496d;
+#navbarContainer{
+  height: $navBarHeight;
+  font-size: 24px;
+}
 .hov:hover {
   color: #ff5e7f;
   transition-property: color;

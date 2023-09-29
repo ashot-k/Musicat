@@ -1,10 +1,10 @@
 function addToMiniCart(id) {
     let cartContent = document.getElementById("mini-cart-content");
 
-    $.get("add-new", function (data) {
-      /*  // Create a new cartItem object
-        if(cartContent.querySelector("#" + data.cartItemId).length > 0){
-            return;
+    $.get("/add-new", function (data) {
+        let existingItem = cartContent.querySelector("#mini-cartItemId" + data.cartItemId);
+        if(existingItem != null){
+            cartContent.removeChild(existingItem);
         }
         const cartItem = {
             product: {
@@ -15,9 +15,8 @@ function addToMiniCart(id) {
             quantity: data.quantity,
             cartItemId: data.cartItemId
         };
-        console.log(cartItem);
-        const miniCartItem = document.createElement("body");
-        miniCartItem.innerHTML = `
+        const miniCartItem = ` 
+ <div  class="cart-item gap-1 mini-cart-item"  id="mini-cartItemId${cartItem.cartItemId}">
     <div class="d-flex align-items-center gap-1 mini-cart-item-name-container" style="width: 40%">
         <a href="/item/${cartItem.product.id}">
             <img class="cart-item-image" src="${cartItem.product.imageURL}" alt="Image not Found">
@@ -33,9 +32,8 @@ function addToMiniCart(id) {
         </div>
         <button class="btn btn-danger remove-item-button" type="button" onclick="removeItem('${cartItem.cartItemId}')">Remove</button>
     </div>
-`;
-        const container = document.getElementById("mini-cart-content");
-        container.appendChild(miniCartItem);*/
+ </div>`;
+        cartContent.innerHTML += miniCartItem;
     });
 }
 

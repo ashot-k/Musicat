@@ -1,19 +1,17 @@
 
-.mini-cart-item > *{
-  //padding: 0 !important;
-}
 .dropdown-menu{
   max-height: 250px;
   font-size: 16px;
-  margin: 0;
-  margin-left: -232px;
+  margin: 0 0 0 -232px;
   width: fit-content;
   border: 2px solid #2779a7;
+}
+.mini-cart-item{
+  width: 450px !important;
 }
 #mini-cart-content{
   max-height: 250px;
   overflow-y:scroll;
-
 }
 .mini-cart-item-name-container{
   width: 50%;

@@ -32,12 +32,7 @@
                     </a>
                 </div>
                 <div class="cart-item-info-container d-flex flex-row align-items-center gap-1">
-                    <div class="cart-item-property">
-                        <span>Unit price: </span>
-                        <span class="unit-price"
-                              th:text="${cartItem.getProduct().getPrice()}"></span>
-                        <span>€</span>
-                    </div>
+                        <span class="unit-price" th:text="${cartItem.getProduct().getPrice()}" hidden="hidden"></span>
                     <div class="quantity-input-container d-flex flex-column">
                         <label>Quantity</label>
                         <input class="form-control quantity-input-field" type="number"
@@ -45,7 +40,6 @@
                                th:value="${cartItem.getQuantity()}">
                     </div>
                     <div class="cart-item-property">
-                        <span>Total: </span>
                         <span class="total-price"
                               th:text="${cartItem.getProduct().getPrice() * cartItem.getQuantity()}"></span>
                         <span>€</span>

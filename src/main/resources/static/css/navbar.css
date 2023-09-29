@@ -18,6 +18,11 @@
   transition-delay: 0s;
 }
 
+#navbarContainer {
+  height: 60px;
+  font-size: 24px;
+}
+
 .hov:hover {
   color: #ff5e7f;
   transition-property: color;

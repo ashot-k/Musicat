@@ -173,6 +173,9 @@ public class UserController {
         relatedProducts.remove(product);
         model.addAttribute("relatedProducts", relatedProducts);
 
+        currentPageProducts = new ArrayList<>();
+        currentPageProducts.addAll(relatedProducts);
+        currentPageProducts.add(product);
         return "product-page";
     }
 
@@ -184,7 +187,7 @@ public class UserController {
 
     CartItem prevAdded;
     @PostMapping("/add-to-cart")
-    ResponseEntity addToCart(@RequestBody Object itemId,
+    ResponseEntity<HttpStatus> addToCart(@RequestBody Object itemId,
                              @ModelAttribute Cart cart, Model m) {
         Product productToAdd = null;
         for (Product p : currentPageProducts) {
@@ -192,7 +195,6 @@ public class UserController {
                 productToAdd = p;
             }
         }
-
         prevAdded = cartService.addItem(cart, new CartItem(productToAdd));
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -200,11 +202,11 @@ public class UserController {
 
     @GetMapping("/add-new")
     @ResponseBody
-    CartItem ok(){
+    CartItem prev(){
         return prevAdded;
     }
     @PostMapping("/update-quantity/{cartItemId}")
-    ResponseEntity updateQuantity(Model model,
+    ResponseEntity<HttpStatus> updateQuantity(Model model,
                                   @PathVariable String cartItemId, @RequestBody int quantity) {
         Cart c = (Cart) model.getAttribute("cart");
         CartItem cartItem = c.findCartItem(Integer.parseInt(cartItemId));
@@ -215,7 +217,7 @@ public class UserController {
     }
 
     @PostMapping("/remove-item/{cartItemId}")
-    ResponseEntity removeCartItem(Model model,
+    ResponseEntity<HttpStatus> removeCartItem(Model model,
                                   @PathVariable String cartItemId) {
         Cart c = (Cart) model.getAttribute("cart");
         c.getCartItems().remove(c.findCartItem(Integer.parseInt(cartItemId)));

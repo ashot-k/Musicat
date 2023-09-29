@@ -156,18 +156,35 @@ $categories-container-width: 300px;
   background-color: rgb(243, 211, 214);
 }
 
+@import "navbar";
+
+$product-added-height: 70px;
+#added-to-cart-popup{
+  position: absolute;
+  width: 350px;
+  margin: ($navBarHeight + 105) 100px 0 0;
+}
+#popupItemName{
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .product-added {
   display: flex;
-  align-items: start;
-  justify-content: start;
-  flex-direction: row;
-  height: 40px;
+  align-items: center;
+  height: $product-added-height;
   background-color: #f5f5f5;
-  padding: 0;
-  margin-top: 5px;
-  border-radius: 8px;
+  border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  animation: slideIn 0.8s ease-in forwards, slideOut 0.8s 2s ease-out forwards;
+  animation: slideIn 0.8s ease-in forwards, slideOut 0.8s 1.8s ease-out forwards;
+}
+.product-added img{
+  width: $product-added-height;
+  height: $product-added-height;
+}
+.product-added h6{
+  padding: 5px;
+  white-space: nowrap;
 }
 
 

@@ -29,7 +29,7 @@ function onLoad() {
 }
 
 function cartItemId(str) {
-    str = str.replace("mini-");
+    str = str.replace("mini-", '');
     return str.replace("cartItemId", '');
 }
 
@@ -58,8 +58,7 @@ function addToCart(productId, name) {
         url: '/add-to-cart',
         success: function () {
             addToCartPopup(productId, name);
-
-            addToMiniCart();
+            addToMiniCart(productId);
             increaseCartItemCounter();
         },
         error: function (xhr, status, error) {
@@ -75,27 +74,28 @@ function addToCartPopup(productId, name) {
     added_container.className = "product-added";
     added_container.addEventListener("animationend", function () {
         added_container.addEventListener("animationend", function () {
-            console.log("called onanimend");
             container.removeChild(added_container);
         }, false);
     }, false);
 
     const img = document.createElement("img");
-    img.src = document.getElementById("product" + productId).src
-    img.width = 40;
-    img.height = 40;
-    const h6 = document.createElement("h6");
-    h6.textContent = name + " has been added to the cart!";
-    h6.style.padding = "5px";
-    h6.style.whiteSpace = "nowrap";
+    img.src = document.getElementById("product" + productId).src;
+    const itemName = document.createElement("h6");
+    itemName.textContent = name;
+    const h6 = document.createElement("h6")
+    h6.textContent = " added to the cart!";
     added_container.appendChild(img);
+    added_container.appendChild(itemName);
     added_container.appendChild(h6);
+    itemName.id = "popupItemName";
+
     container.appendChild(added_container);
 }
 function removeItem(id) {
     id = cartItemId(id);
     const path = window.location.pathname;
     const page = path.substring(path.lastIndexOf('/') + 1);
+
     if(page == "cart"){
         removeFromCart(id);
     }
@@ -120,27 +120,27 @@ function removeFromCart(id) {
 
 
 
-let cart_number = document.getElementsByClassName("cart-items-number")[0];
+let cartCounter = document.getElementsByClassName("cart-items-number")[0];
 
 function updateCartItemCounter() {
-    cartItems = $("#mini-cart-content  .mini-cart-item");
+    let cartItems = $("#mini-cart-content  .mini-cart-item");
     let counter = 0;
     if (cartItems.length < 1) {
-        cart_number.innerHTML = "";
+        cartCounter.innerHTML = "";
         return counter;
     }
     for (let i = 0; i < cartItems.length; i++) {
         const quantityField = cartItems[i].querySelector(".mini-cart-item-quantity").innerHTML;
         counter += parseInt(quantityField);
     }
-    cart_number.innerHTML = parseInt(counter);
+    cartCounter.innerHTML = parseInt(counter);
 }
 function increaseCartItemCounter() {
-    if (cart_number.innerHTML.length < 1) {
-        cart_number.innerHTML = 1;
+    if (cartCounter.innerHTML.length < 1) {
+        cartCounter.innerHTML = 1;
         return;
     }
-    cart_number.innerHTML = parseInt(cart_number.innerHTML) + 1;
+    cartCounter.innerHTML = parseInt(cartCounter.innerHTML) + 1;
 }
 
 

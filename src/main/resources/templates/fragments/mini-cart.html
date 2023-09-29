@@ -8,7 +8,7 @@
 <body>
 <div  th:fragment="mini-cart" >
     <div id="mini-cart-content">
-    <div  style="width: 450px" class="cart-item gap-1 mini-cart-item"
+    <div  class="cart-item gap-1 mini-cart-item"
           th:insert="/fragments/mini-cart-item :: mini-cart-item"
          th:id="'mini-cartItemId' + ${cartItem.getCartItemId()}" th:each="cartItem :${cart.getCartItems()}">
     </div>
