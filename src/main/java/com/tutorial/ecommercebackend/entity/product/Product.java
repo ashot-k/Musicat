@@ -88,7 +88,7 @@ public class Product implements Serializable{
             allTracks.append(tracks.get(i).getName()).append(", ");
         }
         allTracks.deleteCharAt(allTracks.length() - 2);
-        allTracks.append("[" + tracks.size() + "]");
+        allTracks.append("[").append(tracks.size()).append("]");
         return allTracks.toString();
     }
 

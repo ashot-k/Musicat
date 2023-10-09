@@ -31,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     ImageRepository imageRep;
     TrackRepository trackRep;
 
+    String imageStorageUrl = "./src/main/resources/static/images/album-images/";
     public static int totalPages;
 
     @Autowired
@@ -84,17 +85,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     ///////////////////////////TRACKS///////////////////////////
-    public boolean saveTracks(Product p, List<String> trackNames) {
+    public boolean saveTracks(Product product, List<String> trackNames) {
         List<Track> tracks = new ArrayList<>();
         if (!trackNames.isEmpty()) {
-            for (String str : trackNames)
+            for (String str : trackNames) {
                 tracks.add(new Track(str));
-            if (p.getTracks() != null)
-                deleteAllTracks(p);
+            }
+            if (product.getTracks() != null) {
+                deleteAllTracks(product);
+            }
             List<Track> savedTracks = saveAllTracks(tracks);
-            p.setTracks(savedTracks);
-            if (!p.getTracks().isEmpty()) {
-                products.save(p);
+            product.setTracks(savedTracks);
+            if (!product.getTracks().isEmpty()) {
+                products.save(product);
                 return true;
             } else
                 return false;
@@ -110,9 +113,6 @@ public class ProductServiceImpl implements ProductService {
         return trackRep.saveAll(tracks);
     }
 
-   /* public List<Track> findTracksByProduct(Product product) {
-        return trackRep.findByProductId(product.getId());
-    }*/
 
     public void removeTracksByIdIn(List<Long> ids) {
         trackRep.removeByIdIn(ids);
@@ -132,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void saveImage(Product product, MultipartFile file) throws IOException {
-        String uploadDir = "./src/main/resources/static/images/album-images/" + product.getId();
+        String uploadDir = imageStorageUrl + product.getId();
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath))
             Files.createDirectories(uploadPath);
@@ -144,10 +144,10 @@ public class ProductServiceImpl implements ProductService {
         } catch (IOException e) {
             System.out.println("failed saving file: " + e);
         }
+        String imageURIrel = String.valueOf(filePath).substring(String.valueOf(filePath).indexOf("static") + 6);
 
         Images image = new Images();
         image.setProduct(product);
-        String imageURIrel = String.valueOf(filePath).substring(String.valueOf(filePath).indexOf("static") + 6);
         image.setImage(imageURIrel);
         deleteAllImages(product);
         imageRep.save(image);

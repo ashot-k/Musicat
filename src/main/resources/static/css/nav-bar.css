@@ -4,19 +4,16 @@
   margin-top: -5px;
   position: absolute;
   background-color: green;
-  color: white;
-  border-radius: 50%;
-  pointer-events: none;
 }
 
 .nav-item > a:hover {
   color: #ff5e7f !important;
   transition-property: color;
-  transition-duration: 300ms;
+  transition-duration: 400ms;
   transition-delay: 0s;
 }
 
-#navbarContainer {
+#nav-bar-container {
   height: 60px;
   font-size: 24px;
 }
@@ -51,4 +48,4 @@
   }
 }
 
-/*# sourceMappingURL=navbar.css.map */
+/*# sourceMappingURL=nav-bar.css.map */

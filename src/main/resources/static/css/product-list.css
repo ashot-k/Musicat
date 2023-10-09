@@ -74,21 +74,16 @@
 .product-list {
   width: 100%;
   justify-content: center;
-  height: fit-content;
   background: #ffffff;
 }
 
 .card {
-  width: auto;
-  height: auto;
   max-width: 240px !important;
   min-width: 30px !important;
 }
 
 .product-info {
   align-items: center;
-  height: 100%;
-  width: 100%;
   text-align: center;
 }
 
@@ -107,13 +102,9 @@
 }
 
 .album-name {
-  text-decoration: none;
   color: black;
-  font-weight: bold;
-}
-
-.artist-name {
   text-decoration: none;
+  font-weight: bold;
 }
 
 .product-price {
@@ -143,19 +134,16 @@
   margin-top: -5px;
   position: absolute;
   background-color: green;
-  color: white;
-  border-radius: 50%;
-  pointer-events: none;
 }
 
 .nav-item > a:hover {
   color: #ff5e7f !important;
   transition-property: color;
-  transition-duration: 300ms;
+  transition-duration: 400ms;
   transition-delay: 0s;
 }
 
-#navbarContainer {
+#nav-bar-container {
   height: 60px;
   font-size: 24px;
 }
@@ -190,9 +178,13 @@
   }
 }
 #added-to-cart-popup {
-  position: absolute;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  gap: 5px;
+  bottom: 10px; /* Adjust this value to position the element higher or lower from the bottom */
+  right: 10px; /* Adjust this value to position the element more towards or away from the right */
   width: 350px;
-  margin: 165px 100px 0 0;
 }
 
 #popupItemName {

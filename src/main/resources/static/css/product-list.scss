@@ -90,22 +90,16 @@ $categories-container-width: 300px;
 .product-list {
   width: $product-list-width;
   justify-content: center;
-  height: fit-content;
   background: #ffffff;
 }
 
 .card {
-  width: auto;
-  height: auto;
   max-width: $product-card-max-width !important;
   min-width: $product-card-min-width !important;
-  //container-type: inline-size;
 }
 
 .product-info {
   align-items: center;
-  height: 100%;
-  width: 100%;
   text-align: center;
 }
 
@@ -125,13 +119,9 @@ $categories-container-width: 300px;
 }
 
 .album-name {
-  text-decoration: none;
   color: black;
-  font-weight: bold;
-}
-
-.artist-name {
   text-decoration: none;
+  font-weight: bold;
 }
 
 .product-price {
@@ -156,13 +146,17 @@ $categories-container-width: 300px;
   background-color: rgb(243, 211, 214);
 }
 
-@import "navbar";
+@import "nav-bar";
 
 $product-added-height: 70px;
 #added-to-cart-popup{
-  position: absolute;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  gap: 5px;
+  bottom: 10px; /* Adjust this value to position the element higher or lower from the bottom */
+  right: 10px; /* Adjust this value to position the element more towards or away from the right */
   width: 350px;
-  margin: ($navBarHeight + 105) 100px 0 0;
 }
 #popupItemName{
   overflow-x: hidden;

@@ -8,11 +8,10 @@
 
 <body>
 <div th:fragment="header-nav">
-    <div id="navbarContainer">
+    <div id="nav-bar-container">
         <nav class="navbar navbar-expand-lg navbar-dark p-0 bg-gradient" style="background-color: #2779a7; ">
             <!--fixed-top-->
-            <a class="navbar-brand display" style="font-weight: 300;line-height: 1.2;
-                                                   font-size: 36px;padding-left: 15px"
+            <a class="navbar-brand " style="line-height: 1.2;font-size: 36px;padding-left: 25px"
                href="/">MUSICAT</a>
             <button type="button"
                     class="navbar-toggler"
@@ -69,7 +68,7 @@
                         <a class="btn btn-secondary my-2 my-sm-0" style="margin-right: 15px" th:href="@{/register}">Register</a>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <h5 class="active" style="text-align: center; color: white"
+                        <h5 th:if="${username != null}" class="active" style="text-align: center; color: white"
                             th:utext="'Logged in as <br>' + ${username}"></h5>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">

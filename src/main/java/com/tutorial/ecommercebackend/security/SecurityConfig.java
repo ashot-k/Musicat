@@ -25,11 +25,15 @@ import java.io.IOException;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig implements AccessDeniedHandler {
-
+    public static final String[] STATIC_RESOURCE_PATHS = {
+            "/css/**",
+            "/images/**",
+            "/fonts/**",
+            "/js/**",
+    };
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService) {
-
         this.userDetailsService = userDetailsService;
     }
 
@@ -41,29 +45,17 @@ public class SecurityConfig implements AccessDeniedHandler {
         return provider;
     }
 
-    String[] staticResources = {
-            "/css/**",
-            "/images/**",
-            "/fonts/**",
-            "/js/**",
-    };
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(staticResources).permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers(STATIC_RESOURCE_PATHS).permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/login").anonymous()
                         .requestMatchers("/register").anonymous()
-                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/search").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/item/**").permitAll()
-
+                        .requestMatchers("/**").permitAll()
         );
         http.formLogin(login -> {
             login
@@ -82,14 +74,16 @@ public class SecurityConfig implements AccessDeniedHandler {
 
         return http.build();
     }
+
     @Bean
     public HttpSessionRequestCache httpSessionRequestCache() {
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
         requestCache.setCreateSessionAllowed(false);
         return requestCache;
     }
+
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException{
         response.sendRedirect("/");
     }
 }

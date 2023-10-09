@@ -1,7 +1,7 @@
-
+let totalCartPrice = 0;
 function onLoad() {
     const cartItems = $(".cart-container  .cart-item");
-    console.log("cart.js onLoad()");
+
     for (let i = 0; i < cartItems.length; i++) {
         const quantityField = cartItems[i].querySelector(".quantity-input-field");
         const totalPrice = cartItems[i].querySelector(".total-price");
@@ -10,22 +10,32 @@ function onLoad() {
         const id = cartItems[i].id;
         const miniCartItem = document.getElementById("mini-" + id);
         const miniCartQuantity = miniCartItem.querySelector(".mini-cart-item-quantity");
-
+        totalCartPrice = calcTotalCartPrice(cartItems);
         quantityField.onchange = function () {
-            let quantity = quantityField.value;
-            if (quantity <= 0) {
+            if ( quantityField.value <= 0) {
                 quantityField.value = 1;
-                miniCartQuantity.innerHTML = quantityField.value;
-                return;
             }
             miniCartQuantity.innerHTML = quantityField.value;
-            updatePrice(quantity, unitPrice, totalPrice, id);
-            updateCartItemCounter();
+            updatePrice(quantityField.value, unitPrice, totalPrice, id);
+            totalCartPrice = calcTotalCartPrice(cartItems);
         }
         removeBtn.onclick = function () {
             removeItem(id);
         }
     }
+
+
+
+
+}
+function calcTotalCartPrice(cartItems){
+    totalCartPrice = 0;
+    for (let i = 0; i < cartItems.length; i++) {
+        const totalPrice = cartItems[i].querySelector(".total-price");
+        totalCartPrice += parseFloat(totalPrice.innerHTML);
+    }
+    document.getElementById("productsPrice").innerHTML = totalCartPrice.toFixed(1) + "€";
+    return totalCartPrice;
 }
 
 function cartItemId(str) {
@@ -35,7 +45,8 @@ function cartItemId(str) {
 
 function updatePrice(quantity, unitPrice, totalPrice, id) {
     totalPrice.value = quantity * parseFloat(unitPrice.innerHTML)
-    totalPrice.innerHTML = totalPrice.value;
+    totalPrice.innerHTML = totalPrice.value.toFixed(1);
+
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -43,6 +54,7 @@ function updatePrice(quantity, unitPrice, totalPrice, id) {
         url: '/update-quantity/' + cartItemId(id),
         asynch: false,
         success: function () {
+            updateCartItemCounter();
         },
         error: function (xhr, status, error) {
             console.log("Error:", error);
@@ -73,22 +85,20 @@ function addToCartPopup(productId, name) {
     //clear previous
     added_container.className = "product-added";
     added_container.addEventListener("animationend", function () {
-        added_container.addEventListener("animationend", function () {
+       added_container.addEventListener("animationend", function () {
             container.removeChild(added_container);
         }, false);
     }, false);
-
     const img = document.createElement("img");
     img.src = document.getElementById("product" + productId).src;
     const itemName = document.createElement("h6");
     itemName.textContent = name;
-    const h6 = document.createElement("h6")
+    itemName.id = "popupItemName";
+    const h6 = document.createElement("h6");
     h6.textContent = " added to the cart!";
     added_container.appendChild(img);
     added_container.appendChild(itemName);
     added_container.appendChild(h6);
-    itemName.id = "popupItemName";
-
     container.appendChild(added_container);
 }
 function removeItem(id) {

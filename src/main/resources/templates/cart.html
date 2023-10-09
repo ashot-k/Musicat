@@ -11,35 +11,36 @@
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="/css/cart.css" rel="stylesheet">
     <link href="/css/mini-cart.css" rel="stylesheet">
-    <link href="/css/navbar.css" rel="stylesheet">
+    <link href="/css/nav-bar.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
 
 <body onload="onLoad()" style="height: 1700px; background-color: #f1f1f1" class="text-dark">
 <div class="sticky-top" th:insert="/fragments/header :: header-nav"></div>
-<div class="d-flex flex-row" style="justify-content: space-evenly">
+<div class="d-flex " style="justify-content: space-evenly; padding: 80px">
+    <div class="container d-flex">
         <div class="cart-container">
-            <div class="cart-item gap-1 cart-item-id" th:id="'cartItemId'+${cartItem.getCartItemId()}"
+            <div class="cart-item cart-item-id" th:id="'cartItemId'+${cartItem.getCartItemId()}"
                  th:each="cartItem :${cart.getCartItems()}">
-                <div class="d-flex flex-row align-items-center gap-1 cart-item-name-container">
+                <div class="d-flex align-items-center cart-item-name-container">
                     <a th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
                         <img class="cart-item-image" th:src="@{${cartItem.getProduct().getImageURL()}}"
                              alt="Image not Found">
                     </a>
-                    <a class="cart-item-property hov cart-item-name"
+                    <a class="cart-item-property cart-item-name hov"
                        th:text="${cartItem.getProduct().getName()}"
                        th:href="@{/item/{productId}(productId=${cartItem.getProduct().getId()})}">
                     </a>
                 </div>
-                <div class="cart-item-info-container d-flex flex-row align-items-center gap-1">
-                        <span class="unit-price" th:text="${cartItem.getProduct().getPrice()}" hidden="hidden"></span>
+                <div class="d-flex cart-item-info-container align-items-center">
+                    <span class="unit-price" th:text="${cartItem.getProduct().getPrice()}" hidden="hidden"></span>
                     <div class="quantity-input-container d-flex flex-column">
                         <label>Quantity</label>
                         <input class="form-control quantity-input-field" type="number"
                                th:id="${cartItem.getQuantity()}"
                                th:value="${cartItem.getQuantity()}">
                     </div>
-                    <div class="cart-item-property">
+                    <div class="cart-item-property cart-item-price">
                         <span class="total-price"
                               th:text="${cartItem.getProduct().getPrice() * cartItem.getQuantity()}"></span>
                         <span>€</span>
@@ -48,9 +49,44 @@
                 </div>
             </div>
         </div>
-    <div class="container">
-        <h6>jiojoijoijoij</h6>
+        <div class="order-info-container d-flex" style="padding: 25px">
+            <div class="price-info">
+                <ol class="list-group">
+                    <li class="list-group-item">
+                        <h3 style="text-align: start">Summary</h3>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 style="text-align: start; justify-content: end; white-space: nowrap" class="d-flex">
+                            Price of Products: <span style="width: 100%; text-align: end" id="productsPrice">okok</span>
+                        </h6>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 style="text-align: start; justify-content: end; white-space: nowrap" class="d-flex">
+                            Shipping: <span style="width: 100%; text-align: end" id="shippingPrice">- -</span>
+                        </h6>
+                    </li>
+                    <li class="list-group-item d-flex gap-2 justify-content-evenly">
+                        <input type="checkbox" class="btn-check" id="btn-as-guest" autocomplete="off" checked="checked">
+                        <label class="btn btn-primary" for="btn-as-guest">Continue as guest</label>
+
+                        <input type="checkbox" class="btn-check" id="btn-register" autocomplete="off">
+                        <label class="btn btn-primary" for="btn-register">Register</label>
+                        <!--<button class="btn btn-primary" type="submit" data-bs-toggle="button">Continue as guest</button>
+                        <button class="btn btn-primary" type="submit" data-bs-toggle="button">Register</button>-->
+                    </li>
+                    <li class="list-group-item d-flex gap-2">
+                        <form>
+
+                        </form>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
+    <!--  <div class="container" sec:authorize="!isAuthenticated()">
+          fdxfdfxfgxfdgxfdx
+
+      </div>-->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"

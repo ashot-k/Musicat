@@ -1,10 +1,8 @@
 $cart-item-container-height: 70px;
-$cart-item-width: 500px;
+$cart-item-width: 525px;
 
 .cart-container {
   background-color: #ffffff;
-  height: fit-content;
-  width: fit-content;
   max-width: 600px;
   display: flex;
   flex-direction: column;
@@ -13,23 +11,19 @@ $cart-item-width: 500px;
 }
 .cart-item {
   display: flex;
-  align-items: center;
-  justify-content: start;
-  flex-direction: row;
   width: $cart-item-width;
   height: $cart-item-container-height;
   background-color: #fafafa;
-  padding: 0;
-  margin-top: 5px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 .cart-item-image {
   width: $cart-item-container-height;
   height: $cart-item-container-height;
 }
 .cart-item-name-container{
-  width: 50%;
+  width: $cart-item-width / (5/2);
+  padding-right: 5px;
   height: 100%;
 }
 .cart-item-name{
@@ -38,6 +32,7 @@ $cart-item-width: 500px;
   margin-left: 8px;
 }
 .cart-item-property {
+  width: 90%;
   font-size: 18px;
   text-overflow: ellipsis;
   overflow-x: hidden;
@@ -45,18 +40,23 @@ $cart-item-width: 500px;
   word-wrap: break-word;
   white-space: nowrap;
 }
+.cart-item-price{
+  text-align: right;
+}
 .cart-item-info-container {
-  width: 70%;
+  padding-left: 10px;
+  width: ($cart-item-width - ($cart-item-width / (5/2)) - 15px);
   height: 100%;
-  justify-content: space-around;
+  gap: 12px;
 }
 .quantity-input-container {
-  justify-content: center;
+  width: 80px;
   align-items: center;
+  gap: 5px;
 }
 .quantity-input-field {
-  width: 70px;
-  height: 25px;
+  width: 80px;
+  height: 30px;
 }
 .unit-price, .total-price {
   font-size: 20px;
@@ -65,4 +65,22 @@ $cart-item-width: 500px;
 .remove-item-button{
   width: fit-content;
   height: fit-content;
+}
+
+.order-info-container{
+
+  width: 100%;
+}
+.price-info{
+  width: 100%;
+}
+.price-info ol{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+.price-info ol > * > h6{
+  font-size: 18px;
+}
+.price-info ol > * > h6 > span{
+  font-weight: bolder;
+  font-size: 20px;
 }

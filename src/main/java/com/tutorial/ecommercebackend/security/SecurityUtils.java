@@ -1,6 +1,5 @@
 package com.tutorial.ecommercebackend.security;
 
-import com.tutorial.ecommercebackend.controller.UserController;
 import com.tutorial.ecommercebackend.service.LocalUserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +18,7 @@ public class SecurityUtils {
     public static boolean checkDupleUsername(LocalUserService userService, String username, Model model) {
         if (userService.existsByUsername(username)) {
             model.addAttribute("dupleUsername"
-                    , "Username " + username + " has already been taken");
+                    , "Username: " + username + " has already been taken");
             System.out.println("duple username " + username);
             return true;
         }

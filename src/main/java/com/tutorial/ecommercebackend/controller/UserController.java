@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @ModelAttribute("cart")
-    public Cart shoppingCart(HttpSession session) {
+    public Cart shoppingCart(HttpSession session, Model m) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) {
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -74,6 +74,22 @@ public class UserController {
         }
     }
 
+    @GetMapping("/after-login")
+    String afterLogin(HttpSession session, Model m) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Cart userCart = cartService.findByUsername(username);
+        Cart anonCart = (Cart) session.getAttribute("cart");
+        if (userCart == null) {
+            userCart = cartService.saveCart(new Cart(userService.findbyUsername(username)));
+        }
+        if (anonCart != null) {
+            cartService.addItems(userCart, anonCart.getCartItems());
+        }
+        session.setAttribute("cart", userCart);
+        m.addAttribute("cart", userCart);
+        return "redirect:/";
+    }
+
     @ModelAttribute("genreList")
     public List<String> populateGenreList() {
         return Genre.genreList;
@@ -82,19 +98,20 @@ public class UserController {
     @ModelAttribute("username")
     public String localUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = "";
+        String username;
         if (authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails userDetails) {
                 username = userDetails.getUsername();
+                return username;
             }
         }
-        return username;
+        return null;
     }
 
     @GetMapping("/")
-    public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
-//                                        ,@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                           @RequestParam(value = "pageSize", defaultValue = "4", required = false) int pageSize
             , Model model) {
         Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
         model.addAttribute("products", page);
@@ -120,22 +137,6 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/after-login")
-    String afterLogin(HttpSession session, Model m) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Cart userCart = cartService.findByUsername(username);
-        if (userCart == null) {
-            userCart = cartService.saveCart(new Cart(userService.findbyUsername(username)));
-        }
-        Cart anonCart = (Cart) session.getAttribute("cart");
-        if (anonCart != null) {
-            cartService.addItems(userCart, anonCart.getCartItems());
-        }
-        session.setAttribute("cart", userCart);
-        m.addAttribute("cart", userCart);
-
-        return "redirect:/";
-    }
 
     @GetMapping("/register")
     String register(@ModelAttribute("user") LocalUser user) {
@@ -155,6 +156,7 @@ public class UserController {
         String purePassword = user.getPassword();
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setRole(Role.ROLE_CUSTOMER);
+
         LocalUser savedUser = userService.saveUser(user);
 
         SecurityUtils.autoLogin(request, savedUser.getUsername(), purePassword);
@@ -184,11 +186,16 @@ public class UserController {
         return "cart";
     }
 
-
     CartItem prevAdded;
+
+    @GetMapping("/add-new")
+    @ResponseBody
+    CartItem prev() {
+        return prevAdded;
+    }
+
     @PostMapping("/add-to-cart")
-    ResponseEntity<HttpStatus> addToCart(@RequestBody Object itemId,
-                             @ModelAttribute Cart cart, Model m) {
+    ResponseEntity<HttpStatus> addToCart(@RequestBody Object itemId, @ModelAttribute Cart cart) {
         Product productToAdd = null;
         for (Product p : currentPageProducts) {
             if (p.getId() == Long.parseLong((String) itemId)) {
@@ -198,16 +205,9 @@ public class UserController {
         prevAdded = cartService.addItem(cart, new CartItem(productToAdd));
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
-
-    @GetMapping("/add-new")
-    @ResponseBody
-    CartItem prev(){
-        return prevAdded;
-    }
     @PostMapping("/update-quantity/{cartItemId}")
     ResponseEntity<HttpStatus> updateQuantity(Model model,
-                                  @PathVariable String cartItemId, @RequestBody int quantity) {
+                                              @PathVariable String cartItemId, @RequestBody int quantity) {
         Cart c = (Cart) model.getAttribute("cart");
         CartItem cartItem = c.findCartItem(Integer.parseInt(cartItemId));
         if (cartItem != null)
@@ -218,7 +218,7 @@ public class UserController {
 
     @PostMapping("/remove-item/{cartItemId}")
     ResponseEntity<HttpStatus> removeCartItem(Model model,
-                                  @PathVariable String cartItemId) {
+                                              @PathVariable String cartItemId) {
         Cart c = (Cart) model.getAttribute("cart");
         c.getCartItems().remove(c.findCartItem(Integer.parseInt(cartItemId)));
         cartService.saveCart(c);

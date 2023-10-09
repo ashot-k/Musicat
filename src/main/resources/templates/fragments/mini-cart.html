@@ -6,15 +6,17 @@
     <title></title>
 </head>
 <body>
-<div  th:fragment="mini-cart" >
+<div th:fragment="mini-cart">
     <div id="mini-cart-content">
-    <div  class="cart-item gap-1 mini-cart-item"
-          th:insert="/fragments/mini-cart-item :: mini-cart-item"
-         th:id="'mini-cartItemId' + ${cartItem.getCartItemId()}" th:each="cartItem :${cart.getCartItems()}">
+        <div class="cart-item mini-cart-item"
+             th:insert="/fragments/mini-cart-item :: mini-cart-item"
+             th:id="'mini-cartItemId' + ${cartItem.getCartItemId()}" th:each="cartItem :${cart.getCartItems()}">
+        </div>
     </div>
-    </div>
-    <div style="width: 100%; height: 64px; background-color: #2779a7; border: 1px solid black;" class="d-flex flex-row align-items-center justify-content-center gap-1 p-1 bg-gradient">
-        <button class="btn btn-success" style="width: 150px" th:onclick="|window.location.href='@{/cart}'|">View Cart</button>
+    <div style="width: 100%; height: 64px; background-color: #2779a7; border: 1px solid black;"
+         class="d-flex align-items-center justify-content-center gap-1 p-1 bg-gradient">
+        <button class="btn btn-success" style="width: 150px" th:onclick="|window.location.href='@{/cart}'|">View Cart
+        </button>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

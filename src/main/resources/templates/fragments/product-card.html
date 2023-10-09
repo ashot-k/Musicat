@@ -10,16 +10,17 @@
              th:id="'product' + ${product.id}"
              th:src="@{${product.getImageURL()}}"  alt="image not found">
     </a>
-    <div class="card-body d-flex flex-column product-info">
+    <div class="card-body product-info d-flex flex-column ">
         <h6 class="card-title album-name">
-            <a class="album-name" style="text-decoration: none" th:text="${product.name}"
+            <a class="album-name" th:text="${product.name}"
                th:href="@{/item/{productId}(productId=${product.id})}"></a>
         </h6>
         <a class="card-subtitle hov text-decoration-none artist-name" style=""
            th:text="${product.artist}" th:href="@{'/search?keyword=' + ${product.artist}}"></a>
         <p class="product-price" th:text="${product.price} + '€'"></p>
         <div style="width: 100%;">
-            <button type="button" th:attr="onclick=|addToCart('${product.id}', '${product.name}')|"   class="add-to-cart-btn btn btn-outline-success fs-6 fw-bold w-65">Add to Cart</button>
+            <button class="add-to-cart-btn btn btn-outline-success fw-bold" type="button"
+                    th:attr="onclick=|addToCart('${product.id}', '${product.name}')|">Add to Cart</button>
         </div>
     </div>
 </div>
