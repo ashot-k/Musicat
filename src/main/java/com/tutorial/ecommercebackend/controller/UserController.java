@@ -83,7 +83,12 @@ public class UserController {
             userCart = cartService.saveCart(new Cart(userService.findbyUsername(username)));
         }
         if (anonCart != null) {
-            cartService.addItems(userCart, anonCart.getCartItems());
+            if(anonCart.getId() != null) {
+                List<CartItem> anonCartItems = anonCart.getCartItems();
+
+                cartService.deleteById(anonCart.getId());
+                cartService.addItems(userCart, anonCartItems);
+            }
         }
         session.setAttribute("cart", userCart);
         m.addAttribute("cart", userCart);
@@ -108,6 +113,7 @@ public class UserController {
         }
         return null;
     }
+
 
     @GetMapping("/")
     public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -182,7 +188,7 @@ public class UserController {
     }
 
     @GetMapping("/cart")
-    String showCart() {
+    String showCart(@ModelAttribute("user") LocalUser user) {
         return "cart";
     }
 

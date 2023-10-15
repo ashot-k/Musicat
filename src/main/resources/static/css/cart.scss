@@ -2,7 +2,6 @@ $cart-item-container-height: 70px;
 $cart-item-width: 525px;
 
 .cart-container {
-  background-color: #ffffff;
   max-width: 600px;
   display: flex;
   flex-direction: column;
@@ -84,4 +83,17 @@ $cart-item-width: 525px;
 .price-info ol > * > h6 > span{
   font-weight: bolder;
   font-size: 20px;
+}
+#summary-register-form form{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px;
+  justify-content: space-evenly;
+}
+#summary-register-form * > *{
+  font-size: 16px;
+}
+#summary-register-form div{
+  width: 45%;
 }

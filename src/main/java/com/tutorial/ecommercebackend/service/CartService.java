@@ -11,4 +11,6 @@ public interface CartService {
     Cart findByUsername(String username);
     CartItem addItem(Cart cart, CartItem cartItem);
     List<CartItem> addItems(Cart cart, List<CartItem> cartItems);
+    Cart deleteById(long id);
+
 }

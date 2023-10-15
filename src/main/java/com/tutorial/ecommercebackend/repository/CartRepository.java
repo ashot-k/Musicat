@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface CartRepository extends JpaRepository<Cart, Long> {
+    Cart deleteById(long id);
     Optional <Cart> findByLocalUser_Username(String username);
 }

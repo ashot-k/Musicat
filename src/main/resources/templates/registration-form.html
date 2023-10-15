@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="sticky-top" th:insert="~{/fragments/header :: header-nav}"></div>
-<div class="container my-2">
+<div class="container my-2" >
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card">
@@ -27,7 +27,7 @@
                     <h2 class="text-center">Register</h2>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/register}" method="post"
+                    <form th:fragment="register-form" th:action="@{/register}" method="post"
                           th:object="${user}" class="form-horizontal" role="form">
                         <div class="form-group mb-3">
                             <label class="control-label w-100"> Username

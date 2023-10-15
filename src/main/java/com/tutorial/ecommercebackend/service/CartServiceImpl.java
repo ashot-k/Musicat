@@ -65,4 +65,9 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+    @Override
+    public Cart deleteById(long id){
+       return cartRep.deleteById(id);
+    }
+
 }

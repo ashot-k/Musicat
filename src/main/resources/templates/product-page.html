@@ -18,7 +18,7 @@
     <title>Musicat</title>
 </head>
 <body style="height: fit-content; background-color: white" class="text-dark">
-<div th:insert="/fragments/header :: header-nav"></div>
+<div th:insert="~{/fragments/header :: header-nav}"></div>
 <div th:object="${product}" class="container my-5">
     <div class="row">
         <div class="col-md-12 text-start mb-1">
@@ -65,7 +65,7 @@
                     </span>
             <hr class="mt-3 mb-1 w-100">
             <div style="text-align: center;" class="my-2"
-                 th:insert="/fragments/track-listing :: track-list">
+                 th:insert="~{/fragments/track-listing :: track-list}">
             </div>
         </div>
         <hr>
@@ -73,7 +73,7 @@
         <div class="row">
             <div class="col-auto"
                  th:each="product : ${relatedProducts}"
-                 th:insert="/fragments/product-card :: product-card">
+                 th:insert="~{/fragments/product-card :: product-card}">
             </div>
         </div>
     </div>
