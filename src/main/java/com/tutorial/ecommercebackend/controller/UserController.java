@@ -25,7 +25,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import se.michaelthelin.spotify.SpotifyApi;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class UserController {
     CartService cartService;
     LocalUserService userService;
     public static final String indexUrl = "http://localhost:8088/";
-    private static final int pageSize = 3;
+    private static final int pageSize = 6;
     private static final int pageNo = 0;
     List<Product> currentPageProducts;
 
@@ -73,33 +75,10 @@ public class UserController {
             return anonCart;
         }
     }
-
-    @GetMapping("/after-login")
-    String afterLogin(HttpSession session, Model m) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Cart userCart = cartService.findByUsername(username);
-        Cart anonCart = (Cart) session.getAttribute("cart");
-        if (userCart == null) {
-            userCart = cartService.saveCart(new Cart(userService.findbyUsername(username)));
-        }
-        if (anonCart != null) {
-            if(anonCart.getId() != null) {
-                List<CartItem> anonCartItems = anonCart.getCartItems();
-
-                cartService.deleteById(anonCart.getId());
-                cartService.addItems(userCart, anonCartItems);
-            }
-        }
-        session.setAttribute("cart", userCart);
-        m.addAttribute("cart", userCart);
-        return "redirect:/";
-    }
-
     @ModelAttribute("genreList")
     public List<String> populateGenreList() {
         return Genre.genreList;
     }
-
     @ModelAttribute("username")
     public String localUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -114,11 +93,41 @@ public class UserController {
         return null;
     }
 
+    String client_id = "2589aeb7464143cdaca99be59934136c";
+    String client_secret = "c6d6314534e24a81902e7784a53c0c27";
+    String redirectUri = "http://localhost:8080/";
+    @GetMapping("/spotify-login")
+    ResponseEntity<HttpStatus> spotifyLogin(){
+        SpotifyApi spotifyApi = new SpotifyApi.Builder()
+                .setClientId(client_id)
+                .setClientSecret(client_secret)
+                .setRedirectUri(URI.create(redirectUri))
+                .build();
+     return ResponseEntity.ok(HttpStatus.OK);
+    }
+    @GetMapping("/after-login")
+    String afterLogin(HttpSession session, Model m) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Cart userCart = cartService.findByUsername(username);
+        Cart anonCart = (Cart) session.getAttribute("cart");
+        if (userCart == null) {
+            userCart = cartService.saveCart(new Cart(userService.findbyUsername(username)));
+        }
+        if (anonCart != null) {
+            if (anonCart.getId() != null) {
+                List<CartItem> anonCartItems = anonCart.getCartItems();
 
+                cartService.deleteById(anonCart.getId());
+                cartService.addItems(userCart, anonCartItems);
+            }
+        }
+        session.setAttribute("cart", userCart);
+        m.addAttribute("cart", userCart);
+        return "redirect:/";
+    }
     @GetMapping("/")
     public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                           @RequestParam(value = "pageSize", defaultValue = "4", required = false) int pageSize
-            , Model model) {
+                           Model model) {
         Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
         model.addAttribute("products", page);
         currentPageProducts = page.toList();
@@ -142,7 +151,6 @@ public class UserController {
     String loginPage() {
         return "login";
     }
-
 
     @GetMapping("/register")
     String register(@ModelAttribute("user") LocalUser user) {
@@ -211,6 +219,7 @@ public class UserController {
         prevAdded = cartService.addItem(cart, new CartItem(productToAdd));
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
     @PostMapping("/update-quantity/{cartItemId}")
     ResponseEntity<HttpStatus> updateQuantity(Model model,
                                               @PathVariable String cartItemId, @RequestBody int quantity) {

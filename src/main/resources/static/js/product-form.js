@@ -14,8 +14,6 @@ function showImage(fileInput) {
     reader.readAsDataURL(file);
 }
 
-
-
 function addTrack(preloaded) {
     const ul = document.getElementById("trackListing");
     const li = document.createElement("li");
@@ -59,6 +57,7 @@ function sendTrackData() {
         if(trackList[i].value.length > 0)
         tracks[i] = trackList[i].value;
     }
+    console.log(JSON.stringify(tracks));
     $.ajax({
         type: "POST",
         contentType: "application/json",

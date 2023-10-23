@@ -15,10 +15,10 @@
     <link href="/css/nav-bar.css" rel="stylesheet">
     <title>Musicat</title>
 </head>
-<body style="height: 1700px; background-color: #f1f1f1" class="text-dark">
+<body onload="onPageLoad()" style="height: 1700px; background-color: #f1f1f1" class="text-dark">
 <div class="sticky-top" th:insert="~{/fragments/header :: header-nav}"></div>
 
-<a href="/spotify-login">SPOTIFY LOGIN</a>
+<button   onclick="spotifyLogin()">SPOTIFY LOGIN</button>
 <div class="d-flex content p-5 gap-5">
     <div class="categories-container rounded d-flex flex-column p-3 gap-4">
         <div th:insert="~{/fragments/filters :: filters}"></div>
@@ -46,5 +46,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script th:src="@{/js/cart.js}"></script>
 <script th:src="@{/js/mini-cart.js}"></script>
+<script th:src="@{/js/spotify-login.js}"></script>
 </body>
 </html>
