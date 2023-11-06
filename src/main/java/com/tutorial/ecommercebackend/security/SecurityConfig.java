@@ -27,6 +27,7 @@ public class SecurityConfig implements AccessDeniedHandler {
             "/fonts/**",
             "/js/**",
     };
+
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService) {
@@ -40,7 +41,6 @@ public class SecurityConfig implements AccessDeniedHandler {
         provider.setPasswordEncoder(new BCryptPasswordEncoder());
         return provider;
     }
-
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -1,7 +1,5 @@
-function addToMiniCart(id) {
-    let cartContent = document.getElementById("mini-cart-content");
-
-    $.get("/add-new", function (data) {
+function addToMiniCart(data) {
+        let cartContent = document.getElementById("mini-cart-content");
         let existingItem = cartContent.querySelector("#mini-cartItemId" + data.cartItemId);
         if(existingItem != null){
             cartContent.removeChild(existingItem);
@@ -16,7 +14,7 @@ function addToMiniCart(id) {
             cartItemId: data.cartItemId
         };
         const miniCartItem = ` 
- <div  class="cart-item mini-cart-item"  id="mini-cartItemId${cartItem.cartItemId}">
+        <div  class="cart-item mini-cart-item"  id="mini-cartItemId${cartItem.cartItemId}">
     <div class="d-flex align-items-center gap-1 mini-cart-item-name-container">
         <a href="/item/${cartItem.product.id}">
             <img class="cart-item-image" src="${cartItem.product.imageURL}" alt="Image not Found">
@@ -35,7 +33,6 @@ function addToMiniCart(id) {
     </div>
  </div>`;
         cartContent.innerHTML += miniCartItem;
-    });
 }
 
 function removeFromMiniCart(id) {

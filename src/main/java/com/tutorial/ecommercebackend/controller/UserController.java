@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @ModelAttribute("cart")
-    public Cart shoppingCart(HttpSession session, Model m) {
+    public Cart shoppingCart(HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) {
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -75,10 +75,12 @@ public class UserController {
             return anonCart;
         }
     }
+
     @ModelAttribute("genreList")
     public List<String> populateGenreList() {
         return Genre.genreList;
     }
+
     @ModelAttribute("username")
     public String localUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -96,15 +98,17 @@ public class UserController {
     String client_id = "2589aeb7464143cdaca99be59934136c";
     String client_secret = "c6d6314534e24a81902e7784a53c0c27";
     String redirectUri = "http://localhost:8080/";
+
     @GetMapping("/spotify-login")
-    ResponseEntity<HttpStatus> spotifyLogin(){
+    ResponseEntity<HttpStatus> spotifyLogin() {
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(client_id)
                 .setClientSecret(client_secret)
                 .setRedirectUri(URI.create(redirectUri))
                 .build();
-     return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
+
     @GetMapping("/after-login")
     String afterLogin(HttpSession session, Model m) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -125,9 +129,9 @@ public class UserController {
         m.addAttribute("cart", userCart);
         return "redirect:/";
     }
+
     @GetMapping("/")
-    public String homePage(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                           Model model) {
+    public String home(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo, Model model) {
         Page<Product> page = productService.findAllProductsPaged(pageNo, pageSize);
         model.addAttribute("products", page);
         currentPageProducts = page.toList();
@@ -179,7 +183,7 @@ public class UserController {
     }
 
     @GetMapping("/item/{productId}")
-    public String getProduct(Model model, @PathVariable String productId) {
+    public String getProductPage(Model model, @PathVariable String productId) {
         Product product = productService.findProductById(Long.parseLong(productId)).get();
         model.addAttribute("product", product);
         model.addAttribute("image", productService.findImagesByProduct(product).get(0).getImage());
@@ -200,44 +204,41 @@ public class UserController {
         return "cart";
     }
 
-    CartItem prevAdded;
-
-    @GetMapping("/add-new")
-    @ResponseBody
-    CartItem prev() {
-        return prevAdded;
-    }
-
     @PostMapping("/add-to-cart")
-    ResponseEntity<HttpStatus> addToCart(@RequestBody Object itemId, @ModelAttribute Cart cart) {
+    ResponseEntity<CartItem> addToCart(@RequestBody Object itemId, @ModelAttribute Cart cart) {
         Product productToAdd = null;
         for (Product p : currentPageProducts) {
             if (p.getId() == Long.parseLong((String) itemId)) {
                 productToAdd = p;
             }
         }
-        prevAdded = cartService.addItem(cart, new CartItem(productToAdd));
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(cartService.addItem(cart, new CartItem(productToAdd)), HttpStatus.OK);
     }
 
     @PostMapping("/update-quantity/{cartItemId}")
     ResponseEntity<HttpStatus> updateQuantity(Model model,
                                               @PathVariable String cartItemId, @RequestBody int quantity) {
         Cart c = (Cart) model.getAttribute("cart");
-        CartItem cartItem = c.findCartItem(Integer.parseInt(cartItemId));
-        if (cartItem != null)
+        CartItem cartItem;
+        if (c != null) {
+            cartItem = c.findCartItem(Integer.parseInt(cartItemId));
             cartItem.setQuantity(quantity);
-        cartService.saveCart(c);
-        return ResponseEntity.ok(HttpStatus.OK);
+            cartService.saveCart(c);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } else
+            return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/remove-item/{cartItemId}")
     ResponseEntity<HttpStatus> removeCartItem(Model model,
                                               @PathVariable String cartItemId) {
         Cart c = (Cart) model.getAttribute("cart");
-        c.getCartItems().remove(c.findCartItem(Integer.parseInt(cartItemId)));
-        cartService.saveCart(c);
-        return ResponseEntity.ok(HttpStatus.OK);
+        if (c != null) {
+            c.getCartItems().remove(c.findCartItem(Integer.parseInt(cartItemId)));
+            cartService.saveCart(c);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } else
+            return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
     }
 }
 
