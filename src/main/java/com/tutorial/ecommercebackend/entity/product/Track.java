@@ -11,8 +11,9 @@ public class Track implements Serializable {
     public Track(String name) {
         this.name = name;
     }
-    public Track() {
-    }
+
+    public Track() {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "track_id", nullable = false)

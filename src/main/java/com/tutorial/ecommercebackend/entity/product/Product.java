@@ -62,13 +62,12 @@ public class Product implements Serializable{
     @Max(value = 2030, message = "Year must be less than or equal to 2030")
     private Integer year;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "tracks_mapping",
             joinColumns = @JoinColumn(name = "product_id")
             , inverseJoinColumns = @JoinColumn(name = "track_id")
     )
-    @JsonIgnore
     private List<Track> tracks;
 
     public List<String> tracksToStringList() {
@@ -81,7 +80,7 @@ public class Product implements Serializable{
 
     public String tracksToString() {
         if(tracks.isEmpty()){
-            return "!empty!";
+            return "!EMPTY!";
         }
         StringBuilder allTracks = new StringBuilder();
         for (int i = 0; i < tracks.toArray().length; i++) {

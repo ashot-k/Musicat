@@ -57,7 +57,7 @@ public class AdminController {
         System.out.println("called addTracks");
         this.trackNames = (List<String>) tracks;
         System.out.println(this.trackNames.toString());
-        return "";
+        return trackNames.toString();
     }
 
 
@@ -71,10 +71,12 @@ public class AdminController {
     String saveNewProduct(@Valid @ModelAttribute("product") Product product, BindingResult result,
                           @ModelAttribute("imageId") MultipartFile file) throws IOException {
         Product savedProduct;
-        if (result.hasErrors()) {
+        if (result.hasErrors() || file.isEmpty()) {
             System.out.println(result.getAllErrors());
             return "/admin/add-product-form";
         } else {
+            if (trackNames != null)
+                productService.saveTracks(product, trackNames);
             savedProduct = productService.saveProduct(product);
             System.out.println(product.getName() + " added");
             productService.saveImage(savedProduct, file);
@@ -105,7 +107,6 @@ public class AdminController {
                              @ModelAttribute("imageId") MultipartFile file,
                              BindingResult result) throws IOException {
         Product savedProduct;
-
         if (result.hasErrors()) {
             System.out.println(result);
             return "/admin/edit-product-form";
@@ -116,7 +117,6 @@ public class AdminController {
             if (!file.isEmpty())
                 productService.saveImage(savedProduct, file);
         }
-        System.out.println(product.getName() + " edited");
         return "redirect:/admin/list-products";
     }
 

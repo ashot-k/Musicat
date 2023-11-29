@@ -1,6 +1,7 @@
 package com.tutorial.ecommercebackend.repository;
 
 import com.tutorial.ecommercebackend.entity.product.Product;
+import com.tutorial.ecommercebackend.entity.product.Track;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +31,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             , nativeQuery = true)
     Page<Product> findByGenre(@Param("keyword") String keyword, Pageable pageable);
 
+    @Query(value = "SELECT p.tracks FROM Product p WHERE p.id = :productId")
+    List<Track> findTracksByProductId(@Param("productId") Long id);
 
     List<Product> findAllByArtist(String name);
 

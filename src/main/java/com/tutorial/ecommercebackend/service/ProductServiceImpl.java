@@ -27,7 +27,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
-    ProductRepository products;
+    ProductRepository productRep;
     ImageRepository imageRep;
     TrackRepository trackRep;
 
@@ -36,52 +36,52 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     public ProductServiceImpl(ProductRepository products, ImageRepository images, TrackRepository trackRep) {
-        this.products = products;
+        this.productRep = products;
         this.imageRep = images;
         this.trackRep = trackRep;
     }
 
     ///////////////////////////PRODUCTS///////////////////////////
     public List<Product> findAllProductsByArtist(String name) {
-        return products.findAllByArtist(name);
+        return productRep.findAllByArtist(name);
     }
 
     public List<Product> findProductsByKeyword(String keyword) {
-        return (keyword != null) ? products.findByKeyword(keyword) : null;
+        return (keyword != null) ? productRep.findByKeyword(keyword) : null;
     }
 
     public List<Product> findAllProducts() {
-        return products.findAll();
+        return productRep.findAll();
     }
 
     public Page<Product> findProductsByKeywordPaged(String keyword, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Product> productPage = products.findByKeywordPageable(keyword, pageable);
+        Page<Product> productPage = productRep.findByKeywordPageable(keyword, pageable);
         totalPages = productPage.getTotalPages();
         return productPage;
     }
 
     public Page<Product> findAllProductsPaged(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Product> productPage = products.findAll(pageable);
+        Page<Product> productPage = productRep.findAll(pageable);
         totalPages = productPage.getTotalPages();
         return productPage;
     }
 
     public Product saveProduct(Product product) {
-        return products.save(product);
+        return productRep.save(product);
     }
 
     public List<Product> findAllProductsByOrderByNameAsc() {
-        return products.findAllByOrderByNameAsc();
+        return productRep.findAllByOrderByNameAsc();
     }
 
     public Optional<Product> findProductById(Long id) {
-        return products.findById(id);
+        return productRep.findById(id);
     }
 
     public void deleteProductById(Long id) {
-        products.deleteById(id);
+        productRep.deleteById(id);
     }
 
     ///////////////////////////TRACKS///////////////////////////
@@ -91,13 +91,10 @@ public class ProductServiceImpl implements ProductService {
             for (String str : trackNames) {
                 tracks.add(new Track(str));
             }
-            if (product.getTracks() != null) {
-                deleteAllTracks(product);
-            }
             List<Track> savedTracks = saveAllTracks(tracks);
             product.setTracks(savedTracks);
             if (!product.getTracks().isEmpty()) {
-                products.save(product);
+                productRep.save(product);
                 return true;
             } else
                 return false;
@@ -117,6 +114,7 @@ public class ProductServiceImpl implements ProductService {
     public void removeTracksByIdIn(List<Long> ids) {
         trackRep.removeByIdIn(ids);
     }
+
 
     ///////////////////////////IMAGES///////////////////////////
     public List<Images> findImagesByProduct(Product product) {
