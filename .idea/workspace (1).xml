@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fe4d6c1f-07c6-4409-babb-663c25833e56" name="Changes" comment="implemented password encryption using bcrypt and login using custom database user table">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/shopping/SessionItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/shopping/ShoppingSession.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/repository/SessionItemRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/service/ShoppingSessionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/service/ShoppingSessionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Genre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Track.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/product/Track.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/user/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/user/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/user/LocalUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/user/LocalUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/user/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/entity/user/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/repository/LocalUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/repository/LocalUserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/CustomUserDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/CustomUserDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/LoginRedirectsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/LoginRedirectsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tutorial/ecommercebackend/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sqldemo.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/product-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/product-list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/product-list.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/product-list.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/add-product-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/add-product-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/edit-product-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/edit-product-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/product-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/product-card.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/product-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/product-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/registration-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/registration-form.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Sass File" />
+        <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="SCSS File" />
+        <option value="JavaScript File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2SIAv8ihuHX2xiGMRj9cox6bSrB" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;enumerated-roles&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/programming/projects/ecommerce/src/main/resources/templates/admin/add-product-form.html&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;SCSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;91e1a746ad5d4bce768f7c4a32be55a2&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/programming/projects/ecommerce/src/main/resources/templates/admin/add-product-form.html&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;a6d28e12-492b-409b-8690-00930c482331/schema/\&quot;ecommerce\&quot;&quot;
+    ]
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\programming\projects\ecommerce\src\main\resources\templates\fragments" />
+      <recent name="C:\programming\projects\ecommerce\src\main\resources\static\images" />
+      <recent name="C:\programming\projects\ecommerce\src\main\resources\templates\admin" />
+      <recent name="C:\programming\projects\ecommerce\src\main\resources\templates" />
+      <recent name="C:\programming\projects\ecommerce\src\main\resources\static\js" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="com.tutorial.ecommercebackend.controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.EcommerceApplication">
+    <configuration name="EcommerceApplication | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/EcommerceApplication.http" index="3" requestIdentifier="#3" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="EcommerceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ecommerce-backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.tutorial.ecommercebackend.EcommerceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP Request.EcommerceApplication | #3" />
+        <item itemvalue="HTTP Request.EcommerceApplication | #3" />
+        <item itemvalue="HTTP Request.EcommerceApplication | #3" />
+        <item itemvalue="HTTP Request.EcommerceApplication | #3" />
+        <item itemvalue="HTTP Request.EcommerceApplication | #3" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SQLScriptSettings">
+    <option name="matrix">
+      <map>
+        <entry key="MARIADB.Drop" value="IfExists=1" />
+      </map>
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fe4d6c1f-07c6-4409-babb-663c25833e56" name="Changes" comment="" />
+      <created>1688823950604</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1688823950604</updated>
+      <workItem from="1688823952164" duration="6268000" />
+      <workItem from="1688906166534" duration="12101000" />
+      <workItem from="1688976486890" duration="6542000" />
+      <workItem from="1688983451140" duration="6929000" />
+      <workItem from="1689789408471" duration="3453000" />
+      <workItem from="1689940513089" duration="1524000" />
+      <workItem from="1689942092841" duration="9268000" />
+      <workItem from="1689966438383" duration="1794000" />
+      <workItem from="1689975024163" duration="1584000" />
+      <workItem from="1690024452695" duration="9944000" />
+      <workItem from="1690038413564" duration="272000" />
+      <workItem from="1690111245592" duration="21094000" />
+      <workItem from="1690136725292" duration="72000" />
+      <workItem from="1690136820284" duration="145000" />
+      <workItem from="1690146814751" duration="4938000" />
+      <workItem from="1690183198506" duration="21034000" />
+      <workItem from="1690288563066" duration="13341000" />
+      <workItem from="1690308676443" duration="1303000" />
+      <workItem from="1690372058451" duration="18492000" />
+      <workItem from="1690455339466" duration="20156000" />
+      <workItem from="1690478709814" duration="11305000" />
+      <workItem from="1690544917751" duration="346000" />
+      <workItem from="1690545273453" duration="847000" />
+      <workItem from="1690546128102" duration="5713000" />
+      <workItem from="1690554757310" duration="13476000" />
+      <workItem from="1690618239939" duration="11946000" />
+      <workItem from="1690634998006" duration="109000" />
+      <workItem from="1690635115908" duration="15589000" />
+      <workItem from="1690658297558" duration="1430000" />
+      <workItem from="1690802759456" duration="22117000" />
+      <workItem from="1690833322005" duration="1352000" />
+      <workItem from="1690883713543" duration="102000" />
+      <workItem from="1690883904396" duration="16258000" />
+      <workItem from="1690903461321" duration="98000" />
+      <workItem from="1690903569910" duration="5844000" />
+      <workItem from="1690966362893" duration="22308000" />
+      <workItem from="1690998849770" duration="7454000" />
+      <workItem from="1691047771204" duration="20533000" />
+      <workItem from="1691134554385" duration="7231000" />
+      <workItem from="1691173416839" duration="2977000" />
+      <workItem from="1691252719357" duration="7179000" />
+      <workItem from="1691260150454" duration="18000" />
+      <workItem from="1691339287862" duration="6919000" />
+      <workItem from="1691421027886" duration="2729000" />
+      <workItem from="1691493194143" duration="2712000" />
+      <workItem from="1691495915666" duration="333000" />
+      <workItem from="1691496370336" duration="101000" />
+      <workItem from="1691496481914" duration="14462000" />
+      <workItem from="1691520960904" duration="1501000" />
+      <workItem from="1691526155108" duration="339000" />
+      <workItem from="1691570448799" duration="9827000" />
+      <workItem from="1691584017773" duration="14352000" />
+      <workItem from="1691846885165" duration="34000" />
+      <workItem from="1691847644825" duration="1000" />
+      <workItem from="1692119028413" duration="6004000" />
+      <workItem from="1692131855203" duration="3364000" />
+      <workItem from="1692176563792" duration="27187000" />
+      <workItem from="1692522420591" duration="13000" />
+      <workItem from="1692778024907" duration="364000" />
+      <workItem from="1693146885374" duration="668000" />
+      <workItem from="1693151276905" duration="249000" />
+      <workItem from="1693243424562" duration="7032000" />
+    </task>
+    <task id="LOCAL-00001" summary="init">
+      <option name="closed" value="true" />
+      <created>1689941605760</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1689941605760</updated>
+    </task>
+    <task id="LOCAL-00002" summary="deleted service layer">
+      <option name="closed" value="true" />
+      <created>1689943802663</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1689943802663</updated>
+    </task>
+    <task id="LOCAL-00003" summary="admin page prototype">
+      <option name="closed" value="true" />
+      <created>1690136788872</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1690136788872</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added album images&#10;-album image display on main page&#10;-album image saving locally when creating a new product&#10;-album image database table">
+      <option name="closed" value="true" />
+      <created>1690471034194</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1690471034194</updated>
+    </task>
+    <task id="LOCAL-00005" summary="adjusted main page visually">
+      <option name="closed" value="true" />
+      <created>1690642943799</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1690642943799</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added track list product&#10;Revamped Admin pages&#10;-seperated edit and add product pages&#10;-added features regarding tracks&#10;-removed all references to image repos from AdminController and added them to the ProductService class&#10;-optimized AdminController code&#10;-implemented track preloading and adding to controller through ajax&#10;Implemented page generation for each product(product-page)&#10;Split page parts into fragments for index and product-page">
+      <option name="closed" value="true" />
+      <created>1691067788788</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1691067788788</updated>
+    </task>
+    <task id="LOCAL-00007" summary="slightly adjusted product page">
+      <option name="closed" value="true" />
+      <created>1691070398601</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1691070398601</updated>
+    </task>
+    <task id="LOCAL-00008" summary="implemented paging">
+      <option name="closed" value="true" />
+      <created>1691501235612</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1691501235612</updated>
+    </task>
+    <task id="LOCAL-00009" summary="optimized UserController&#10;added user registration&#10;-login logout buttons on nav&#10;-registration form&#10;-LocalUser repository and service classes">
+      <option name="closed" value="true" />
+      <created>1691587729938</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1691587729938</updated>
+    </task>
+    <task id="LOCAL-00010" summary="adjusted styling">
+      <option name="closed" value="true" />
+      <created>1691601643902</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1691601643902</updated>
+    </task>
+    <task id="LOCAL-00011" summary="implemented user registration">
+      <option name="closed" value="true" />
+      <created>1692133565039</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1692133565039</updated>
+    </task>
+    <task id="LOCAL-00012" summary="implemented password encryption using bcrypt and login using custom database user table">
+      <option name="closed" value="true" />
+      <created>1692200755972</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1692200755972</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="enumerated-roles" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <MESSAGE value="deleted service layer" />
+    <MESSAGE value="admin page prototype" />
+    <MESSAGE value="added album images&#10;-album image display on main page&#10;-album image saving locally when creating a new product&#10;-album image database table" />
+    <MESSAGE value="adjusted main page visually" />
+    <MESSAGE value="Added track list product&#10;Revamped Admin pages&#10;-seperated edit and add product pages&#10;-added features regarding tracks&#10;-removed all references to image repos from AdminController and added them to the ProductService class&#10;-optimized AdminController code&#10;-implemented track preloading and adding to controller through ajax&#10;Implemented page generation for each product(product-page)&#10;Split page parts into fragments for index and product-page" />
+    <MESSAGE value="slightly adjusted product page" />
+    <MESSAGE value="added track-listing to product pages" />
+    <MESSAGE value="implemented paging" />
+    <MESSAGE value="optimized UserController&#10;added user registration&#10;-login logout buttons on nav&#10;-registration form&#10;-LocalUser repository and service classes" />
+    <MESSAGE value="adjusted styling" />
+    <MESSAGE value="implemented user registration" />
+    <MESSAGE value="implemented password encryption using bcrypt and login using custom database user table" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented password encryption using bcrypt and login using custom database user table" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
