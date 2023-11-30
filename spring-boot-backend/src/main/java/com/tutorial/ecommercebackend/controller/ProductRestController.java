@@ -23,7 +23,8 @@ public class ProductRestController {
 
     @GetMapping("")
     public ResponseEntity<List<Product>> getAllProducts(){
-        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
+        List<Product> p = productService.findAllProducts();
+        return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
     @GetMapping("/{productId}")

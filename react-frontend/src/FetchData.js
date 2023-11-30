@@ -4,9 +4,9 @@ const useFetchData = (url) => {
     const [data, setData] = useState(null);
     const [isPending, setPending] = useState(true);
     const [error, setError] = useState(null);
-    
-    useEffect(() => {   
-       getData(url)
+
+    useEffect(() => {
+        getData(url)
     }, [url]);
 
     function getData(url) {
@@ -19,15 +19,14 @@ const useFetchData = (url) => {
                 setPending(false);
             }).catch(err => {
                 setError(err);
-                if(data == null)
-                setTimeout(() => {
-                    getData(url);
-                }, 2500);
+                if (data == null)
+                    setTimeout(() => {
+                        getData(url);
+                    }, 2500);
             })
     }
 
-
-    return {data, isPending, error}
+    return { data, isPending, error }
 }
 export default useFetchData
 
