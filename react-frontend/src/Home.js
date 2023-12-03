@@ -1,7 +1,5 @@
-
-import ProductList from "./ProductList";
+import ProductList from "./components/product/ProductList";
 import useFetchData from "./FetchData";
-
 
 const Home = () => {
     const domain = "http://localhost:8080";

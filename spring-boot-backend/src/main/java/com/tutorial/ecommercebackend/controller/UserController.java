@@ -30,11 +30,14 @@ import se.michaelthelin.spotify.SpotifyApi;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.tutorial.ecommercebackend.security.SecurityUtils.checkDupleUsername;
 
 @Controller
 @SessionAttributes("cart")
+
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:8080"})
 public class UserController {
     /*
     TODO  FIX REMAINING TIME FOR CARTS
@@ -206,13 +209,9 @@ public class UserController {
 
     @PostMapping("/add-to-cart")
     ResponseEntity<CartItem> addToCart(@RequestBody Object itemId, @ModelAttribute Cart cart) {
-        Product productToAdd = null;
-        for (Product p : currentPageProducts) {
-            if (p.getId() == Long.parseLong((String) itemId)) {
-                productToAdd = p;
-            }
-        }
-        return new ResponseEntity<>(cartService.addItem(cart, new CartItem(productToAdd)), HttpStatus.OK);
+       Optional<Product> p = productService.findProductById(Long.parseLong(itemId.toString()));
+        return p.map(product -> new ResponseEntity<>(cartService.addItem(cart, new CartItem(product)), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/update-quantity/{cartItemId}")

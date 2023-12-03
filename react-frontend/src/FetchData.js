@@ -25,10 +25,9 @@ const useFetchData = (url) => {
                     }, 2500);
             })
     }
-
     return { data, isPending, error }
 }
-export default useFetchData
+export default useFetchData;
 
 
 

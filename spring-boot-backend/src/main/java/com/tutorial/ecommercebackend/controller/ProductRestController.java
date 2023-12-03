@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RequestMapping("api/products")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://localhost:8080"})
 public class ProductRestController {
     ProductService productService;
     @Autowired
@@ -25,6 +25,11 @@ public class ProductRestController {
     public ResponseEntity<List<Product>> getAllProducts(){
         List<Product> p = productService.findAllProducts();
         return new ResponseEntity<>(p, HttpStatus.OK);
+    }
+    @GetMapping("/related-products/{productId}")
+    public ResponseEntity<List<Product>> getRelatedProducts(@PathVariable String productId){
+
+        return null;
     }
 
     @GetMapping("/{productId}")

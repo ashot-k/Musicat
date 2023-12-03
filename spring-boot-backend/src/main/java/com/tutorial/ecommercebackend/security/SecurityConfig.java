@@ -66,7 +66,6 @@ public class SecurityConfig implements AccessDeniedHandler {
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
         );
-        http.csrf().disable();
 
         return http.build();
     }

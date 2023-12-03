@@ -23,6 +23,7 @@ public interface ProductService {
     Page<Product> findAllProductsPaged(int pageNo, int pageSize);
 
     List<Product> findAllProductsByOrderByNameAsc();
+    List<Product> findAllRelatedProducts(Long id);
 
     Product saveProduct(Product product);
 
