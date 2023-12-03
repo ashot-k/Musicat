@@ -1,0 +1,282 @@
+BEGIN;
+
+
+CREATE TABLE IF NOT EXISTS public.cart
+(
+    cart_id bigint NOT NULL DEFAULT nextval('cart_cart_id_seq'::regclass),
+    last_accessed timestamp(6) without time zone,
+    remaining timestamp(6) without time zone,
+    time_created timestamp(6) without time zone,
+    cart_user bigint,
+    CONSTRAINT cart_pkey PRIMARY KEY (cart_id),
+    CONSTRAINT uk_m8x6plgdylqgj60hhlip3w7hu UNIQUE (cart_user)
+);
+
+CREATE TABLE IF NOT EXISTS public.cart_item
+(
+    item_id bigint NOT NULL DEFAULT nextval('cart_item_item_id_seq'::regclass),
+    quantity integer NOT NULL,
+    product_id bigint,
+    CONSTRAINT cart_item_pkey PRIMARY KEY (item_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.cart_item_mapping
+(
+    cart_id bigint NOT NULL,
+    cart_item_id bigint NOT NULL,
+    CONSTRAINT uk_m0pqcxrm1xb4xbb9kvkwht5uk UNIQUE (cart_item_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.images
+(
+    image_id bigint NOT NULL DEFAULT nextval('images_image_id_seq'::regclass),
+    product_id bigint,
+    image_data character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT images_pkey PRIMARY KEY (image_id),
+    CONSTRAINT images_product_id_key UNIQUE (product_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.inventory
+(
+    quantity integer NOT NULL,
+    inventory_id bigint NOT NULL DEFAULT nextval('inventory_inventory_id_seq'::regclass),
+    CONSTRAINT inventory_pkey PRIMARY KEY (inventory_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.local_user
+(
+    fk_addresses_id bigint,
+    user_id bigint NOT NULL DEFAULT nextval('local_user_user_id_seq'::regclass),
+    passwrd character varying(1000) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    first_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    role character varying(255) COLLATE pg_catalog."default",
+    username character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT local_user_pkey PRIMARY KEY (user_id),
+    CONSTRAINT local_user_fk_addresses_id_key UNIQUE (fk_addresses_id),
+    CONSTRAINT local_user_username_key UNIQUE (username)
+);
+
+CREATE TABLE IF NOT EXISTS public.order_details
+(
+    fk_user_id bigint NOT NULL,
+    order_details_id bigint NOT NULL DEFAULT nextval('order_details_order_details_id_seq'::regclass),
+    payment_id bigint,
+    CONSTRAINT order_details_pkey PRIMARY KEY (order_details_id),
+    CONSTRAINT order_details_payment_id_key UNIQUE (payment_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.order_items
+(
+    quantity integer NOT NULL,
+    order_id bigint NOT NULL,
+    order_items_id bigint NOT NULL DEFAULT nextval('order_items_order_items_id_seq'::regclass),
+    product_id bigint NOT NULL,
+    CONSTRAINT order_items_pkey PRIMARY KEY (order_items_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.payment_details
+(
+    amount double precision NOT NULL,
+    order_id_order_details_id bigint,
+    order_pay_details_id bigint NOT NULL DEFAULT nextval('payment_details_order_pay_details_id_seq'::regclass),
+    CONSTRAINT payment_details_pkey PRIMARY KEY (order_pay_details_id),
+    CONSTRAINT payment_details_order_id_order_details_id_key UNIQUE (order_id_order_details_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.product
+(
+    price double precision NOT NULL,
+    year_of_release integer NOT NULL,
+    fk_inventory_id bigint,
+    product_id bigint NOT NULL DEFAULT nextval('product_product_id_seq'::regclass),
+    description character varying(1000) COLLATE pg_catalog."default" NOT NULL,
+    artist character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    genre character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    product_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT product_pkey PRIMARY KEY (product_id),
+    CONSTRAINT product_fk_inventory_id_key UNIQUE (fk_inventory_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.spring_session
+(
+    primary_id character(36) COLLATE pg_catalog."default" NOT NULL,
+    session_id character(36) COLLATE pg_catalog."default" NOT NULL,
+    creation_time bigint NOT NULL,
+    last_access_time bigint NOT NULL,
+    max_inactive_interval integer NOT NULL,
+    expiry_time bigint NOT NULL,
+    principal_name character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT spring_session_pk PRIMARY KEY (primary_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.spring_session_attributes
+(
+    session_primary_id character(36) COLLATE pg_catalog."default" NOT NULL,
+    attribute_name character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    attribute_bytes bytea NOT NULL,
+    CONSTRAINT spring_session_attributes_pk PRIMARY KEY (session_primary_id, attribute_name)
+);
+
+CREATE TABLE IF NOT EXISTS public.track
+(
+    track_id bigint NOT NULL DEFAULT nextval('track_track_id_seq'::regclass),
+    track_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT track_pkey PRIMARY KEY (track_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.tracks_mapping
+(
+    product_id bigint NOT NULL,
+    track_id bigint NOT NULL,
+    CONSTRAINT tracks_mapping_track_id_key UNIQUE (track_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.user_address
+(
+    postal_code character varying(5) COLLATE pg_catalog."default" NOT NULL,
+    address_id bigint NOT NULL DEFAULT nextval('user_address_address_id_seq'::regclass),
+    country character varying(80) COLLATE pg_catalog."default" NOT NULL,
+    address_line_1 character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    address_line_2 character varying(255) COLLATE pg_catalog."default",
+    city character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT user_address_pkey PRIMARY KEY (address_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.user_payment
+(
+    account_number bigint NOT NULL,
+    pay_details_id bigint NOT NULL DEFAULT nextval('user_payment_pay_details_id_seq'::regclass),
+    user_id bigint NOT NULL,
+    pay_method character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT user_payment_pkey PRIMARY KEY (pay_details_id)
+);
+
+ALTER TABLE IF EXISTS public.cart
+    ADD CONSTRAINT fkp2lc7cnshkhv50d3ll2jjo0q6 FOREIGN KEY (cart_user)
+    REFERENCES public.local_user (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS uk_m8x6plgdylqgj60hhlip3w7hu
+    ON public.cart(cart_user);
+
+
+ALTER TABLE IF EXISTS public.cart_item
+    ADD CONSTRAINT fkjcyd5wv4igqnw413rgxbfu4nv FOREIGN KEY (product_id)
+    REFERENCES public.product (product_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.cart_item_mapping
+    ADD CONSTRAINT fk5h38ig8wktvpd4g9x6ti1jm0 FOREIGN KEY (cart_item_id)
+    REFERENCES public.cart_item (item_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS uk_m0pqcxrm1xb4xbb9kvkwht5uk
+    ON public.cart_item_mapping(cart_item_id);
+
+
+ALTER TABLE IF EXISTS public.cart_item_mapping
+    ADD CONSTRAINT fkhmukvc0m8pkvoajn4t9ggny1n FOREIGN KEY (cart_id)
+    REFERENCES public.cart (cart_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.images
+    ADD CONSTRAINT fk8sfun6tj1hqb85ed52o8mkqyh FOREIGN KEY (product_id)
+    REFERENCES public.product (product_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS images_product_id_key
+    ON public.images(product_id);
+
+
+ALTER TABLE IF EXISTS public.local_user
+    ADD CONSTRAINT fk92gew46hc036bx257xkihf52r FOREIGN KEY (fk_addresses_id)
+    REFERENCES public.user_address (address_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS local_user_fk_addresses_id_key
+    ON public.local_user(fk_addresses_id);
+
+
+ALTER TABLE IF EXISTS public.order_details
+    ADD CONSTRAINT fk22470nsqgceouhmgf1tpgxui7 FOREIGN KEY (fk_user_id)
+    REFERENCES public.local_user (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.order_details
+    ADD CONSTRAINT fke2t35c1i6f93nhvxbru3wy4s5 FOREIGN KEY (payment_id)
+    REFERENCES public.payment_details (order_pay_details_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS order_details_payment_id_key
+    ON public.order_details(payment_id);
+
+
+ALTER TABLE IF EXISTS public.order_items
+    ADD CONSTRAINT fkfaco7kgw6uoepp39m74cy7j6o FOREIGN KEY (order_id)
+    REFERENCES public.order_details (order_details_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.order_items
+    ADD CONSTRAINT fklf6f9q956mt144wiv6p1yko16 FOREIGN KEY (product_id)
+    REFERENCES public.product (product_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.payment_details
+    ADD CONSTRAINT fkr4ajqn0piw7ic8hyqqqqe1mux FOREIGN KEY (order_id_order_details_id)
+    REFERENCES public.order_details (order_details_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS payment_details_order_id_order_details_id_key
+    ON public.payment_details(order_id_order_details_id);
+
+
+ALTER TABLE IF EXISTS public.product
+    ADD CONSTRAINT fkmurxufobr1g1qojpqkrqduk6n FOREIGN KEY (fk_inventory_id)
+    REFERENCES public.inventory (inventory_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS product_fk_inventory_id_key
+    ON public.product(fk_inventory_id);
+
+
+ALTER TABLE IF EXISTS public.spring_session_attributes
+    ADD CONSTRAINT spring_session_attributes_fk FOREIGN KEY (session_primary_id)
+    REFERENCES public.spring_session (primary_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.tracks_mapping
+    ADD CONSTRAINT fk9gccqot7dgpo2165oqje2mcja FOREIGN KEY (product_id)
+    REFERENCES public.product (product_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.tracks_mapping
+    ADD CONSTRAINT fkq4aj20m4f6ocwn9ar0us7bo4c FOREIGN KEY (track_id)
+    REFERENCES public.track (track_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS tracks_mapping_track_id_key
+    ON public.tracks_mapping(track_id);
+
+
+ALTER TABLE IF EXISTS public.user_payment
+    ADD CONSTRAINT fkkugnevoqb5xiqktiy0grou3rj FOREIGN KEY (user_id)
+    REFERENCES public.local_user (user_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+END;
