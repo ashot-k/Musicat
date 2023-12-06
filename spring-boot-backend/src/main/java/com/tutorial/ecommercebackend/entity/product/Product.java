@@ -1,6 +1,7 @@
 package com.tutorial.ecommercebackend.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,43 @@ public class Product implements Serializable{
     public static final String IMAGE_URL_PREFIX =  "/images/album-images/";
     public static final String IMAGE_URL_SUFFIX = "/album_image.png";
 
-    public Product(String name, String artist, String description, Double price, Inventory inventory, Integer year, String genre, List<Track> tracks) {
+    public Product(String name, String artist, String description, Double price, Inventory inventory,String genre, List<Track> tracks) {
         this.name = name;
         this.artist = artist;
         this.description = description;
         this.price = price;
         this.inventory = inventory;
-        this.year = year;
         this.genre = genre;
         this.tracks = tracks;
     }
-    public Product(){}
+    public Product(String name, String artist, String description, Double price, Inventory inventory, String genre) {
+        this.name = name;
+        this.artist = artist;
+        this.description = description;
+        this.price = price;
+        this.inventory = inventory;
+        this.genre = genre;
+        this.tracks = new ArrayList<>();
+    }
+    public Product(String name, String artist, Double price, Inventory inventory, String genre){
+        this.name = name;
+        this.artist = artist;
+        this.price = price;
+        this.inventory = inventory;
+        this.genre = genre;
+        this.tracks = new ArrayList<>();
+    }
+    public Product(String name, String artist, Double price, Inventory inventory, String genre,List<Track> tracks){
+        this.name = name;
+        this.artist = artist;
+        this.price = price;
+        this.inventory = inventory;
+        this.genre = genre;
+        this.tracks = tracks;
+    }
+    public Product(){
+        this.tracks = new ArrayList<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,30 +72,29 @@ public class Product implements Serializable{
     @NotBlank(message = "Genre cannot be empty")
     private String genre;
 
-    @Column(name = "description", nullable = false, length = 1000)
+    @Column(name = "description", length = 1000)
     private String description;
 
     @Column(name = "price", nullable = false)
-    @NotNull(message = "Insert valid price")
+    @NotNull(message = "Enter valid price")
+    @Digits(message = "Enter valid price", integer = 6, fraction = 0)
+    @Min(value = 0, message = "Price cannot be negative")
     private Double price;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_inventory_id")
     private Inventory inventory;
 
-    @Column(name = "year_of_release", nullable = false)
+    /*@Column(name = "year_of_release", nullable = false)
     @NotNull(message = "Enter valid year of release")
     @Min(value = 1900, message = "Year must be greater than or equal to 1900")
     @Max(value = 2030, message = "Year must be less than or equal to 2030")
-    private Integer year;
+    private Integer year;*/
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tracks_mapping",
-            joinColumns = @JoinColumn(name = "product_id")
-            , inverseJoinColumns = @JoinColumn(name = "track_id")
-    )
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Track> tracks;
+
+    private String imageURL;
 
     public List<String> tracksToStringList() {
         List<String> stringList = new ArrayList<>();
@@ -91,8 +117,12 @@ public class Product implements Serializable{
         return allTracks.toString();
     }
 
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     public String getImageURL(){
-        return IMAGE_URL_PREFIX + this.getId() + IMAGE_URL_SUFFIX;
+        return this.imageURL;
     }
     public Long getId() {
         return id;
@@ -148,13 +178,6 @@ public class Product implements Serializable{
         this.inventory = inventory;
     }
 
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
 
     public List<Track> getTracks() {
         return tracks;

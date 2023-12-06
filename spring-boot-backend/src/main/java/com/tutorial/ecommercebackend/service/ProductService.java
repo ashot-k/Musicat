@@ -1,7 +1,6 @@
 package com.tutorial.ecommercebackend.service;
 
 
-import com.tutorial.ecommercebackend.entity.product.Images;
 import com.tutorial.ecommercebackend.entity.product.Product;
 import com.tutorial.ecommercebackend.entity.product.Track;
 import org.springframework.data.domain.Page;
@@ -40,14 +39,4 @@ public interface ProductService {
     List<Track> saveAllTracks(List<Track> tracks);
 
     void removeTracksByIdIn(List<Long> ids);
-
-    ///////////////////////////IMAGES///////////////////////////
-    List<Images> findImagesByProduct(Product product);
-
-    void deleteAllImages(Product product);
-
-    void deleteImageById(Long id);
-
-    void saveImage(Product product, MultipartFile file) throws IOException;
-
 }

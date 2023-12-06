@@ -1,0 +1,23 @@
+{
+  "id": 2,
+  "name": "Blackwater Park",
+  "artist": "Opeth",
+  "genre": "Progressive Metal",
+  "description": "Blackwater Park is the fifth studio album by Swedish progressive metal band Opeth. It was released on March 12, 2001, in Europe and a day later in North America through Music for Nations and Koch Records.[1][2] The album marks the first collaboration between Porcupine Tree frontman Steven Wilson and the band, as Wilson had been brought in to produce the album. This contributed to a shift in Opeth's musical style. The songs 'The Drapery Falls' and 'Still Day Beneath the Sun'were released as singles. ",
+  "price": 12,
+  "inventory": {
+    "quantity": 12
+  },
+  "tracks": [
+    {
+      "name": "The Leper Affinity"
+    },
+    {
+      "name": 	"Bleak"
+    },
+    {
+      "name": 	"Harvest"
+    }
+  ],
+  "imageURL": "https://en.wikipedia.org/wiki/Blackwater_Park#/media/File:Blackwaterpark.jpg"
+}

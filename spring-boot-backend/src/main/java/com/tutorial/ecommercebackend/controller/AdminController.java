@@ -2,7 +2,6 @@ package com.tutorial.ecommercebackend.controller;
 
 
 import com.tutorial.ecommercebackend.entity.product.Genre;
-import com.tutorial.ecommercebackend.entity.product.Images;
 import com.tutorial.ecommercebackend.entity.product.Product;
 import com.tutorial.ecommercebackend.entity.product.Track;
 import com.tutorial.ecommercebackend.service.ProductService;
@@ -13,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,37 +66,29 @@ public class AdminController {
 
 
     @PostMapping("/add-product")
-    String saveNewProduct(@Valid @ModelAttribute("product") Product product, BindingResult result,
+    String createProduct(@ModelAttribute("product") Product product, BindingResult result,
                           @ModelAttribute("imageId") MultipartFile file) throws IOException {
         Product savedProduct;
-        if (result.hasErrors() || file.isEmpty()) {
-            System.out.println(result.getAllErrors());
-            return "/admin/add-product-form";
-        } else {
             if (trackNames != null)
                 productService.saveTracks(product, trackNames);
             savedProduct = productService.saveProduct(product);
             System.out.println(product.getName() + " added");
-            productService.saveImage(savedProduct, file);
+         /*
           if(!productService.saveTracks(savedProduct, trackNames)){
               return"/admin/add-product-form";
           }
-        }
+          */
         return "redirect:/admin/list-products";
     }
 
 
     @GetMapping("/edit-product")
-    String showEditProductForm(@ModelAttribute("product") Product product,
-                               @RequestParam(value = "productId", required = false) Long id, Model model) {
+    String editProductForm(@RequestParam(value = "productId", required = false) Long id, Model model) {
 
         Optional<Product> selectedProduct = productService.findProductById(id);
         model.addAttribute("product", selectedProduct);
 
-        List<Images> image = selectedProduct.map(value -> productService.findImagesByProduct(value)).orElse(null);
-        if (image != null)
-            if (!image.isEmpty())
-                model.addAttribute("image", image.get(0).getImage());
+
         return "/admin/edit-product-form";
     }
 
@@ -114,8 +104,6 @@ public class AdminController {
             savedProduct = productService.saveProduct(product);
             if (trackNames != null)
                 productService.saveTracks(product, trackNames);
-            if (!file.isEmpty())
-                productService.saveImage(savedProduct, file);
         }
         return "redirect:/admin/list-products";
     }
@@ -125,12 +113,6 @@ public class AdminController {
     String deleteProduct(@RequestParam("productId") Long id) throws IOException {
         Optional<Product> p = productService.findProductById(id);
         Product product = p.get();
-
-        List<Images> i = productService.findImagesByProduct(product);
-        if (!i.isEmpty()) {
-            productService.deleteImageById(i.get(0).getId());
-            FileUtils.deleteDirectory(new File("./src/main/resources/static/images/album-images/" + id));
-        }
 
         List<Track> t = product.getTracks();
         List<Long> trackIds = new ArrayList<>();

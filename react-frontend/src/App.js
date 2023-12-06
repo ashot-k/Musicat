@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './Home';
 import ProductPage from './components/product/ProductPage';
+import CreateProductForm from './components/admin/CreateProductForm.js';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/items/:productId' element={<ProductPage />} />
+          <Route path='/create-product/' element={<CreateProductForm/>} />
         </Routes>
       </div>
     </div>

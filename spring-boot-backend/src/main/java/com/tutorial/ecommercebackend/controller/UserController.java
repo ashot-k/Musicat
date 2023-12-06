@@ -189,7 +189,7 @@ public class UserController {
     public String getProductPage(Model model, @PathVariable String productId) {
         Product product = productService.findProductById(Long.parseLong(productId)).get();
         model.addAttribute("product", product);
-        model.addAttribute("image", productService.findImagesByProduct(product).get(0).getImage());
+        model.addAttribute("image", product.getImageURL());
         model.addAttribute("tracks", product.getTracks());
 
         List<Product> relatedProducts = productService.findAllProductsByArtist(product.getArtist());

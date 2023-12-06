@@ -1,5 +1,6 @@
 package com.tutorial.ecommercebackend.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -22,20 +23,33 @@ public class Track implements Serializable {
     @Column(name = "track_name", nullable = false)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    @JsonBackReference
+    private Product product;
+
+    public Track(String name, Product product) {
+        this.name =name;
+        this.product = product;
+    }
     public void setId(Long id) {
         this.id = id;
     }
-
     public Long getId() {
         return id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

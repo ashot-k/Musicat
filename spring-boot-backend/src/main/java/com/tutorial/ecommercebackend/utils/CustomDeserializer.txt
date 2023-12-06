@@ -1,0 +1,17 @@
+package com.tutorial.ecommercebackend.utils;
+
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.tutorial.ecommercebackend.entity.product.Product;
+
+import java.io.IOException;
+
+public class CustomDeserializer extends JsonDeserializer<Product> {
+    @Override
+    public Product deserialize(JsonParser parser, DeserializationContext context) throws IOException, JacksonException {
+     //   JsonNode node = parser.getCodec().readTree(parser)
+        return null;
+    }
+}

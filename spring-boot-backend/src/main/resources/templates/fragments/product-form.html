@@ -31,15 +31,6 @@
                      th:errors="*{artist}"></div>
             </div>
             <div class="mb-3">
-                <label for="year" class="form-label">Year
-                    <input class="form-control" name="year" id="year" type="number" th:field="*{year}"
-                           required>
-                </label>
-                <div class="text-danger" th:if="${#fields.hasErrors('year')}"
-                     th:errors="*{year}"></div>
-
-            </div>
-            <div class="mb-3">
                 <label for="genre" id="genre" class="form-label">Genre</label>
                 <select class="form-select" aria-label="Select Genre" th:field="*{genre}" required>
                     <option value="">Select Genre</option>
@@ -83,17 +74,6 @@
         <img id="preview" class="mx-auto mb-3 mt-3" alt="Image preview"
              style="width: 256px; height: 256px;" src="" th:src="@{${image}}">
         <hr class="mt-3 mb-1 w-100">
-        <!--   <div class="d-grid gap-2 col-lg-6 mx-auto" style="width: 100%;">
-                 <div class="d-grid col-6 mx-auto mb-3 justify-content-center">
-                     <label for="added-track" class="form-label">Track Name
-                         <input name="added-track" id="added-track" type="text" class="form-control">
-                     </label>
-                     <button id="add-track-button" class="btn btn-primary" type="button" onclick="addTrack()">Add
-                         Track
-                     </button>
-                 </div>
-             </div>-->
-
 
         <div class="d-grid gap-2 col-6 mx-auto">
             <button class="btn btn-primary"   onclick="test()" type="button">Save Product</button>

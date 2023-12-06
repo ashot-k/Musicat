@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const NavBar = () => {
    return (
 
@@ -18,7 +20,7 @@ const NavBar = () => {
                         <a href="#" className="nav-link active">Wishlist</a>
                      </li>
                      <li className="nav-item">
-                        <a href="#" className="nav-link active">placeholder</a>
+                       <Link className="nav-link active" to={'/create-product/'}></Link> 
                      </li>
                   </ul>
                   <ul className="navbar-nav gap-3 align-items-center" style={{ height: '60px' }}>

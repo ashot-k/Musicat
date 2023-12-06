@@ -21,7 +21,6 @@
         <th scope="col">Name</th>
         <th scope="col">Artist</th>
         <th scope="col">Price</th>
-        <th scope="col">Year</th>
         <th scope="col">Genre</th>
         <th scope="col">Tracks</th>
         <th scope="col">Quantity</th>
@@ -36,7 +35,6 @@
         <td style="max-width: 250px;" th:text="${product.getName()}"></td>
         <td style="max-width: 150px;" th:text="${product.getArtist()}"></td>
         <td th:text="${product.getPrice()}"></td>
-        <td th:text="${product.getYear()}"></td>
         <td th:text="${product.getGenre()}"></td>
         <td style="max-width: 200px" th:text="${product.tracksToString()}"></td>
         <td th:text="${product.getInventory().getQuantity()}"></td>

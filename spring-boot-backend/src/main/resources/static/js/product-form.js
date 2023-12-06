@@ -1,17 +1,4 @@
-$(document).ready(function () {
-    $('#imageFile').change(function () {
-        showImage(this);
-    });
-})
 
-function showImage(fileInput) {
-    let file = fileInput.files[0];
-    let reader = new FileReader();
-    reader.onload = function (e) {
-        $('#preview').attr('src', e.target.result)
-    };
-    reader.readAsDataURL(file);
-}
 
 
 function deleteTrackField(e) {

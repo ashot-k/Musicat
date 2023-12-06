@@ -28,7 +28,7 @@
             <div class="d-flex flex-row align-items-start gap-4 w-100">
                 <div>
                     <img th:id="'product' + ${product.id}"
-                         class="border border-secondary border-1 rounded product-image" th:src="${image}" src="#"
+                         class="border border-secondary border-1 rounded product-image" th:src="${product.imageURL}" src="#"
                          alt="Product Image">
                 </div>
                 <div class="col-lg-5 d-flex flex-fill flex-column justify-content-between"
@@ -41,7 +41,6 @@
                                th:href="@{'/search?keyword=' + ${product.artist}}"> </a>
                         </h4>
                         <h4 class="fs-5 fw-bold" th:text="'Genre: ' + ${product.genre}"></h4>
-                        <h4 class="fs-5 fw-bold" th:text="'Year: ' + ${product.year}"></h4>
                     </div>
                     <div>
                         <span class="fs-4 h4 fw-bold">Price:

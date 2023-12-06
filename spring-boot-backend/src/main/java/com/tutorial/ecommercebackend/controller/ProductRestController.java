@@ -31,6 +31,10 @@ public class ProductRestController {
 
         return null;
     }
+    @GetMapping("/search-product/{keyword}")
+    public ResponseEntity<List<Product>> search(@PathVariable String keyword){
+        return new ResponseEntity<>(productService.findProductsByKeyword(keyword), HttpStatus.OK);
+    }
 
     @GetMapping("/{productId}")
     public  ResponseEntity<Product> getProduct(@PathVariable String productId){

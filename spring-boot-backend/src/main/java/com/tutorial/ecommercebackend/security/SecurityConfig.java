@@ -47,8 +47,8 @@ public class SecurityConfig implements AccessDeniedHandler {
         http.authorizeHttpRequests(configurer ->
                 configurer
                         .requestMatchers(STATIC_RESOURCE_PATHS).permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                       /* .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")*/
                         .requestMatchers("/login").anonymous()
                         .requestMatchers("/register").anonymous()
                         .requestMatchers("/**").permitAll()
@@ -66,7 +66,7 @@ public class SecurityConfig implements AccessDeniedHandler {
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
         );
-
+        http.csrf().disable();
         return http.build();
     }
 
