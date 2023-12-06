@@ -31,7 +31,6 @@ const ProductPage = () => {
                     <a className="hov text-decoration-none h5" style={{ textDecoration: 'none' }} href="#">{product.artist}</a>
                   </h4>
                   <h4 className="fs-5 fw-bold">Genre:{product.genre}</h4>
-                  <h4 className="fs-5 fw-bold" >Year: {product.year}</h4>
                 </div>
                 <div>
                   <span className="fs-4 h4 fw-bold">Price:

@@ -84,11 +84,6 @@ public class Product implements Serializable{
     @JoinColumn(name = "fk_inventory_id")
     private Inventory inventory;
 
-    /*@Column(name = "year_of_release", nullable = false)
-    @NotNull(message = "Enter valid year of release")
-    @Min(value = 1900, message = "Year must be greater than or equal to 1900")
-    @Max(value = 2030, message = "Year must be less than or equal to 2030")
-    private Integer year;*/
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
